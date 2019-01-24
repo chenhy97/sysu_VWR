@@ -15,6 +15,7 @@ import (
 	"sort"
 	"strings"
 	"time"
+	"log"
 )
 
 // cassandra token to server map
@@ -100,10 +101,22 @@ func Start(listener chan gotocol.Message) {
 	hist := collect.NewHist("")
 	ep, _ := time.ParseDuration(archaius.Conf.EurekaPoll)
 	eurekaTicker := time.NewTicker(ep)
+	var delaytime time.Duration
+	var delaysymbol int = 0
 	for {
 		select {
 		case msg := <-listener:
-			flow.Instrument(msg, name, hist)
+			if msg.Imposition == gotocol.Put{
+				flow.Instrument(msg, name, hist, "NO")
+			}else if delaysymbol == 1 {
+				log.Println("begin")
+				time.Sleep(delaytime)
+				log.Println("end")
+				flow.Instrument(msg, name, hist, "YES")
+				delaysymbol = 0
+			}else{
+				flow.Instrument(msg, name, hist, "NO")
+			}
 			switch msg.Imposition {
 			case gotocol.Hello:
 				if name == "" {
@@ -129,12 +142,12 @@ func Start(listener chan gotocol.Message) {
 				if len(ring) == 0 || ring[i].name == name { // ring is setup so only respond if this is the right place
 					// return any stored value for this key (Cassandra READ.ONE behavior)
 					outmsg := gotocol.Message{gotocol.GetResponse, listener, time.Now(), msg.Ctx, store[msg.Intention]}
-					flow.AnnotateSend(outmsg, name)
+					flow.AnnotateSend(outmsg, name,"NO")
 					outmsg.GoSend(msg.ResponseChan)
 				} else {
 					// forward the message to the right place, but don't change the ResponseChan or span
 					outmsg := gotocol.Message{gotocol.GetRequest, msg.ResponseChan, time.Now(), msg.Ctx.AddSpan(), msg.Intention}
-					flow.AnnotateSend(outmsg, name)
+					flow.AnnotateSend(outmsg, name,"NO")
 					outmsg.GoSend(microservices.Named(ring[i].name))
 				}
 			case gotocol.GetResponse:
@@ -150,7 +163,7 @@ func Start(listener chan gotocol.Message) {
 					} else {
 						// forward the message to the right place, but don't change the ResponseChan or context parent
 						outmsg := gotocol.Message{gotocol.Put, msg.ResponseChan, time.Now(), msg.Ctx.AddSpan(), msg.Intention}
-						flow.AnnotateSend(outmsg, name)
+						flow.AnnotateSend(outmsg, name,"NO")
 						outmsg.GoSend(microservices.Named(ring[i].name))
 					}
 					// duplicate the request on to priamCassandra nodes in each zone and one in each region
@@ -159,7 +172,7 @@ func Start(listener chan gotocol.Message) {
 						for _, n := range microservices.Names() {
 							if names.Region(n) == names.Region(name) && names.Zone(n) == z {
 								outmsg := gotocol.Message{gotocol.Replicate, listener, time.Now(), msg.Ctx.NewParent(), msg.Intention}
-								flow.AnnotateSend(outmsg, name)
+								flow.AnnotateSend(outmsg, name,"NO")
 								outmsg.GoSend(microservices.Named(n))
 								break // only need to send it to one node in each zone
 							}
@@ -169,7 +182,7 @@ func Start(listener chan gotocol.Message) {
 						for _, n := range microservices.Names() {
 							if names.Region(n) == r {
 								outmsg := gotocol.Message{gotocol.Replicate, listener, time.Now(), msg.Ctx.NewParent(), msg.Intention}
-								flow.AnnotateSend(outmsg, name)
+								flow.AnnotateSend(outmsg, name,"NO")
 								outmsg.GoSend(microservices.Named(n))
 								break // only need to send it to one node in each region
 							}
@@ -189,7 +202,7 @@ func Start(listener chan gotocol.Message) {
 					} else {
 						// forward the message to the right place, but don't change the ResponseChan
 						outmsg := gotocol.Message{gotocol.Replicate, msg.ResponseChan, time.Now(), msg.Ctx, msg.Intention}
-						flow.AnnotateSend(outmsg, name)
+						flow.AnnotateSend(outmsg, name,"NO")
 						outmsg.GoSend(microservices.Named(ring[i].name))
 					}
 				}
@@ -206,7 +219,7 @@ func Start(listener chan gotocol.Message) {
 						for _, n := range microservices.Names() {
 							if names.Region(n) == myregion && names.Zone(n) == z {
 								outmsg := gotocol.Message{gotocol.Replicate, listener, time.Now(), msg.Ctx.NewParent(), msg.Intention}
-								flow.AnnotateSend(outmsg, name)
+								flow.AnnotateSend(outmsg, name,"NO")
 								outmsg.GoSend(microservices.Named(n))
 								break // only need to send it to one node in each zone
 							}
@@ -214,11 +227,26 @@ func Start(listener chan gotocol.Message) {
 					}
 					break
 				}
+			case gotocol.Delay:
+				delaysymbol = 1
+				d, e := time.ParseDuration(msg.Intention)
+				if e == nil && d >= time.Millisecond && d <= time.Hour {
+					delaytime = d
+				}
+				// log.Println("begin")
+				// time.Sleep(delaytime)
+				// delaysymbol = 0
+				// log.Println("end")
 			case gotocol.Goodbye:
 				gotocol.Message{gotocol.Goodbye, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
 				return
 			}
 		case <-eurekaTicker.C: // check to see if any new dependencies have appeared
+			for {//这一部分是否多余(select 好像可以保证一次只有一个case在执行)或者不够合理(也许会产生竞争)，
+				if delaysymbol == 0 {
+					break
+				}
+			}
 			for dep := range dependencies {
 				for _, ch := range eureka {
 					ch <- gotocol.Message{gotocol.GetRequest, listener, time.Now(), gotocol.NilContext, dep}

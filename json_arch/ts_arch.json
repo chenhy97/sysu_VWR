@@ -1,0 +1,1251 @@
+{
+    "arch": "ts.yml",
+    "args": "[./compose2arch -file ts.yml]",
+    "date": "2018-08-02T18:30:34.849403779+08:00",
+    "description": "compose yaml",
+    "services": [
+        {
+            "container": "redis",
+            "count": 1,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "redis",
+            "package": "store",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "redis"
+            ],
+            "machine": "external",
+            "name": "www-redis",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-security-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-security-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-security-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-security-service",
+            "package": "denominator"
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-payment-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "ts/ts-inside-payment-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-inside-payment-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-inside-payment-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-inside-payment-service",
+            "package": "denominator"
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-order-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "ts/ts-station-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-station-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-station-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-station-service",
+            "package": "denominator"
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-order-other-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "ts/ts-consign-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-consign-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-consign-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-consign-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-route-plan-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-route-plan-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-route-plan-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-route-plan-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-preserve-other-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-preserve-other-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-preserve-other-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-preserve-other-service",
+            "package": "denominator"
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-ticket-office-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "ts/ts-consign-price-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-consign-price-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-consign-price-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-consign-price-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-food-map-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-food-map-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-food-map-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-food-map-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-login-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-login-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-login-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-login-service",
+            "package": "denominator"
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-account-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "ts/ts-verification-code-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-verification-code-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-verification-code-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-verification-code-service",
+            "package": "denominator"
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-price-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "ts/ts-sso-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-sso-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-sso-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-sso-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-news-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-news-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-news-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-news-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-ticket-office-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-ticket-office-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-ticket-office-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-ticket-office-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-food-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-food-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-food-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-food-service",
+            "package": "denominator"
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-assurance-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-route-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "ts/ts-basic-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-basic-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-basic-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-basic-service",
+            "package": "denominator"
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-contacts-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-travel2-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-news-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "ts/ts-notification-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-notification-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-notification-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-notification-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-order-other-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-order-other-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-order-other-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-order-other-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-rebook-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-rebook-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-rebook-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-rebook-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-voucher-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-voucher-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-voucher-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-voucher-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-route-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-route-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-route-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-route-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-travel-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-travel-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-travel-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-travel-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-cancel-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-cancel-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-cancel-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-cancel-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-seat-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-seat-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-seat-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-seat-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-assurance-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-assurance-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-assurance-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-assurance-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-ticketinfo-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-ticketinfo-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-ticketinfo-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-ticketinfo-service",
+            "package": "denominator"
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-travel-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-inside-payment-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "ts/ts-admin-user-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-admin-user-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-admin-user-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-admin-user-service",
+            "package": "denominator"
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-security-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-consign-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "ts/ts-travel2-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-travel2-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-travel2-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-travel2-service",
+            "package": "denominator"
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-rebook-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "ts/ts-config-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-config-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-config-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-config-service",
+            "package": "denominator"
+        },
+        {
+            "container": "openzipkin/zipkin",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "zipkin",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "zipkin"
+            ],
+            "machine": "external",
+            "name": "www-zipkin",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-order-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-order-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-order-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-order-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-travel-plan-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-travel-plan-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-travel-plan-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-travel-plan-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-contacts-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-contacts-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-contacts-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-contacts-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-ui-dashboard",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-ui-dashboard",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-ui-dashboard"
+            ],
+            "machine": "external",
+            "name": "www-ts-ui-dashboard",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-admin-route-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-admin-route-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-admin-route-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-admin-route-service",
+            "package": "denominator"
+        },
+        {
+            "container": "mysql",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-voucher-mysql",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "rabbitmq:management",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "rabbitmq",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "rabbitmq"
+            ],
+            "machine": "external",
+            "name": "www-rabbitmq",
+            "package": "denominator"
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-station-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-food-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "ts/ts-payment-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-payment-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-payment-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-payment-service",
+            "package": "denominator"
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-config-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "ts/ts-price-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-price-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-price-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-price-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-execute-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-execute-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-execute-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-execute-service",
+            "package": "denominator"
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-train-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "ts/ts-admin-basic-info-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-admin-basic-info-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-admin-basic-info-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-admin-basic-info-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-admin-travel-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-admin-travel-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-admin-travel-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-admin-travel-service",
+            "package": "denominator"
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-verification-code-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "ts/ts-register-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-register-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-register-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-register-service",
+            "package": "denominator"
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-food-map-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "mongo",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-consign-price-mongo",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "ts/ts-admin-order-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-admin-order-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-admin-order-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-admin-order-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-train-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-train-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-train-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-train-service",
+            "package": "denominator"
+        },
+        {
+            "container": "ts/ts-preserve-service",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "ts-preserve-service",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "ts-preserve-service"
+            ],
+            "machine": "external",
+            "name": "www-ts-preserve-service",
+            "package": "denominator"
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "redis",
+                "ts-security-service",
+                "ts-payment-mongo",
+                "ts-inside-payment-service",
+                "ts-order-mongo",
+                "ts-station-service",
+                "ts-order-other-mongo",
+                "ts-consign-service",
+                "ts-route-plan-service",
+                "ts-preserve-other-service",
+                "ts-ticket-office-mongo",
+                "ts-consign-price-service",
+                "ts-food-map-service",
+                "ts-login-service",
+                "ts-account-mongo",
+                "ts-verification-code-service",
+                "ts-price-mongo",
+                "ts-sso-service",
+                "ts-news-service",
+                "ts-ticket-office-service",
+                "ts-food-service",
+                "ts-assurance-mongo",
+                "ts-route-mongo",
+                "ts-basic-service",
+                "ts-contacts-mongo",
+                "ts-travel2-mongo",
+                "ts-news-mongo",
+                "ts-notification-service",
+                "ts-order-other-service",
+                "ts-rebook-service",
+                "ts-voucher-service",
+                "ts-route-service",
+                "ts-travel-service",
+                "ts-cancel-service",
+                "ts-seat-service",
+                "ts-assurance-service",
+                "ts-ticketinfo-service",
+                "ts-travel-mongo",
+                "ts-inside-payment-mongo",
+                "ts-admin-user-service",
+                "ts-security-mongo",
+                "ts-consign-mongo",
+                "ts-travel2-service",
+                "ts-rebook-mongo",
+                "ts-config-service",
+                "zipkin",
+                "ts-order-service",
+                "ts-travel-plan-service",
+                "ts-contacts-service",
+                "ts-ui-dashboard",
+                "ts-admin-route-service",
+                "ts-voucher-mysql",
+                "rabbitmq",
+                "ts-station-mongo",
+                "ts-food-mongo",
+                "ts-payment-service",
+                "ts-config-mongo",
+                "ts-price-service",
+                "ts-execute-service",
+                "ts-train-mongo",
+                "ts-admin-basic-info-service",
+                "ts-admin-travel-service",
+                "ts-verification-code-mongo",
+                "ts-register-service",
+                "ts-food-map-mongo",
+                "ts-consign-price-mongo",
+                "ts-admin-order-service",
+                "ts-train-service",
+                "ts-preserve-service"
+            ],
+            "machine": "network",
+            "name": "my-network",
+            "package": "elb",
+            "regions": 1
+        }
+    ],
+    "version": "arch-0.1"
+}

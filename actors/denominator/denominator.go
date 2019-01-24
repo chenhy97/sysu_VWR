@@ -31,11 +31,23 @@ func Start(listener chan gotocol.Message) {
 	eurekaTicker := time.NewTicker(ep)
 	chatTicker := time.NewTicker(time.Hour)
 	chatTicker.Stop()
+	var delaysymbol int = 0
+	var delaytime time.Duration
 	w := 1 // counter for random messages
 	for {
 		select {
 		case msg := <-listener:
-			flow.Instrument(msg, name, nethist)
+			if msg.Imposition == gotocol.Put{
+				flow.Instrument(msg, name, nethist, "NO")
+			}else if delaysymbol == 1 {
+				log.Println("begin")
+				time.Sleep(delaytime)
+				log.Println("end")
+				flow.Instrument(msg, name, nethist, "YES")
+				delaysymbol = 0
+			}else{
+				flow.Instrument(msg, name, nethist, "NO")
+			}
 			switch msg.Imposition {
 			case gotocol.Hello:
 				if name == "" {
@@ -54,6 +66,16 @@ func Start(listener chan gotocol.Message) {
 			case gotocol.Forget:
 				// forget a buddy
 				handlers.Forget(&dependencies, microservices, msg)
+			case gotocol.Delay:
+				delaysymbol = 1
+				d, e := time.ParseDuration(msg.Intention)
+				if e == nil && d >= time.Millisecond && d <= time.Hour {
+					delaytime = d
+				}
+				// log.Println("begin")
+				// time.Sleep(delaytime)
+				// delaysymbol = 0
+				// log.Println("end")
 			case gotocol.Chat:
 				// setup the ticker to run at the specified rate
 				d, e := time.ParseDuration(msg.Intention)
@@ -73,17 +95,30 @@ func Start(listener chan gotocol.Message) {
 				collect.SaveHist(servhist, name, "_serv")
 				collect.SaveHist(rthist, name, "_rt")
 				collect.SaveAllGuesses(name)
+				//log.Println(parent)
 				gotocol.Message{gotocol.Goodbye, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
 				return
 			}
 		case <-eurekaTicker.C: // check to see if any new dependencies have appeared
+			for {//这一部分是否多余(select 好像可以保证一次只有一个case在执行)或者不够合理(也许会产生竞争)，
+				if delaysymbol == 0 {
+					break
+				}
+			}
 			for dep := range dependencies {
 				for _, ch := range eureka {
 					ch <- gotocol.Message{gotocol.GetRequest, listener, time.Now(), gotocol.NilContext, dep}
 				}
 			}
 		case <-chatTicker.C:
+			for {//这一部分是否多余(select 好像可以保证一次只有一个case在执行)或者不够合理(也许会产生竞争)，
+				if delaysymbol == 0 {
+					break
+				}
+			}
 			c := microservices.Random()
+			log.Println(microservices)
+			log.Println("ahahahahahah~~~~~~~~")
 			if c != nil {
 				ctx := gotocol.NewTrace()
 				now := time.Now()
@@ -98,7 +133,7 @@ func Start(listener chan gotocol.Message) {
 					sm = gotocol.Message{gotocol.Put, listener, now, ctx, fmt.Sprintf("Why%v%v me", w, w*w)}
 					w++ // put a new key each time
 				}
-				flow.AnnotateSend(sm, name) // service send logs creation time for this flow
+				flow.AnnotateSend(sm, name,"NO") // service send logs creation time for this flow
 				sm.GoSend(c)
 			}
 		}

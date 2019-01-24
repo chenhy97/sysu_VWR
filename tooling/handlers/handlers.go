@@ -31,7 +31,7 @@ func Inform(msg gotocol.Message, name string, listener chan gotocol.Message) cha
 		log.Fatal(name + "Inform message received before Hello message")
 	}
 	// service registry channel is buffered so don't use GoSend to tell Eureka we exist
-	msg.ResponseChan <- gotocol.Message{gotocol.Put, listener, time.Now(), DebugContext(msg.Ctx), name}
+	msg.ResponseChan <- gotocol.Message{gotocol.Put, listener, time.Now(), DebugContext(msg.Ctx), name}//msg.ResponseChan是eureka
 	return msg.ResponseChan
 }
 
@@ -78,7 +78,7 @@ func Put(msg gotocol.Message, name string, listener chan gotocol.Message, reques
 		return
 	}
 	outmsg := gotocol.Message{gotocol.Put, listener, time.Now(), msg.Ctx.NewParent(), msg.Intention}
-	flow.AnnotateSend(outmsg, name)
+	flow.AnnotateSend(outmsg, name,"NO")
 	outmsg.GoSend(c)
 }
 
@@ -86,11 +86,16 @@ func Put(msg gotocol.Message, name string, listener chan gotocol.Message, reques
 func GetRequest(msg gotocol.Message, name string, listener chan gotocol.Message, requestor *map[string]gotocol.Routetype, router *ribbon.Router) {
 	// pass on request to a random service - client send
 	c := router.Random()
+	//log.Println(listener)
+	//log.Println(name)
+	//log.Println(msg.Route())
+	//log.Println(router)
+	//log.Println("-----------------------")
 	if c == nil {
 		return
 	}
 	outmsg := gotocol.Message{gotocol.GetRequest, listener, time.Now(), msg.Ctx.NewParent(), msg.Intention}
-	flow.AnnotateSend(outmsg, name)
+	flow.AnnotateSend(outmsg, name,"NO")
 	(*requestor)[outmsg.Ctx.Route()] = msg.Route() // remember where to respond to when this span comes back
 	outmsg.GoSend(c)
 }
@@ -101,7 +106,7 @@ func GetResponse(msg gotocol.Message, name string, listener chan gotocol.Message
 	r := (*requestor)[ctr]
 	if r.ResponseChan != nil {
 		outmsg := gotocol.Message{gotocol.GetResponse, listener, time.Now(), r.Ctx, msg.Intention}
-		flow.AnnotateSend(outmsg, name)
+		flow.AnnotateSend(outmsg, name,"NO")
 		outmsg.GoSend(r.ResponseChan)
 		delete(*requestor, ctr)
 	}

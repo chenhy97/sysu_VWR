@@ -3,6 +3,7 @@
     "description":"See http://media.amazonwebservices.com/architecturecenter/AWS_ac_ra_web_01.pdf",
     "version": "arch-0.0",
     "victim": "webserver",
+    "delayvictim": "",
     "services": [
         { "name":"rdsmysql",      "package":"store",       "count":2, "regions":1, "dependencies":["rdsmysql"]},
         { "name":"appserver",     "package":"monolith",    "count":6, "regions":1, "dependencies":["rdsmysql"]},

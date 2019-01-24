@@ -35,7 +35,7 @@ func Start(name string) {
 	edges := make(map[string]bool, archaius.Conf.Dunbar)
 	var ok bool
 	hist := collect.NewHist(name)
-	log.Println(name + ": starting")
+	log.Println(name + ": starting...........")
 	if archaius.Conf.GraphmlFile != "" {
 		graphml.Setup(archaius.Conf.GraphmlFile)
 	}

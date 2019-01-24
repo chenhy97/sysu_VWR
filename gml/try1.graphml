@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <graphml xmlns="http://graphml.graphdrawing.org/xmlns/graphml"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns/graphml http://www.yworks.com/xml/schema/graphml/1.0/ygraphml.xsd"
+    xmlns:y="http://www.yworks.com/xml/graphml">
+    <key id="d0" for="node" yfiles.type="nodegraphics"/>
+    <key id="d1" for="edge" yfiles.type="edgegraphics"/>
+    <key id="d2" for="node" attr.name="Text" attr.type="string"/>
+    <graph id="spigo" edgedefault="directed">
+      <node id="try.us-east-1.zoneA.rdsmysql00"><data key="service">store</data></node>
+      <node id="try.us-east-1.zoneB.rdsmysql01"><data key="service">store</data></node>
+      <edge id="e1" source="try.us-east-1.zoneB.rdsmysql01" target="try.us-east-1.zoneA.rdsmysql00"/>
+      <node id="try.us-west-2.zoneC.rdsmysql02"><data key="service">store</data></node>
+      <node id="try.us-west-2.zoneA.rdsmysql03"><data key="service">store</data></node>
+      <node id="try.us-east-1.zoneA.appserver00"><data key="service">monolith</data></node>
+      <edge id="e2" source="try.us-east-1.zoneA.appserver00" target="try.us-east-1.zoneB.rdsmysql01"/>
+      <edge id="e3" source="try.us-east-1.zoneA.appserver00" target="try.us-east-1.zoneA.rdsmysql00"/>
+      <node id="try.us-east-1.zoneB.appserver01"><data key="service">monolith</data></node>
+      <edge id="e4" source="try.us-east-1.zoneB.appserver01" target="try.us-east-1.zoneB.rdsmysql01"/>
+      <edge id="e5" source="try.us-east-1.zoneB.appserver01" target="try.us-east-1.zoneA.rdsmysql00"/>
+      <node id="try.us-east-1.zoneC.appserver02"><data key="service">monolith</data></node>
+      <edge id="e6" source="try.us-east-1.zoneC.appserver02" target="try.us-east-1.zoneB.rdsmysql01"/>
+      <edge id="e7" source="try.us-east-1.zoneC.appserver02" target="try.us-east-1.zoneA.rdsmysql00"/>
+      <node id="try.us-east-1.zoneA.appserver03"><data key="service">monolith</data></node>
+      <edge id="e8" source="try.us-east-1.zoneA.appserver03" target="try.us-east-1.zoneB.rdsmysql01"/>
+      <edge id="e9" source="try.us-east-1.zoneA.appserver03" target="try.us-east-1.zoneA.rdsmysql00"/>
+      <node id="try.us-east-1.zoneB.appserver04"><data key="service">monolith</data></node>
+      <edge id="e10" source="try.us-east-1.zoneB.appserver04" target="try.us-east-1.zoneB.rdsmysql01"/>
+      <edge id="e11" source="try.us-east-1.zoneB.appserver04" target="try.us-east-1.zoneA.rdsmysql00"/>
+      <node id="try.us-east-1.zoneC.appserver05"><data key="service">monolith</data></node>
+      <edge id="e12" source="try.us-east-1.zoneC.appserver05" target="try.us-east-1.zoneB.rdsmysql01"/>
+      <edge id="e13" source="try.us-east-1.zoneC.appserver05" target="try.us-east-1.zoneA.rdsmysql00"/>
+      <node id="try.us-west-2.zoneA.appserver06"><data key="service">monolith</data></node>
+      <edge id="e14" source="try.us-west-2.zoneA.appserver06" target="try.us-west-2.zoneC.rdsmysql02"/>
+      <edge id="e15" source="try.us-west-2.zoneA.appserver06" target="try.us-west-2.zoneA.rdsmysql03"/>
+      <node id="try.us-west-2.zoneB.appserver07"><data key="service">monolith</data></node>
+      <edge id="e16" source="try.us-west-2.zoneB.appserver07" target="try.us-west-2.zoneA.rdsmysql03"/>
+      <node id="try.us-west-2.zoneC.appserver08"><data key="service">monolith</data></node>
+      <edge id="e17" source="try.us-west-2.zoneC.appserver08" target="try.us-west-2.zoneA.rdsmysql03"/>
+      <edge id="e18" source="try.us-west-2.zoneB.appserver07" target="try.us-west-2.zoneC.rdsmysql02"/>
+      <edge id="e19" source="try.us-west-2.zoneC.appserver08" target="try.us-west-2.zoneC.rdsmysql02"/>
+      <node id="try.us-west-2.zoneA.appserver09"><data key="service">monolith</data></node>
+      <edge id="e20" source="try.us-west-2.zoneA.appserver09" target="try.us-west-2.zoneC.rdsmysql02"/>
+      <edge id="e21" source="try.us-west-2.zoneA.appserver09" target="try.us-west-2.zoneA.rdsmysql03"/>
+      <node id="try.us-west-2.zoneB.appserver10"><data key="service">monolith</data></node>
+      <edge id="e22" source="try.us-west-2.zoneB.appserver10" target="try.us-west-2.zoneA.rdsmysql03"/>
+      <edge id="e23" source="try.us-west-2.zoneB.appserver10" target="try.us-west-2.zoneC.rdsmysql02"/>
+      <node id="try.us-west-2.zoneC.appserver11"><data key="service">monolith</data></node>
+      <edge id="e24" source="try.us-west-2.zoneC.appserver11" target="try.us-west-2.zoneC.rdsmysql02"/>
+      <edge id="e25" source="try.us-west-2.zoneC.appserver11" target="try.us-west-2.zoneA.rdsmysql03"/>
+      <node id="try.us-east-1.*.appserver-elb00"><data key="service">elb</data></node>
+      <node id="try.us-west-2.*.appserver-elb00"><data key="service">elb</data></node>
+      <node id="try.us-east-1.zoneA.webserver00"><data key="service">monolith</data></node>
+      <node id="try.us-east-1.zoneA.webserver03"><data key="service">monolith</data></node>
+      <node id="try.us-east-1.zoneA.webserver06"><data key="service">monolith</data></node>
+      <node id="try.us-east-1.zoneA.webserver09"><data key="service">monolith</data></node>
+      <edge id="e26" source="try.us-east-1.*.appserver-elb00" target="try.us-east-1.zoneB.appserver01"/>
+      <edge id="e27" source="try.us-east-1.zoneA.webserver09" target="try.us-east-1.*.appserver-elb00"/>
+      <node id="try.us-west-2.zoneA.webserver12"><data key="service">monolith</data></node>
+      <node id="try.us-west-2.zoneA.webserver15"><data key="service">monolith</data></node>
+      <node id="try.us-west-2.zoneA.webserver18"><data key="service">monolith</data></node>
+      <node id="try.us-west-2.zoneA.webserver21"><data key="service">monolith</data></node>
+      <node id="try.us-west-2.*.webserver-elb00"><data key="service">elb</data></node>
+      <edge id="e28" source="try.us-west-2.*.webserver-elb00" target="try.us-west-2.zoneA.webserver18"/>
+      <node id="try.us-east-1.zoneB.webserver01"><data key="service">monolith</data></node>
+      <node id="try.us-east-1.zoneB.webserver04"><data key="service">monolith</data></node>
+      <node id="try.us-east-1.zoneB.webserver07"><data key="service">monolith</data></node>
+      <node id="try.us-east-1.zoneB.webserver10"><data key="service">monolith</data></node>
+      <edge id="e29" source="try.us-east-1.*.appserver-elb00" target="try.us-east-1.zoneC.appserver05"/>
+      <edge id="e30" source="try.us-east-1.*.appserver-elb00" target="try.us-east-1.zoneC.appserver02"/>
+      <edge id="e31" source="try.us-east-1.*.appserver-elb00" target="try.us-east-1.zoneB.appserver04"/>
+      <edge id="e32" source="try.us-east-1.*.appserver-elb00" target="try.us-east-1.zoneA.appserver00"/>
+      <edge id="e33" source="try.us-east-1.*.appserver-elb00" target="try.us-east-1.zoneA.appserver03"/>
+      <node id="try.us-east-1.*.webserver-elb00"><data key="service">elb</data></node>
+      <edge id="e34" source="try.us-east-1.*.webserver-elb00" target="try.us-east-1.zoneB.webserver07"/>
+      <node id="try.us-east-1.zoneC.webserver02"><data key="service">monolith</data></node>
+      <node id="try.us-east-1.zoneC.webserver05"><data key="service">monolith</data></node>
+      <edge id="e35" source="try.us-west-2.zoneA.webserver12" target="try.us-west-2.*.appserver-elb00"/>
+      <edge id="e36" source="try.us-west-2.zoneA.webserver15" target="try.us-west-2.*.appserver-elb00"/>
+      <node id="try.*.*.www00"><data key="service">denominator</data></node>
+      <edge id="e37" source="try.us-west-2.zoneA.webserver18" target="try.us-west-2.*.appserver-elb00"/>
+      <node id="try.us-west-2.zoneB.webserver13"><data key="service">monolith</data></node>
+      <edge id="e38" source="try.us-west-2.zoneA.webserver21" target="try.us-west-2.*.appserver-elb00"/>
+      <edge id="e39" source="try.us-west-2.*.webserver-elb00" target="try.us-west-2.zoneA.webserver15"/>
+      <edge id="e40" source="try.us-west-2.*.webserver-elb00" target="try.us-west-2.zoneA.webserver21"/>
+      <edge id="e41" source="try.us-west-2.*.webserver-elb00" target="try.us-west-2.zoneA.webserver12"/>
+      <edge id="e42" source="try.us-east-1.zoneB.webserver01" target="try.us-east-1.*.appserver-elb00"/>
+      <node id="try.us-west-2.zoneC.webserver14"><data key="service">monolith</data></node>
+      <node id="try.us-east-1.zoneC.webserver08"><data key="service">monolith</data></node>
+      <node id="try.us-west-2.zoneC.webserver17"><data key="service">monolith</data></node>
+      <node id="try.us-west-2.zoneC.webserver20"><data key="service">monolith</data></node>
+      <node id="try.us-east-1.zoneC.webserver11"><data key="service">monolith</data></node>
+      <edge id="e43" source="try.us-west-2.*.appserver-elb00" target="try.us-west-2.zoneA.appserver09"/>
+      <edge id="e44" source="try.us-west-2.*.appserver-elb00" target="try.us-west-2.zoneB.appserver07"/>
+      <edge id="e45" source="try.us-west-2.*.appserver-elb00" target="try.us-west-2.zoneC.appserver11"/>
+      <edge id="e46" source="try.us-west-2.*.appserver-elb00" target="try.us-west-2.zoneC.appserver08"/>
+      <edge id="e47" source="try.us-west-2.*.appserver-elb00" target="try.us-west-2.zoneB.appserver10"/>
+      <edge id="e48" source="try.us-west-2.*.appserver-elb00" target="try.us-west-2.zoneA.appserver06"/>
+      <node id="try.us-west-2.zoneC.webserver23"><data key="service">monolith</data></node>
+      <edge id="e49" source="try.us-east-1.*.webserver-elb00" target="try.us-east-1.zoneC.webserver11"/>
+      <edge id="e50" source="try.us-west-2.*.webserver-elb00" target="try.us-west-2.zoneC.webserver20"/>
+      <edge id="e51" source="try.us-east-1.zoneB.webserver04" target="try.us-east-1.*.appserver-elb00"/>
+      <edge id="e52" source="try.us-east-1.zoneB.webserver07" target="try.us-east-1.*.appserver-elb00"/>
+      <edge id="e53" source="try.us-east-1.zoneA.webserver03" target="try.us-east-1.*.appserver-elb00"/>
+      <edge id="e54" source="try.us-east-1.zoneA.webserver06" target="try.us-east-1.*.appserver-elb00"/>
+      <node id="try.us-east-1.zoneA.cloudfront00"><data key="service">monolith</data></node>
+      <edge id="e55" source="try.us-east-1.zoneA.webserver00" target="try.us-east-1.*.appserver-elb00"/>
+      <edge id="e56" source="try.us-east-1.zoneB.webserver10" target="try.us-east-1.*.appserver-elb00"/>
+      <edge id="e57" source="try.us-east-1.zoneA.cloudfront00" target="try.us-east-1.*.webserver-elb00"/>
+      <edge id="e58" source="try.us-east-1.*.webserver-elb00" target="try.us-east-1.zoneB.webserver04"/>
+      <node id="try.us-east-1.zoneA.content-s300"><data key="service">store</data></node>
+      <edge id="e59" source="try.us-east-1.*.webserver-elb00" target="try.us-east-1.zoneA.webserver00"/>
+      <edge id="e60" source="try.us-east-1.*.webserver-elb00" target="try.us-east-1.zoneA.webserver03"/>
+      <edge id="e61" source="try.us-east-1.*.webserver-elb00" target="try.us-east-1.zoneB.webserver10"/>
+      <edge id="e62" source="try.us-east-1.*.webserver-elb00" target="try.us-east-1.zoneB.webserver01"/>
+      <edge id="e63" source="try.us-west-2.zoneC.webserver14" target="try.us-west-2.*.appserver-elb00"/>
+      <edge id="e64" source="try.us-west-2.zoneC.webserver17" target="try.us-west-2.*.appserver-elb00"/>
+      <edge id="e65" source="try.us-west-2.zoneC.webserver20" target="try.us-west-2.*.appserver-elb00"/>
+      <node id="try.us-west-2.zoneB.webserver16"><data key="service">monolith</data></node>
+      <node id="try.us-west-2.zoneB.webserver19"><data key="service">monolith</data></node>
+      <edge id="e66" source="try.us-west-2.zoneC.webserver23" target="try.us-west-2.*.appserver-elb00"/>
+      <edge id="e67" source="try.us-west-2.*.webserver-elb00" target="try.us-west-2.zoneC.webserver14"/>
+      <edge id="e68" source="try.us-west-2.*.webserver-elb00" target="try.us-west-2.zoneC.webserver17"/>
+      <node id="try.us-west-2.zoneB.webserver22"><data key="service">monolith</data></node>
+      <edge id="e69" source="try.us-east-1.*.webserver-elb00" target="try.us-east-1.zoneA.webserver09"/>
+      <edge id="e70" source="try.us-east-1.*.webserver-elb00" target="try.us-east-1.zoneA.webserver06"/>
+      <edge id="e71" source="try.us-east-1.zoneC.webserver02" target="try.us-east-1.*.appserver-elb00"/>
+      <node id="try.us-west-2.zoneB.cloudfront01"><data key="service">monolith</data></node>
+      <node id="try.us-west-2.zoneB.content-s301"><data key="service">store</data></node>
+      <edge id="e72" source="try.us-west-2.*.webserver-elb00" target="try.us-west-2.zoneC.webserver23"/>
+      <edge id="e73" source="try.us-west-2.zoneB.webserver16" target="try.us-west-2.*.appserver-elb00"/>
+      <edge id="e74" source="try.us-west-2.zoneB.cloudfront01" target="try.us-west-2.*.webserver-elb00"/>
+      <edge id="e75" source="try.us-west-2.zoneB.webserver19" target="try.us-west-2.*.appserver-elb00"/>
+      <edge id="e76" source="try.us-west-2.zoneB.webserver22" target="try.us-west-2.*.appserver-elb00"/>
+      <edge id="e77" source="try.us-east-1.*.webserver-elb00" target="try.us-east-1.zoneC.webserver02"/>
+      <edge id="e78" source="try.us-east-1.*.webserver-elb00" target="try.us-east-1.zoneC.webserver05"/>
+      <edge id="e79" source="try.us-west-2.*.webserver-elb00" target="try.us-west-2.zoneB.webserver13"/>
+      <edge id="e80" source="try.us-east-1.*.webserver-elb00" target="try.us-east-1.zoneC.webserver08"/>
+      <edge id="e81" source="try.us-west-2.*.webserver-elb00" target="try.us-west-2.zoneB.webserver16"/>
+      <edge id="e82" source="try.us-west-2.*.webserver-elb00" target="try.us-west-2.zoneB.webserver19"/>
+      <edge id="e83" source="try.us-east-1.zoneC.webserver05" target="try.us-east-1.*.appserver-elb00"/>
+      <edge id="e84" source="try.us-east-1.zoneC.webserver08" target="try.us-east-1.*.appserver-elb00"/>
+      <edge id="e85" source="try.us-east-1.zoneC.webserver11" target="try.us-east-1.*.appserver-elb00"/>
+      <edge id="e86" source="try.us-west-2.*.webserver-elb00" target="try.us-west-2.zoneB.webserver22"/>
+      <edge id="e87" source="try.us-west-2.zoneB.webserver13" target="try.us-west-2.*.appserver-elb00"/>
+      <edge id="e88" source="try.*.*.www00" target="try.us-east-1.zoneA.cloudfront00"/>
+      <edge id="e89" source="try.*.*.www00" target="try.us-west-2.zoneB.cloudfront01"/>
+      <edge id="e90" source="try.us-west-2.zoneC.rdsmysql02" target="try.us-west-2.zoneA.rdsmysql03"/>
+      <edge id="e91" source="try.us-east-1.zoneA.rdsmysql00" target="try.us-east-1.zoneB.rdsmysql01"/>
+      <edge id="e92" source="try.us-west-2.zoneA.rdsmysql03" target="try.us-west-2.zoneC.rdsmysql02"/>
+      <edge id="e93" source="try.us-west-2.zoneB.cloudfront01" target="try.us-west-2.zoneB.content-s301"/>
+      <edge id="e94" source="try.us-east-1.zoneA.cloudfront00" target="try.us-east-1.zoneA.content-s300"/>
+    </graph>
+  </graphml>

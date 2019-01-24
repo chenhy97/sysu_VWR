@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <graphml xmlns="http://graphml.graphdrawing.org/xmlns/graphml"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns/graphml http://www.yworks.com/xml/schema/graphml/1.0/ygraphml.xsd"
+    xmlns:y="http://www.yworks.com/xml/graphml">
+    <key id="d0" for="node" yfiles.type="nodegraphics"/>
+    <key id="d1" for="edge" yfiles.type="edgegraphics"/>
+    <key id="d2" for="node" attr.name="Text" attr.type="string"/>
+    <graph id="spigo" edgedefault="directed">
+      <node id="test.us-east-1.zoneA.rds-mysql00"><data key="service">store</data></node>
+      <node id="test.us-east-1.zoneA.webserver00"><data key="service">monolith</data></node>
+      <edge id="e1" source="test.us-east-1.zoneA.webserver00" target="test.us-east-1.zoneA.rds-mysql00"/>
+      <node id="test.us-east-1.zoneA.webserver-elb00"><data key="service">elb</data></node>
+      <edge id="e2" source="test.us-east-1.zoneA.webserver-elb00" target="test.us-east-1.zoneA.webserver00"/>
+      <node id="test.*.*.www00"><data key="service">denominator</data></node>
+      <edge id="e3" source="test.*.*.www00" target="test.us-east-1.zoneA.webserver-elb00"/>
+    </graph>
+  </graphml>

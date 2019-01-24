@@ -60,6 +60,7 @@ func NewHist(name string) *generic.Histogram {
 	return nil
 }
 
+/*
 // Measure adds a measurement to a histogram collection
 func Measure(h *generic.Histogram, d time.Duration) {
 	if h != nil && archaius.Conf.Collect {
@@ -75,7 +76,32 @@ func Measure(h *generic.Histogram, d time.Duration) {
 			sampleLock.Unlock()
 		}
 	}
+}*/
+func Measure(h *generic.Histogram, d time.Duration) {
+    if h != nil && archaius.Conf.Collect {
+        if d > maxHistObservable {
+            h.Observe(float64(maxHistObservable))
+        } else {
+            h.Observe(float64(d))
+       	}
+        sampleLock.Lock()
+        defer sampleLock.Unlock()
+        myMeasure(h, d)
+//              s := sampleMap[h]
+//              if s != nil && len(s) < sampleCount {
+//                      sampleMap[h] = append(s, int64(d))
+//              sampleLock.Unlock()
+//              }
+        }
 }
+
+func myMeasure(h *generic.Histogram, d time.Duration) {
+        s := sampleMap[h]
+        if s != nil && len(s) < sampleCount {
+                sampleMap[h] = append(s, int64(d))
+        }
+}
+
 
 // SaveHist passes in name because metrics.Histogram blocks expvar.Histogram.Name()
 func SaveHist(h *generic.Histogram, name, suffix string) {

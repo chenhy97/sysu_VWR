@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <graphml xmlns="http://graphml.graphdrawing.org/xmlns/graphml"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns/graphml http://www.yworks.com/xml/schema/graphml/1.0/ygraphml.xsd"
+    xmlns:y="http://www.yworks.com/xml/graphml">
+    <key id="d0" for="node" yfiles.type="nodegraphics"/>
+    <key id="d1" for="edge" yfiles.type="edgegraphics"/>
+    <key id="d2" for="node" attr.name="Text" attr.type="string"/>
+    <graph id="spigo" edgedefault="directed">
+      <node id="sockshop.us-east-1.zoneA.user-db00"><data key="service">store</data></node>
+      <node id="sockshop.us-east-1.zoneA.user00"><data key="service">karyon</data></node>
+      <node id="sockshop.us-east-1.zoneA.carts-db00"><data key="service">priamCassandra</data></node>
+      <edge id="e1" source="sockshop.us-east-1.zoneA.user00" target="sockshop.us-east-1.zoneA.user-db00"/>
+      <node id="sockshop.us-east-1.zoneA.carts00"><data key="service">karyon</data></node>
+      <edge id="e2" source="sockshop.us-east-1.zoneA.carts00" target="sockshop.us-east-1.zoneA.carts-db00"/>
+      <node id="sockshop.us-east-1.zoneA.payment00"><data key="service">karyon</data></node>
+      <node id="sockshop.us-east-1.zoneA.shipping00"><data key="service">karyon</data></node>
+      <node id="sockshop.us-east-1.zoneA.orders00"><data key="service">monolith</data></node>
+      <edge id="e3" source="sockshop.us-east-1.zoneA.orders00" target="sockshop.us-east-1.zoneA.user00"/>
+      <edge id="e4" source="sockshop.us-east-1.zoneA.orders00" target="sockshop.us-east-1.zoneA.carts00"/>
+      <node id="sockshop.us-east-1.zoneA.catalog-db00"><data key="service">store</data></node>
+      <node id="sockshop.us-east-1.zoneA.catalog00"><data key="service">monolith</data></node>
+      <edge id="e5" source="sockshop.us-east-1.zoneA.orders00" target="sockshop.us-east-1.zoneA.payment00"/>
+      <edge id="e6" source="sockshop.us-east-1.zoneA.orders00" target="sockshop.us-east-1.zoneA.shipping00"/>
+      <edge id="e7" source="sockshop.us-east-1.zoneA.catalog00" target="sockshop.us-east-1.zoneA.catalog-db00"/>
+      <node id="sockshop.*.*.front-end00"><data key="service">denominator</data></node>
+      <edge id="e8" source="sockshop.*.*.front-end00" target="sockshop.us-east-1.zoneA.orders00"/>
+      <edge id="e9" source="sockshop.*.*.front-end00" target="sockshop.us-east-1.zoneA.catalog00"/>
+    </graph>
+  </graphml>

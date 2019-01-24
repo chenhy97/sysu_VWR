@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <graphml xmlns="http://graphml.graphdrawing.org/xmlns/graphml"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns/graphml http://www.yworks.com/xml/schema/graphml/1.0/ygraphml.xsd"
+    xmlns:y="http://www.yworks.com/xml/graphml">
+    <key id="d0" for="node" yfiles.type="nodegraphics"/>
+    <key id="d1" for="edge" yfiles.type="edgegraphics"/>
+    <key id="d2" for="node" attr.name="Text" attr.type="string"/>
+    <graph id="spigo" edgedefault="directed">
+      <node id="testyaml.us-east-1.zoneA.web00"><data key="service">monolith</data></node>
+      <node id="testyaml.us-east-1.zoneB.web01"><data key="service">monolith</data></node>
+      <node id="testyaml.us-east-1.zoneC.web02"><data key="service">monolith</data></node>
+      <node id="testyaml.us-east-1.zoneA.nginx00"><data key="service">monolith</data></node>
+      <node id="testyaml.us-east-1.zoneB.nginx01"><data key="service">monolith</data></node>
+      <edge id="e1" source="testyaml.us-east-1.zoneB.nginx01" target="testyaml.us-east-1.zoneC.web02"/>
+      <edge id="e2" source="testyaml.us-east-1.zoneA.nginx00" target="testyaml.us-east-1.zoneB.web01"/>
+      <edge id="e3" source="testyaml.us-east-1.zoneB.nginx01" target="testyaml.us-east-1.zoneB.web01"/>
+      <edge id="e4" source="testyaml.us-east-1.zoneB.nginx01" target="testyaml.us-east-1.zoneA.web00"/>
+      <edge id="e5" source="testyaml.us-east-1.zoneA.nginx00" target="testyaml.us-east-1.zoneA.web00"/>
+      <edge id="e6" source="testyaml.us-east-1.zoneA.nginx00" target="testyaml.us-east-1.zoneC.web02"/>
+      <node id="testyaml.us-east-1.zoneB.db01"><data key="service">monolith</data></node>
+      <node id="testyaml.us-east-1.zoneC.nginx02"><data key="service">monolith</data></node>
+      <node id="testyaml.us-east-1.zoneC.db02"><data key="service">monolith</data></node>
+      <node id="testyaml.us-east-1.zoneA.db00"><data key="service">monolith</data></node>
+      <edge id="e7" source="testyaml.us-east-1.zoneC.nginx02" target="testyaml.us-east-1.zoneA.web00"/>
+      <edge id="e8" source="testyaml.us-east-1.zoneC.nginx02" target="testyaml.us-east-1.zoneB.web01"/>
+      <edge id="e9" source="testyaml.us-east-1.zoneC.nginx02" target="testyaml.us-east-1.zoneC.web02"/>
+      <edge id="e10" source="testyaml.us-east-1.zoneC.web02" target="testyaml.us-east-1.zoneA.db00"/>
+      <edge id="e11" source="testyaml.us-east-1.zoneC.web02" target="testyaml.us-east-1.zoneB.db01"/>
+      <edge id="e12" source="testyaml.us-east-1.zoneC.web02" target="testyaml.us-east-1.zoneC.db02"/>
+      <edge id="e13" source="testyaml.us-east-1.zoneA.web00" target="testyaml.us-east-1.zoneB.db01"/>
+      <edge id="e14" source="testyaml.us-east-1.zoneA.web00" target="testyaml.us-east-1.zoneC.db02"/>
+      <edge id="e15" source="testyaml.us-east-1.zoneA.web00" target="testyaml.us-east-1.zoneA.db00"/>
+      <edge id="e16" source="testyaml.us-east-1.zoneB.web01" target="testyaml.us-east-1.zoneA.db00"/>
+      <edge id="e17" source="testyaml.us-east-1.zoneB.web01" target="testyaml.us-east-1.zoneB.db01"/>
+      <edge id="e18" source="testyaml.us-east-1.zoneB.web01" target="testyaml.us-east-1.zoneC.db02"/>
+    </graph>
+  </graphml>

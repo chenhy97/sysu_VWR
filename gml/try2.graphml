@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <graphml xmlns="http://graphml.graphdrawing.org/xmlns/graphml"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns/graphml http://www.yworks.com/xml/schema/graphml/1.0/ygraphml.xsd"
+    xmlns:y="http://www.yworks.com/xml/graphml">
+    <key id="d0" for="node" yfiles.type="nodegraphics"/>
+    <key id="d1" for="edge" yfiles.type="edgegraphics"/>
+    <key id="d2" for="node" attr.name="Text" attr.type="string"/>
+    <graph id="spigo" edgedefault="directed">
+      <node id="try.us-east-1.zoneB.rdsmysql.store"><data key="service">store</data></node>
+      <node id="try.us-east-1.zoneA.rdsmysql.store"><data key="service">store</data></node>
+      <node id="try.us-east-1.zoneB.appserver.monolith"><data key="service">monolith</data></node>
+      <node id="try.us-east-1.zoneC.appserver.monolith"><data key="service">monolith</data></node>
+      <edge id="e1" source="try.us-east-1.zoneB.appserver.monolith" target="try.us-east-1.zoneB.rdsmysql.store"/>
+      <node id="try.us-east-1.zoneA.appserver.monolith"><data key="service">monolith</data></node>
+      <node id="try.us-east-1.*.appserver-elb.elb"><data key="service">elb</data></node>
+      <edge id="e2" source="try.us-east-1.zoneB.appserver.monolith" target="try.us-east-1.zoneA.rdsmysql.store"/>
+      <edge id="e3" source="try.us-east-1.*.appserver-elb.elb" target="try.us-east-1.zoneB.appserver.monolith"/>
+      <edge id="e4" source="try.us-east-1.zoneA.appserver.monolith" target="try.us-east-1.zoneA.rdsmysql.store"/>
+      <edge id="e5" source="try.us-east-1.*.appserver-elb.elb" target="try.us-east-1.zoneC.appserver.monolith"/>
+      <edge id="e6" source="try.us-east-1.*.appserver-elb.elb" target="try.us-east-1.zoneA.appserver.monolith"/>
+      <node id="try.us-east-1.zoneB.webserver.monolith"><data key="service">monolith</data></node>
+      <edge id="e7" source="try.us-east-1.zoneB.webserver.monolith" target="try.us-east-1.*.appserver-elb.elb"/>
+      <node id="try.us-east-1.zoneA.webserver.monolith"><data key="service">monolith</data></node>
+      <edge id="e8" source="try.us-east-1.zoneA.webserver.monolith" target="try.us-east-1.*.appserver-elb.elb"/>
+      <node id="try.us-east-1.zoneC.webserver.monolith"><data key="service">monolith</data></node>
+      <edge id="e9" source="try.us-east-1.zoneC.appserver.monolith" target="try.us-east-1.zoneA.rdsmysql.store"/>
+      <edge id="e10" source="try.us-east-1.zoneC.appserver.monolith" target="try.us-east-1.zoneB.rdsmysql.store"/>
+      <node id="try.us-east-1.*.webserver-elb.elb"><data key="service">elb</data></node>
+      <edge id="e11" source="try.us-east-1.zoneC.webserver.monolith" target="try.us-east-1.*.appserver-elb.elb"/>
+      <edge id="e12" source="try.us-east-1.*.webserver-elb.elb" target="try.us-east-1.zoneB.webserver.monolith"/>
+      <edge id="e13" source="try.us-east-1.*.webserver-elb.elb" target="try.us-east-1.zoneA.webserver.monolith"/>
+      <edge id="e14" source="try.us-east-1.*.webserver-elb.elb" target="try.us-east-1.zoneC.webserver.monolith"/>
+      <node id="try.us-east-1.zoneA.content-s3.store"><data key="service">store</data></node>
+      <node id="try.us-east-1.zoneA.cloudfront.monolith"><data key="service">monolith</data></node>
+      <node id="try.*.*.www.denominator"><data key="service">denominator</data></node>
+      <edge id="e15" source="try.*.*.www.denominator" target="try.us-east-1.zoneA.cloudfront.monolith"/>
+      <edge id="e16" source="try.us-east-1.zoneA.cloudfront.monolith" target="try.us-east-1.zoneA.content-s3.store"/>
+      <edge id="e17" source="try.us-east-1.zoneA.cloudfront.monolith" target="try.us-east-1.*.webserver-elb.elb"/>
+      <edge id="e18" source="try.us-east-1.zoneB.rdsmysql.store" target="try.us-east-1.zoneA.rdsmysql.store"/>
+      <edge id="e19" source="try.us-east-1.zoneA.rdsmysql.store" target="try.us-east-1.zoneB.rdsmysql.store"/>
+      <edge id="e20" source="try.us-east-1.zoneA.appserver.monolith" target="try.us-east-1.zoneB.rdsmysql.store"/>

@@ -3,6 +3,7 @@
     "description":"A very simple Netflix service. See http://netflix.github.io/ to decode the package names",
     "version": "arch-0.0",
     "victim": "homepage",
+    "delayvictim": "",
     "services": [
         { "name": "cassSubscriber",   "package": "priamCassandra", "count": 6, "regions": 1, "dependencies": ["cassSubscriber", "eureka"]},
         { "name": "evcacheSubscriber","package": "store",          "count": 3, "regions": 1, "dependencies": []},

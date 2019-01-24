@@ -3,6 +3,7 @@
     "description":"Simple storage architecture for latency analysis",
     "version": "arch-0.0",
     "victim": "",
+    "delayvictim":"",
     "services": [
         {
             "name": "disk",

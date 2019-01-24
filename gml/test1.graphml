@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <graphml xmlns="http://graphml.graphdrawing.org/xmlns/graphml"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns/graphml http://www.yworks.com/xml/schema/graphml/1.0/ygraphml.xsd"
+    xmlns:y="http://www.yworks.com/xml/graphml">
+    <key id="d0" for="node" yfiles.type="nodegraphics"/>
+    <key id="d1" for="edge" yfiles.type="edgegraphics"/>
+    <key id="d2" for="node" attr.name="Text" attr.type="string"/>
+    <graph id="spigo" edgedefault="directed">
+      <node id="test.us-east-1.zoneA.mysql00"><data key="service">store</data></node>
+      <node id="test.us-east-1.zoneB.mysql01"><data key="service">store</data></node>
+      <node id="test.us-east-1.zoneA.homepage-node00"><data key="service">karyon</data></node>
+      <node id="test.us-east-1.zoneA.homepage-node03"><data key="service">karyon</data></node>
+      <node id="test.us-east-1.zoneC.homepage-node02"><data key="service">karyon</data></node>
+      <node id="test.us-east-1.zoneA.homepage-node06"><data key="service">karyon</data></node>
+      <node id="test.us-east-1.zoneC.homepage-node05"><data key="service">karyon</data></node>
+      <node id="test.us-east-1.zoneC.homepage-node08"><data key="service">karyon</data></node>
+      <node id="test.us-east-1.zoneB.homepage-node01"><data key="service">karyon</data></node>
+      <node id="test.us-east-1.zoneB.homepage-node04"><data key="service">karyon</data></node>
+      <node id="test.us-east-1.zoneB.homepage-node07"><data key="service">karyon</data></node>
+      <node id="test.us-east-1.zoneB.signup-node01"><data key="service">karyon</data></node>
+      <node id="test.us-east-1.zoneC.signup-node02"><data key="service">karyon</data></node>
+      <node id="test.us-east-1.zoneC.www-proxy02"><data key="service">zuul</data></node>
+      <node id="test.us-east-1.*.www-elb00"><data key="service">elb</data></node>
+      <node id="test.*.*.www00"><data key="service">denominator</data></node>
+      <node id="test.us-east-1.zoneA.signup-node00"><data key="service">karyon</data></node>
+      <node id="test.us-east-1.zoneB.www-proxy01"><data key="service">zuul</data></node>
+      <node id="test.us-east-1.zoneA.www-proxy00"><data key="service">zuul</data></node>
+      <edge id="e1" source="test.*.*.www00" target="test.us-east-1.*.www-elb00"/>
+      <edge id="e2" source="test.us-east-1.zoneA.homepage-node00" target="test.us-east-1.zoneA.mysql00"/>
+      <edge id="e3" source="test.us-east-1.*.www-elb00" target="test.us-east-1.zoneC.www-proxy02"/>
+      <edge id="e4" source="test.us-east-1.zoneA.homepage-node03" target="test.us-east-1.zoneA.mysql00"/>
+      <edge id="e5" source="test.us-east-1.zoneA.homepage-node06" target="test.us-east-1.zoneA.mysql00"/>
+      <edge id="e6" source="test.us-east-1.zoneA.www-proxy00" target="test.us-east-1.zoneA.homepage-node03"/>
+      <edge id="e7" source="test.us-east-1.zoneA.signup-node00" target="test.us-east-1.zoneA.mysql00"/>
+      <edge id="e8" source="test.us-east-1.zoneB.signup-node01" target="test.us-east-1.zoneB.mysql01"/>
+      <edge id="e9" source="test.us-east-1.zoneA.www-proxy00" target="test.us-east-1.zoneA.homepage-node06"/>
+      <edge id="e10" source="test.us-east-1.*.www-elb00" target="test.us-east-1.zoneA.www-proxy00"/>
+      <edge id="e11" source="test.us-east-1.zoneA.www-proxy00" target="test.us-east-1.zoneA.signup-node00"/>
+      <edge id="e12" source="test.us-east-1.zoneB.homepage-node01" target="test.us-east-1.zoneB.mysql01"/>
+      <edge id="e13" source="test.us-east-1.zoneB.homepage-node04" target="test.us-east-1.zoneB.mysql01"/>
+      <edge id="e14" source="test.us-east-1.zoneA.www-proxy00" target="test.us-east-1.zoneA.homepage-node00"/>
+      <edge id="e15" source="test.us-east-1.zoneB.homepage-node07" target="test.us-east-1.zoneB.mysql01"/>
+      <edge id="e16" source="test.us-east-1.zoneC.www-proxy02" target="test.us-east-1.zoneC.signup-node02"/>
+      <edge id="e17" source="test.us-east-1.zoneC.www-proxy02" target="test.us-east-1.zoneC.homepage-node08"/>
+      <edge id="e18" source="test.us-east-1.zoneC.www-proxy02" target="test.us-east-1.zoneC.homepage-node02"/>
+      <edge id="e19" source="test.us-east-1.zoneC.www-proxy02" target="test.us-east-1.zoneC.homepage-node05"/>
+      <edge id="e20" source="test.us-east-1.zoneB.www-proxy01" target="test.us-east-1.zoneB.signup-node01"/>
+      <edge id="e21" source="test.us-east-1.*.www-elb00" target="test.us-east-1.zoneB.www-proxy01"/>
+      <edge id="e22" source="test.us-east-1.zoneB.www-proxy01" target="test.us-east-1.zoneB.homepage-node01"/>
+      <edge id="e23" source="test.us-east-1.zoneB.www-proxy01" target="test.us-east-1.zoneB.homepage-node07"/>
+      <edge id="e24" source="test.us-east-1.zoneB.www-proxy01" target="test.us-east-1.zoneB.homepage-node04"/>

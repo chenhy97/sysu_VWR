@@ -55,7 +55,7 @@ Usage of ./spigo:
   -p int
     	Pirate population for fsm or scale factor % for other architectures (default 100)
   -r	Reload graph from json/<arch>.json to setup architecture
-  -s int
+  -s int(在UI中的序号，生成try（序号）)
     	Sequence number to create multiple runs for ui to step through in json/<arch><s>.json
   -u string
     	Polling interval for Eureka name service, increase for large populations (default "1s")

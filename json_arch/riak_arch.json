@@ -3,6 +3,7 @@
     "description":"Riak IoT ingestion example for the RICON 2015 presentation",
     "version": "arch-0.0",
     "victim": "",
+    "delayvictim": "",
     "services": [
         { "name": "riakTS",     "package": "riak",           "count": 6, "regions": 1, "dependencies": ["riakTS", "eureka"]},
         { "name": "ingester",   "package": "staash",         "count": 6, "regions": 1, "dependencies": ["riakTS"]},

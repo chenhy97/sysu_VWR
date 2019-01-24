@@ -13,6 +13,8 @@ import (
 // Start lamp to netflixoss step by step migration
 func Start() {
 	regions := archaius.Conf.Regions
+	var ServiceName map[int]string
+	var ServiceIndex int
 	if archaius.Conf.Population < 1 {
 		log.Fatal("migration: can't create less than 1 microservice")
 	} else {
@@ -56,6 +58,10 @@ func Start() {
 		asgard.Create(sname, StorePkg, regions, mysqlcount, sname)
 		asgard.Create(pname, MonolithPkg, regions, phpcount, sname)
 		asgard.Create(elbname, ElbPkg, regions, 0, pname)
+		ServiceIndex = 3
+		ServiceName[0] = sname
+		ServiceName[1] = pname
+		ServiceName[2] = elbname
 	case 1: // basic LAMP with memcache
 		asgard.CreateChannels()
 		asgard.CreateEureka() // service registries for each zone
@@ -63,6 +69,11 @@ func Start() {
 		asgard.Create(mname, StorePkg, regions, mcount)
 		asgard.Create(pname, MonolithPkg, regions, phpcount, sname, mname)
 		asgard.Create(elbname, ElbPkg, regions, 0, pname)
+		ServiceIndex = 4
+		ServiceName[0] = sname
+		ServiceName[1] = mname
+		ServiceName[2] = pname
+		ServiceName[3] = elbname
 	case 2: // LAMP with zuul and memcache
 		asgard.CreateChannels()
 		asgard.CreateEureka() // service registries for each zone
@@ -71,6 +82,12 @@ func Start() {
 		asgard.Create(pname, MonolithPkg, regions, phpcount, sname, mname)
 		asgard.Create(zuname, ZuulPkg, regions, zuulcount, pname)
 		asgard.Create(elbname, ElbPkg, regions, 0, zuname)
+		ServiceIndex = 5
+		ServiceName[0] = sname
+		ServiceName[1] = mname
+		ServiceName[2] = pname
+		ServiceName[3] = zuname
+		ServiceName[4] = elbname
 	case 3: // LAMP with zuul and staash and evcache
 		asgard.CreateChannels()
 		asgard.CreateEureka() // service registries for each zone
@@ -80,6 +97,13 @@ func Start() {
 		asgard.Create(pname, KaryonPkg, regions, phpcount, tname)
 		asgard.Create(zuname, ZuulPkg, regions, zuulcount, pname)
 		asgard.Create(elbname, ElbPkg, regions, 0, zuname)
+		ServiceIndex = 6
+		ServiceName[0] = sname
+		ServiceName[1] = mname
+		ServiceName[2] = tname
+		ServiceName[3] = pname
+		ServiceName[4] = zuname
+		ServiceName[5] = elbname
 	case 4: // added node microservice
 		asgard.CreateChannels()
 		asgard.CreateEureka() // service registries for each zone
@@ -90,6 +114,14 @@ func Start() {
 		asgard.Create(nname, KaryonPkg, regions, nodecount, tname)
 		asgard.Create(zuname, ZuulPkg, regions, zuulcount, pname, nname)
 		asgard.Create(elbname, ElbPkg, regions, 0, zuname)
+		ServiceIndex = 7
+		ServiceName[0] = sname
+		ServiceName[1] = mname
+		ServiceName[2] = tname
+		ServiceName[3] = pname
+		ServiceName[4] = nname
+		ServiceName[5] = zuname
+		ServiceName[6] = elbname
 	case 5: // added cassandra alongside mysql
 		asgard.CreateChannels()
 		asgard.CreateEureka() // service registries for each zone
@@ -101,6 +133,15 @@ func Start() {
 		asgard.Create(nname, KaryonPkg, regions, nodecount, tname)
 		asgard.Create(zuname, ZuulPkg, regions, zuulcount, pname, nname)
 		asgard.Create(elbname, ElbPkg, regions, 0, zuname)
+		ServiceIndex = 8
+		ServiceName[0] = cname
+		ServiceName[1] = sname
+		ServiceName[2] = mname
+		ServiceName[3] = tname
+		ServiceName[4] = pname
+		ServiceName[5] = nname
+		ServiceName[6] = zuname
+		ServiceName[7] = elbname
 	case 6: // removed mysql so that multi-region will work properly
 		asgard.CreateChannels()
 		asgard.CreateEureka() // service registries for each zone
@@ -111,6 +152,14 @@ func Start() {
 		asgard.Create(nname, KaryonPkg, regions, nodecount, tname)
 		asgard.Create(zuname, ZuulPkg, regions, zuulcount, pname, nname)
 		asgard.Create(elbname, ElbPkg, regions, 0, zuname)
+		ServiceIndex = 7
+		ServiceName[0] = cname
+		ServiceName[1] = mname
+		ServiceName[2] = tname
+		ServiceName[3] = pname
+		ServiceName[4] = nname
+		ServiceName[5] = zuname
+		ServiceName[6] = elbname
 	case 7: // set two regions with disconnected priamCassandra
 		regions = 2
 		archaius.Conf.Regions = regions
@@ -123,6 +172,14 @@ func Start() {
 		asgard.Create(nname, KaryonPkg, regions, nodecount, tname)
 		asgard.Create(zuname, ZuulPkg, regions, zuulcount, pname, nname)
 		asgard.Create(elbname, ElbPkg, regions, 0, zuname)
+		ServiceIndex = 7
+		ServiceName[0] = sname
+		ServiceName[1] = mname
+		ServiceName[2] = tname
+		ServiceName[3] = pname
+		ServiceName[4] = nname
+		ServiceName[5] = zuname
+		ServiceName[6] = elbname
 	case 8: // set two regions with connected priamCassandra
 		regions = 2
 		archaius.Conf.Regions = regions
@@ -135,6 +192,14 @@ func Start() {
 		asgard.Create(nname, KaryonPkg, regions, nodecount, tname)
 		asgard.Create(zuname, ZuulPkg, regions, zuulcount, pname, nname)
 		asgard.Create(elbname, ElbPkg, regions, 0, zuname)
+		ServiceIndex = 7
+		ServiceName[0] = sname
+		ServiceName[1] = mname
+		ServiceName[2] = tname
+		ServiceName[3] = pname
+		ServiceName[4] = nname
+		ServiceName[5] = zuname
+		ServiceName[6] = elbname
 	case 9: // set three regions with disconnected priamCassandra
 		regions = 3
 		archaius.Conf.Regions = regions
@@ -147,7 +212,15 @@ func Start() {
 		asgard.Create(nname, KaryonPkg, regions, nodecount, tname)
 		asgard.Create(zuname, ZuulPkg, regions, zuulcount, pname, nname)
 		asgard.Create(elbname, ElbPkg, regions, 0, zuname)
+		ServiceIndex = 7
+		ServiceName[0] = sname
+		ServiceName[1] = mname
+		ServiceName[2] = tname
+		ServiceName[3] = pname
+		ServiceName[4] = nname
+		ServiceName[5] = zuname
+		ServiceName[6] = elbname
 	}
 	dnsname := asgard.Create(dns, DenominatorPkg, 0, 0, elbname)
-	asgard.Run(dnsname, "")
+	asgard.Run(dnsname, "","",ServiceName,ServiceIndex)
 }

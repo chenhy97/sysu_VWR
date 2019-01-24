@@ -1,0 +1,23 @@
+{
+  "arch":"mytest",
+  "version":"spigo-0.4",
+  "args":"[./spigo -a mytest -d 1 -j -c]",
+  "date":"2018-08-03T09:09:33.098078853+08:00",
+  "graph":[
+    {"node":"mytest.us-east-1.zoneA.db00","package":"staash","timestamp":"2018-08-03T09:09:33.098373642+08:00","metadata":"IP/54.198.0.1"},
+    {"node":"mytest.us-east-1.zoneA.web00","package":"monolith","timestamp":"2018-08-03T09:09:33.098397776+08:00","metadata":"IP/54.198.0.2"},
+    {"node":"mytest.us-east-1.zoneB.web01","package":"monolith","timestamp":"2018-08-03T09:09:33.098449044+08:00","metadata":"IP/54.221.0.1"},
+    {"node":"mytest.us-east-1.zoneB.nginx01","package":"monolith","timestamp":"2018-08-03T09:09:33.09859592+08:00","metadata":"IP/54.221.0.2"},
+    {"node":"mytest.us-east-1.zoneA.nginx00","package":"monolith","timestamp":"2018-08-03T09:09:33.098567985+08:00","metadata":"IP/54.198.0.3"},
+    {"edge":"e1","source":"mytest.us-east-1.zoneA.web00","target":"mytest.us-east-1.zoneA.db00","timestamp":"2018-08-03T09:09:33.098701557+08:00"},
+    {"node":"mytest.us-east-1.zoneC.web02","package":"monolith","timestamp":"2018-08-03T09:09:33.098493262+08:00","metadata":"IP/50.19.0.1"},
+    {"node":"mytest.*.*.www-nginx00","package":"denominator","timestamp":"2018-08-03T09:09:33.098713793+08:00","metadata":"IP/54.198.0.4"},
+    {"edge":"e2","source":"mytest.us-east-1.zoneB.nginx01","target":"mytest.us-east-1.zoneB.web01","timestamp":"2018-08-03T09:09:33.098698238+08:00"},
+    {"edge":"e3","source":"mytest.us-east-1.zoneB.nginx01","target":"mytest.us-east-1.zoneA.web00","timestamp":"2018-08-03T09:09:33.098701465+08:00"},
+    {"node":"mytest.us-east-1.zoneC.nginx02","package":"monolith","timestamp":"2018-08-03T09:09:33.098630663+08:00","metadata":"IP/50.19.0.2"},
+    {"edge":"e4","source":"mytest.*.*.www-nginx00","target":"mytest.us-east-1.zoneB.nginx01","timestamp":"2018-08-03T09:09:33.098794648+08:00"},
+    {"edge":"e5","source":"mytest.*.*.www-nginx00","target":"mytest.us-east-1.zoneA.nginx00","timestamp":"2018-08-03T09:09:33.098801449+08:00"},
+    {"edge":"e6","source":"mytest.us-east-1.zoneC.nginx02","target":"mytest.us-east-1.zoneC.web02","timestamp":"2018-08-03T09:09:33.098863725+08:00"},
+    {"edge":"e7","source":"mytest.us-east-1.zoneC.nginx02","target":"mytest.us-east-1.zoneA.web00","timestamp":"2018-08-03T09:09:33.098869172+08:00"},
+    {"edge":"e8","source":"mytest.*.*.www-nginx00","target":"mytest.us-east-1.zoneC.nginx02","timestamp":"2018-08-03T09:09:33.098894007+08:00"},
+    {"edge":"e9","source":"mytest.us-east-1.zoneA.nginx00","target":"mytest.us-east-1.zoneA.web00","timestamp":"2018-08-03T09:09:33.098981527+08:00"}

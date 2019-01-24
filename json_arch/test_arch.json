@@ -1,60 +1,13 @@
 {
-    "arch": "test",
+    "arch": "lamp",
+    "description":"Simple LAMP stack",
     "version": "arch-0.0",
-    "victim": "homepage-node",
+    "victim": "",
+    "delayvictim": "webserver-elb",
     "services": [
-        {
-            "name": "mysql",
-            "count": 2,
-            "dependencies": [],
-            "package": "store",
-            "regions": 1
-        },
-        {
-            "name": "homepage-node",
-            "count": 9,
-            "dependencies": [
-                "mysql"
-            ],
-            "package": "karyon",
-            "regions": 1
-        },
-        {
-            "name": "signup-node",
-            "count": 3,
-            "dependencies": [
-                "mysql"
-            ],
-            "package": "karyon",
-            "regions": 1
-        },
-        {
-            "name": "www-proxy",
-            "count": 3,
-            "dependencies": [
-                "signup-node",
-                "homepage-node"
-            ],
-            "package": "zuul",
-            "regions": 1
-        },
-        {
-            "name": "www-elb",
-            "count": 0,
-            "dependencies": [
-                "www-proxy"
-            ],
-            "package": "elb",
-            "regions": 1
-        },
-        {
-            "name": "www",
-            "count": 0,
-            "dependencies": [
-                "www-elb"
-            ],
-            "package": "denominator",
-            "regions": 0
-        }
+        { "name": "rds-mysql",     "package": "store",       "count": 1,  "regions": 1, "dependencies": [] },
+        { "name": "webserver",     "package": "monolith",    "count": 1, "regions": 1, "dependencies": ["rds-mysql"] },
+        { "name": "webserver-elb", "package": "elb",         "count": 1,  "regions": 1, "dependencies": ["webserver"] },
+        { "name": "www",           "package": "denominator", "count": 0,  "regions": 0, "dependencies": ["webserver-elb"] }
     ]
 }

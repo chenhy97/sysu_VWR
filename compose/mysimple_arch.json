@@ -1,0 +1,77 @@
+{
+    "arch": "../compose2arch/mysimpleV2.yml",
+    "args": "[./compose2arch -file ../compose2arch/mysimpleV2.yml]",
+    "date": "2018-08-02T18:12:44.904723823+08:00",
+    "description": "compose yaml",
+    "services": [
+        {
+            "container": "./proxy",
+            "count": 3,
+            "dependencies": [
+                "app"
+            ],
+            "instance": "instance",
+            "machine": "machine",
+            "name": "proxy",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "proxy"
+            ],
+            "machine": "external",
+            "name": "www-proxy",
+            "package": "denominator"
+        },
+        {
+            "container": "./app",
+            "count": 3,
+            "dependencies": [
+                "db"
+            ],
+            "instance": "instance",
+            "machine": "machine",
+            "name": "app",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "postgres",
+            "count": 1,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "db",
+            "package": "staash",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "proxy",
+                "app"
+            ],
+            "machine": "network",
+            "name": "front",
+            "package": "elb",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "app",
+                "db"
+            ],
+            "machine": "network",
+            "name": "back",
+            "package": "elb",
+            "regions": 1
+        }
+    ],
+    "version": "arch-0.1"
+}

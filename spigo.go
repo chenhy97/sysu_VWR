@@ -106,7 +106,11 @@ func main() {
 	// start up the selected architecture
 	go edda.Start(archaius.Conf.Arch + ".edda") // start edda first
 	if reload {
-		asgard.Run(asgard.Reload(archaius.Conf.Arch), "")
+		var ServiceIndex int
+		var ServiceNames map[int]string
+		a := architecture.ReadArch(archaius.Conf.Arch)
+		ServiceIndex,ServiceNames = architecture.ListNames(a)
+		asgard.Run(asgard.Reload(archaius.Conf.Arch), "","",ServiceNames,ServiceIndex)
 	} else {
 		switch archaius.Conf.Arch {
 		case "fsm":

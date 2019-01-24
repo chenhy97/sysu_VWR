@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <graphml xmlns="http://graphml.graphdrawing.org/xmlns/graphml"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns/graphml http://www.yworks.com/xml/schema/graphml/1.0/ygraphml.xsd"
+    xmlns:y="http://www.yworks.com/xml/graphml">
+    <key id="d0" for="node" yfiles.type="nodegraphics"/>
+    <key id="d1" for="edge" yfiles.type="edgegraphics"/>
+    <key id="d2" for="node" attr.name="Text" attr.type="string"/>
+    <graph id="spigo" edgedefault="directed">
+      <node id="mytest.us-east-1.zoneA.db00"><data key="service">staash</data></node>
+      <node id="mytest.us-east-1.zoneA.web00"><data key="service">monolith</data></node>
+      <node id="mytest.us-east-1.zoneB.web01"><data key="service">monolith</data></node>
+      <edge id="e1" source="mytest.us-east-1.zoneB.web01" target="mytest.us-east-1.zoneA.db00"/>
+      <node id="mytest.us-east-1.zoneC.web02"><data key="service">monolith</data></node>
+      <edge id="e2" source="mytest.us-east-1.zoneA.web00" target="mytest.us-east-1.zoneA.db00"/>
+      <edge id="e3" source="mytest.us-east-1.zoneC.web02" target="mytest.us-east-1.zoneA.db00"/>
+      <node id="mytest.us-east-1.zoneA.nginx00"><data key="service">monolith</data></node>
+      <node id="mytest.us-east-1.zoneB.nginx01"><data key="service">monolith</data></node>
+      <edge id="e4" source="mytest.us-east-1.zoneB.nginx01" target="mytest.us-east-1.zoneC.web02"/>
+      <edge id="e5" source="mytest.us-east-1.zoneA.nginx00" target="mytest.us-east-1.zoneC.web02"/>
+      <edge id="e6" source="mytest.us-east-1.zoneB.nginx01" target="mytest.us-east-1.zoneA.web00"/>
+      <edge id="e7" source="mytest.us-east-1.zoneB.nginx01" target="mytest.us-east-1.zoneB.web01"/>
+      <node id="mytest.us-east-1.zoneC.nginx02"><data key="service">monolith</data></node>
+      <edge id="e8" source="mytest.us-east-1.zoneA.nginx00" target="mytest.us-east-1.zoneA.web00"/>
+      <edge id="e9" source="mytest.us-east-1.zoneA.nginx00" target="mytest.us-east-1.zoneB.web01"/>
+      <edge id="e10" source="mytest.us-east-1.zoneC.nginx02" target="mytest.us-east-1.zoneA.web00"/>
+      <edge id="e11" source="mytest.us-east-1.zoneC.nginx02" target="mytest.us-east-1.zoneC.web02"/>
+      <edge id="e12" source="mytest.us-east-1.zoneC.nginx02" target="mytest.us-east-1.zoneB.web01"/>
+      <node id="mytest.*.*.www-nginx00"><data key="service">denominator</data></node>
+      <edge id="e13" source="mytest.*.*.www-nginx00" target="mytest.us-east-1.zoneA.nginx00"/>
+      <edge id="e14" source="mytest.*.*.www-nginx00" target="mytest.us-east-1.zoneC.nginx02"/>
+      <edge id="e15" source="mytest.*.*.www-nginx00" target="mytest.us-east-1.zoneB.nginx01"/>

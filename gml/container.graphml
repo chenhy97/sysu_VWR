@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <graphml xmlns="http://graphml.graphdrawing.org/xmlns/graphml"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns/graphml http://www.yworks.com/xml/schema/graphml/1.0/ygraphml.xsd"
+    xmlns:y="http://www.yworks.com/xml/graphml">
+    <key id="d0" for="node" yfiles.type="nodegraphics"/>
+    <key id="d1" for="edge" yfiles.type="edgegraphics"/>
+    <key id="d2" for="node" attr.name="Text" attr.type="string"/>
+    <graph id="spigo" edgedefault="directed">
+      <node id="container.us-east-1.zoneA.mysql00"><data key="service">store</data></node>
+      <node id="container.us-east-1.zoneB.mysql01"><data key="service">store</data></node>
+      <node id="container.us-east-1.zoneA.homepage00"><data key="service">monolith</data></node>
+      <edge id="e1" source="container.us-east-1.zoneB.mysql01" target="container.us-east-1.zoneA.mysql00"/>
+      <node id="container.us-east-1.zoneB.homepage01"><data key="service">monolith</data></node>
+      <edge id="e2" source="container.us-east-1.zoneA.homepage00" target="container.us-east-1.zoneA.mysql00"/>
+      <edge id="e3" source="container.us-east-1.zoneA.homepage00" target="container.us-east-1.zoneB.mysql01"/>
+      <node id="container.us-east-1.zoneC.homepage02"><data key="service">monolith</data></node>
+      <node id="container.us-east-1.zoneA.homepage03"><data key="service">monolith</data></node>
+      <edge id="e4" source="container.us-east-1.zoneC.homepage02" target="container.us-east-1.zoneB.mysql01"/>
+      <edge id="e5" source="container.us-east-1.zoneC.homepage02" target="container.us-east-1.zoneA.mysql00"/>
+      <edge id="e6" source="container.us-east-1.zoneB.homepage01" target="container.us-east-1.zoneA.mysql00"/>
+      <edge id="e7" source="container.us-east-1.zoneB.homepage01" target="container.us-east-1.zoneB.mysql01"/>
+      <edge id="e8" source="container.us-east-1.zoneA.mysql00" target="container.us-east-1.zoneB.mysql01"/>
+      <node id="container.us-east-1.zoneB.homepage04"><data key="service">monolith</data></node>
+      <edge id="e9" source="container.us-east-1.zoneA.homepage03" target="container.us-east-1.zoneB.mysql01"/>
+      <edge id="e10" source="container.us-east-1.zoneA.homepage03" target="container.us-east-1.zoneA.mysql00"/>
+      <node id="container.us-east-1.zoneC.homepage05"><data key="service">monolith</data></node>
+      <edge id="e11" source="container.us-east-1.zoneB.homepage04" target="container.us-east-1.zoneB.mysql01"/>
+      <node id="container.us-east-1.zoneA.homepage06"><data key="service">monolith</data></node>
+      <edge id="e12" source="container.us-east-1.zoneB.homepage04" target="container.us-east-1.zoneA.mysql00"/>
+      <edge id="e13" source="container.us-east-1.zoneC.homepage05" target="container.us-east-1.zoneA.mysql00"/>
+      <node id="container.us-east-1.zoneB.homepage07"><data key="service">monolith</data></node>
+      <edge id="e14" source="container.us-east-1.zoneC.homepage05" target="container.us-east-1.zoneB.mysql01"/>
+      <edge id="e15" source="container.us-east-1.zoneB.homepage07" target="container.us-east-1.zoneB.mysql01"/>
+      <edge id="e16" source="container.us-east-1.zoneB.homepage07" target="container.us-east-1.zoneA.mysql00"/>
+      <node id="container.us-east-1.zoneC.homepage08"><data key="service">monolith</data></node>
+      <edge id="e17" source="container.us-east-1.zoneA.homepage06" target="container.us-east-1.zoneA.mysql00"/>
+      <edge id="e18" source="container.us-east-1.zoneA.homepage06" target="container.us-east-1.zoneB.mysql01"/>
+      <edge id="e19" source="container.us-east-1.zoneC.homepage08" target="container.us-east-1.zoneA.mysql00"/>
+      <edge id="e20" source="container.us-east-1.zoneC.homepage08" target="container.us-east-1.zoneB.mysql01"/>
+      <node id="container.us-east-1.zoneA.signup00"><data key="service">monolith</data></node>
+      <node id="container.us-east-1.zoneB.signup01"><data key="service">monolith</data></node>
+      <edge id="e21" source="container.us-east-1.zoneB.signup01" target="container.us-east-1.zoneB.mysql01"/>
+      <edge id="e22" source="container.us-east-1.zoneB.signup01" target="container.us-east-1.zoneA.mysql00"/>
+      <node id="container.us-east-1.zoneC.signup02"><data key="service">monolith</data></node>
+      <edge id="e23" source="container.us-east-1.zoneA.signup00" target="container.us-east-1.zoneB.mysql01"/>
+      <edge id="e24" source="container.us-east-1.zoneA.signup00" target="container.us-east-1.zoneA.mysql00"/>
+      <edge id="e25" source="container.us-east-1.zoneC.signup02" target="container.us-east-1.zoneB.mysql01"/>
+      <edge id="e26" source="container.us-east-1.zoneC.signup02" target="container.us-east-1.zoneA.mysql00"/>
+      <node id="container.us-east-1.zoneA.signup-waf00"><data key="service">monolith</data></node>
+      <node id="container.us-east-1.zoneB.signup-waf01"><data key="service">monolith</data></node>
+      <node id="container.us-east-1.zoneC.signup-waf02"><data key="service">monolith</data></node>
+      <edge id="e27" source="container.us-east-1.zoneA.signup-waf00" target="container.us-east-1.zoneA.signup00"/>
+      <edge id="e28" source="container.us-east-1.zoneA.signup-waf00" target="container.us-east-1.zoneC.signup02"/>
+      <edge id="e29" source="container.us-east-1.zoneA.signup-waf00" target="container.us-east-1.zoneB.signup01"/>
+      <edge id="e30" source="container.us-east-1.zoneB.signup-waf01" target="container.us-east-1.zoneC.signup02"/>
+      <edge id="e31" source="container.us-east-1.zoneB.signup-waf01" target="container.us-east-1.zoneB.signup01"/>
+      <edge id="e32" source="container.us-east-1.zoneB.signup-waf01" target="container.us-east-1.zoneA.signup00"/>
+      <node id="container.us-east-1.zoneA.www-proxy00"><data key="service">zuul</data></node>
+      <edge id="e33" source="container.us-east-1.zoneC.signup-waf02" target="container.us-east-1.zoneA.signup00"/>
+      <edge id="e34" source="container.us-east-1.zoneC.signup-waf02" target="container.us-east-1.zoneB.signup01"/>
+      <edge id="e35" source="container.us-east-1.zoneC.signup-waf02" target="container.us-east-1.zoneC.signup02"/>
+      <node id="container.us-east-1.zoneB.www-proxy01"><data key="service">zuul</data></node>
+      <node id="container.us-east-1.zoneC.www-proxy02"><data key="service">zuul</data></node>
+      <edge id="e36" source="container.us-east-1.zoneA.www-proxy00" target="container.us-east-1.zoneA.signup-waf00"/>
+      <node id="container.us-east-1.*.www-elb00"><data key="service">elb</data></node>
+      <edge id="e37" source="container.us-east-1.zoneB.www-proxy01" target="container.us-east-1.zoneB.signup-waf01"/>
+      <edge id="e38" source="container.us-east-1.zoneA.www-proxy00" target="container.us-east-1.zoneA.homepage00"/>
+      <edge id="e39" source="container.us-east-1.zoneA.www-proxy00" target="container.us-east-1.zoneA.homepage03"/>
+      <edge id="e40" source="container.us-east-1.zoneA.www-proxy00" target="container.us-east-1.zoneA.homepage06"/>
+      <node id="container.*.*.www00"><data key="service">denominator</data></node>
+      <edge id="e41" source="container.us-east-1.zoneC.www-proxy02" target="container.us-east-1.zoneC.signup-waf02"/>
+      <edge id="e42" source="container.us-east-1.zoneC.www-proxy02" target="container.us-east-1.zoneC.homepage08"/>
+      <edge id="e43" source="container.us-east-1.zoneC.www-proxy02" target="container.us-east-1.zoneC.homepage02"/>
+      <edge id="e44" source="container.us-east-1.zoneC.www-proxy02" target="container.us-east-1.zoneC.homepage05"/>
+      <edge id="e45" source="container.us-east-1.zoneB.www-proxy01" target="container.us-east-1.zoneB.homepage07"/>
+      <edge id="e46" source="container.us-east-1.zoneB.www-proxy01" target="container.us-east-1.zoneB.homepage01"/>
+      <edge id="e47" source="container.us-east-1.zoneB.www-proxy01" target="container.us-east-1.zoneB.homepage04"/>
+      <edge id="e48" source="container.us-east-1.*.www-elb00" target="container.us-east-1.zoneA.www-proxy00"/>
+      <edge id="e49" source="container.us-east-1.*.www-elb00" target="container.us-east-1.zoneB.www-proxy01"/>
+      <edge id="e50" source="container.us-east-1.*.www-elb00" target="container.us-east-1.zoneC.www-proxy02"/>
+      <edge id="e51" source="container.*.*.www00" target="container.us-east-1.*.www-elb00"/>
+    </graph>
+  </graphml>

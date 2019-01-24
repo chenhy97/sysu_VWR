@@ -1,0 +1,159 @@
+{
+    "arch": "rs.yml",
+    "args": "[./compose2arch -file rs.yml]",
+    "date": "2018-08-03T09:47:53.582474772+08:00",
+    "description": "compose yaml",
+    "services": [
+        {
+            "container": "${REPO}/rs-user:${TAG}",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "user",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "${REPO}/rs-shipping:${TAG}",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "shipping",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "${REPO}/rs-dispatch:${TAG}",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "dispatch",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "${REPO}/rs-mongodb:${TAG}",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "mongodb",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "redis:4.0.6",
+            "count": 1,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "redis",
+            "package": "store",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "${REPO}/rs-cart:${TAG}",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "cart",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "${REPO}/rs-catalogue:${TAG}",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "catalogue",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "rabbitmq:3.7-management-alpine",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "rabbitmq",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "${REPO}/rs-shipping-db:${TAG}",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "mysql",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "${REPO}/rs-payment:${TAG}",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "payment",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "${REPO}/rs-web:${TAG}",
+            "count": 3,
+            "dependencies": null,
+            "instance": "instance",
+            "machine": "machine",
+            "name": "web",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "web"
+            ],
+            "machine": "external",
+            "name": "www-web",
+            "package": "denominator"
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "user",
+                "shipping",
+                "dispatch",
+                "mongodb",
+                "redis",
+                "cart",
+                "catalogue",
+                "rabbitmq",
+                "mysql",
+                "payment",
+                "web"
+            ],
+            "machine": "network",
+            "name": "robot-shop",
+            "package": "elb",
+            "regions": 1
+        }
+    ],
+    "version": "arch-0.1"
+}

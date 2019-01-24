@@ -3,6 +3,7 @@
     "description":"Yogi architecture from OSCON",
     "version": "arch-0.1",
     "victim": "cass",
+    "delayvictim": "",
     "services": [
         { "name": "cass",               "package": "priamCassandra", "count": 6, "regions": 1, "dependencies": [ "cass", "eureka" ]  },
         { "name": "kafka",              "package": "store",          "count": 3, "regions": 1, "dependencies": [ "kafka" ]  },

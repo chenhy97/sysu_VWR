@@ -10,6 +10,7 @@ import (
 	"github.com/adrianco/spigo/tooling/handlers"
 	"github.com/adrianco/spigo/tooling/ribbon"
 	"time"
+	"log"
 )
 
 // Start listening, all configuration and state is sent via messages
@@ -24,10 +25,22 @@ func Start(listener chan gotocol.Message) {
 	hist := collect.NewHist("")
 	ep, _ := time.ParseDuration(archaius.Conf.EurekaPoll)
 	eurekaTicker := time.NewTicker(ep)
+	var delaytime time.Duration
+	var delaysymbol int = 0
 	for {
 		select {
 		case msg := <-listener:
-			flow.Instrument(msg, name, hist)
+			if msg.Imposition == gotocol.Put{
+				flow.Instrument(msg, name, hist, "NO")
+			}else if delaysymbol == 1 {
+				log.Println("begin")
+				time.Sleep(delaytime)
+				log.Println("end")
+				flow.Instrument(msg, name, hist, "YES")
+				delaysymbol = 0
+			}else{
+				flow.Instrument(msg, name, hist, "NO")
+			}
 			switch msg.Imposition {
 			case gotocol.Hello:
 				if name == "" {
@@ -49,6 +62,16 @@ func Start(listener chan gotocol.Message) {
 			case gotocol.GetResponse:
 				// return path from a request, send payload back up using saved span context - server send
 				handlers.GetResponse(msg, name, listener, &requestor)
+			case gotocol.Delay:
+				delaysymbol = 1
+				d, e := time.ParseDuration(msg.Intention)
+				if e == nil && d >= time.Millisecond && d <= time.Hour {
+					delaytime = d
+				}
+				// log.Println("begin")
+				// time.Sleep(delaytime)
+				// delaysymbol = 0
+				// log.Println("end")
 			case gotocol.Put:
 				// route the request on to a random dependency
 				handlers.Put(msg, name, listener, &requestor, microservices)
@@ -60,6 +83,11 @@ func Start(listener chan gotocol.Message) {
 				return
 			}
 		case <-eurekaTicker.C: // check to see if any new dependencies have appeared
+			for {//这一部分是否多余(select 好像可以保证一次只有一个case在执行)或者不够合理(也许会产生竞争)，
+				if delaysymbol == 0 {
+					break
+				}
+			}
 			for dep := range dependencies {
 				for _, ch := range eureka {
 					ch <- gotocol.Message{gotocol.GetRequest, listener, time.Now(), gotocol.NilContext, dep}

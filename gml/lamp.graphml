@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <graphml xmlns="http://graphml.graphdrawing.org/xmlns/graphml"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns/graphml http://www.yworks.com/xml/schema/graphml/1.0/ygraphml.xsd"
+    xmlns:y="http://www.yworks.com/xml/graphml">
+    <key id="d0" for="node" yfiles.type="nodegraphics"/>
+    <key id="d1" for="edge" yfiles.type="edgegraphics"/>
+    <key id="d2" for="node" attr.name="Text" attr.type="string"/>
+    <graph id="spigo" edgedefault="directed">
+      <node id="lamp.us-east-1.zoneA.memcache00"><data key="service">store</data></node>
+      <node id="lamp.us-east-1.zoneA.webserver00"><data key="service">monolith</data></node>
+      <node id="lamp.us-east-1.zoneB.webserver01"><data key="service">monolith</data></node>
+      <node id="lamp.us-east-1.zoneB.rds-mysql01"><data key="service">store</data></node>
+      <node id="lamp.us-east-1.zoneC.webserver02"><data key="service">monolith</data></node>
+      <edge id="e1" source="lamp.us-east-1.zoneA.webserver00" target="lamp.us-east-1.zoneA.memcache00"/>
+      <node id="lamp.us-east-1.zoneA.rds-mysql00"><data key="service">store</data></node>
+      <node id="lamp.us-east-1.zoneA.webserver03"><data key="service">monolith</data></node>
+      <node id="lamp.us-east-1.zoneC.webserver05"><data key="service">monolith</data></node>
+      <edge id="e2" source="lamp.us-east-1.zoneC.webserver02" target="lamp.us-east-1.zoneA.memcache00"/>
+      <node id="lamp.us-east-1.zoneB.webserver04"><data key="service">monolith</data></node>
+      <node id="lamp.us-east-1.zoneB.webserver07"><data key="service">monolith</data></node>
+      <node id="lamp.us-east-1.zoneA.webserver06"><data key="service">monolith</data></node>
+      <edge id="e3" source="lamp.us-east-1.zoneA.webserver03" target="lamp.us-east-1.zoneA.memcache00"/>
+      <edge id="e4" source="lamp.us-east-1.zoneC.webserver02" target="lamp.us-east-1.zoneB.rds-mysql01"/>
+      <node id="lamp.us-east-1.zoneC.webserver08"><data key="service">monolith</data></node>
+      <node id="lamp.us-east-1.zoneA.webserver09"><data key="service">monolith</data></node>
+      <node id="lamp.us-east-1.zoneC.webserver11"><data key="service">monolith</data></node>
+      <edge id="e5" source="lamp.us-east-1.zoneA.webserver03" target="lamp.us-east-1.zoneB.rds-mysql01"/>
+      <edge id="e6" source="lamp.us-east-1.zoneA.webserver03" target="lamp.us-east-1.zoneA.rds-mysql00"/>
+      <edge id="e7" source="lamp.us-east-1.zoneA.webserver06" target="lamp.us-east-1.zoneA.memcache00"/>
+      <edge id="e8" source="lamp.us-east-1.zoneA.webserver06" target="lamp.us-east-1.zoneB.rds-mysql01"/>
+      <node id="lamp.us-east-1.zoneA.webserver12"><data key="service">monolith</data></node>
+      <edge id="e9" source="lamp.us-east-1.zoneA.webserver06" target="lamp.us-east-1.zoneA.rds-mysql00"/>
+      <node id="lamp.us-east-1.zoneB.webserver10"><data key="service">monolith</data></node>
+      <edge id="e10" source="lamp.us-east-1.zoneC.webserver08" target="lamp.us-east-1.zoneA.memcache00"/>
+      <edge id="e11" source="lamp.us-east-1.zoneB.webserver04" target="lamp.us-east-1.zoneA.memcache00"/>
+      <edge id="e12" source="lamp.us-east-1.zoneB.webserver04" target="lamp.us-east-1.zoneA.rds-mysql00"/>
+      <edge id="e13" source="lamp.us-east-1.zoneB.webserver04" target="lamp.us-east-1.zoneB.rds-mysql01"/>
+      <edge id="e14" source="lamp.us-east-1.zoneB.webserver07" target="lamp.us-east-1.zoneA.memcache00"/>
+      <edge id="e15" source="lamp.us-east-1.zoneB.webserver07" target="lamp.us-east-1.zoneB.rds-mysql01"/>
+      <edge id="e16" source="lamp.us-east-1.zoneB.webserver07" target="lamp.us-east-1.zoneA.rds-mysql00"/>
+      <edge id="e17" source="lamp.us-east-1.zoneC.webserver05" target="lamp.us-east-1.zoneA.memcache00"/>
+      <edge id="e18" source="lamp.us-east-1.zoneC.webserver05" target="lamp.us-east-1.zoneB.rds-mysql01"/>
+      <edge id="e19" source="lamp.us-east-1.zoneB.webserver10" target="lamp.us-east-1.zoneA.rds-mysql00"/>
+      <edge id="e20" source="lamp.us-east-1.zoneC.webserver08" target="lamp.us-east-1.zoneA.rds-mysql00"/>
+      <edge id="e21" source="lamp.us-east-1.zoneB.webserver10" target="lamp.us-east-1.zoneA.memcache00"/>
+      <edge id="e22" source="lamp.us-east-1.zoneB.webserver10" target="lamp.us-east-1.zoneB.rds-mysql01"/>
+      <edge id="e23" source="lamp.us-east-1.zoneC.webserver08" target="lamp.us-east-1.zoneB.rds-mysql01"/>
+      <edge id="e24" source="lamp.us-east-1.zoneC.webserver05" target="lamp.us-east-1.zoneA.rds-mysql00"/>
+      <edge id="e25" source="lamp.us-east-1.zoneC.webserver11" target="lamp.us-east-1.zoneA.memcache00"/>
+      <edge id="e26" source="lamp.us-east-1.zoneC.webserver11" target="lamp.us-east-1.zoneB.rds-mysql01"/>
+      <edge id="e27" source="lamp.us-east-1.zoneC.webserver11" target="lamp.us-east-1.zoneA.rds-mysql00"/>
+      <edge id="e28" source="lamp.us-east-1.zoneA.webserver09" target="lamp.us-east-1.zoneA.memcache00"/>
+      <edge id="e29" source="lamp.us-east-1.zoneA.webserver09" target="lamp.us-east-1.zoneB.rds-mysql01"/>
+      <edge id="e30" source="lamp.us-east-1.zoneA.webserver09" target="lamp.us-east-1.zoneA.rds-mysql00"/>
+      <edge id="e31" source="lamp.us-east-1.zoneA.webserver12" target="lamp.us-east-1.zoneA.memcache00"/>
+      <edge id="e32" source="lamp.us-east-1.zoneA.webserver12" target="lamp.us-east-1.zoneB.rds-mysql01"/>
+      <edge id="e33" source="lamp.us-east-1.zoneA.webserver12" target="lamp.us-east-1.zoneA.rds-mysql00"/>
+      <node id="lamp.us-east-1.zoneB.webserver13"><data key="service">monolith</data></node>
+      <edge id="e34" source="lamp.us-east-1.zoneB.webserver13" target="lamp.us-east-1.zoneA.memcache00"/>
+      <edge id="e35" source="lamp.us-east-1.zoneB.webserver13" target="lamp.us-east-1.zoneB.rds-mysql01"/>
+      <node id="lamp.us-east-1.zoneC.webserver14"><data key="service">monolith</data></node>
+      <edge id="e36" source="lamp.us-east-1.zoneC.webserver14" target="lamp.us-east-1.zoneA.rds-mysql00"/>
+      <edge id="e37" source="lamp.us-east-1.zoneC.webserver14" target="lamp.us-east-1.zoneA.memcache00"/>
+      <node id="lamp.us-east-1.zoneB.webserver16"><data key="service">monolith</data></node>
+      <edge id="e38" source="lamp.us-east-1.zoneB.webserver13" target="lamp.us-east-1.zoneA.rds-mysql00"/>
+      <node id="lamp.us-east-1.zoneA.webserver15"><data key="service">monolith</data></node>
+      <node id="lamp.us-east-1.*.webserver-elb00"><data key="service">elb</data></node>
+      <node id="lamp.us-east-1.zoneC.webserver17"><data key="service">monolith</data></node>
+      <edge id="e39" source="lamp.us-east-1.zoneA.webserver15" target="lamp.us-east-1.zoneA.rds-mysql00"/>
+      <edge id="e40" source="lamp.us-east-1.zoneA.webserver15" target="lamp.us-east-1.zoneA.memcache00"/>
+      <edge id="e41" source="lamp.us-east-1.zoneA.webserver15" target="lamp.us-east-1.zoneB.rds-mysql01"/>
+      <edge id="e42" source="lamp.us-east-1.zoneC.webserver14" target="lamp.us-east-1.zoneB.rds-mysql01"/>
+      <edge id="e43" source="lamp.us-east-1.*.webserver-elb00" target="lamp.us-east-1.zoneA.webserver00"/>
+      <edge id="e44" source="lamp.us-east-1.*.webserver-elb00" target="lamp.us-east-1.zoneB.webserver13"/>
+      <node id="lamp.*.*.www00"><data key="service">denominator</data></node>
+      <edge id="e45" source="lamp.us-east-1.*.webserver-elb00" target="lamp.us-east-1.zoneB.webserver01"/>
+      <edge id="e46" source="lamp.us-east-1.*.webserver-elb00" target="lamp.us-east-1.zoneB.webserver04"/>
+      <edge id="e47" source="lamp.us-east-1.*.webserver-elb00" target="lamp.us-east-1.zoneC.webserver08"/>
+      <edge id="e48" source="lamp.us-east-1.zoneB.webserver16" target="lamp.us-east-1.zoneA.memcache00"/>
+      <edge id="e49" source="lamp.us-east-1.*.webserver-elb00" target="lamp.us-east-1.zoneC.webserver11"/>
+      <edge id="e50" source="lamp.us-east-1.*.webserver-elb00" target="lamp.us-east-1.zoneC.webserver14"/>
+      <edge id="e51" source="lamp.us-east-1.*.webserver-elb00" target="lamp.us-east-1.zoneC.webserver02"/>
+      <edge id="e52" source="lamp.us-east-1.*.webserver-elb00" target="lamp.us-east-1.zoneA.webserver15"/>
+      <edge id="e53" source="lamp.us-east-1.*.webserver-elb00" target="lamp.us-east-1.zoneA.webserver12"/>
+      <edge id="e54" source="lamp.us-east-1.*.webserver-elb00" target="lamp.us-east-1.zoneA.webserver06"/>
+      <edge id="e55" source="lamp.us-east-1.*.webserver-elb00" target="lamp.us-east-1.zoneC.webserver05"/>
+      <edge id="e56" source="lamp.us-east-1.*.webserver-elb00" target="lamp.us-east-1.zoneA.webserver09"/>
+      <edge id="e57" source="lamp.us-east-1.*.webserver-elb00" target="lamp.us-east-1.zoneB.webserver07"/>
+      <edge id="e58" source="lamp.us-east-1.*.webserver-elb00" target="lamp.us-east-1.zoneB.webserver16"/>
+      <edge id="e59" source="lamp.us-east-1.*.webserver-elb00" target="lamp.us-east-1.zoneB.webserver10"/>
+      <edge id="e60" source="lamp.us-east-1.*.webserver-elb00" target="lamp.us-east-1.zoneA.webserver03"/>
+      <edge id="e61" source="lamp.us-east-1.zoneC.webserver17" target="lamp.us-east-1.zoneA.memcache00"/>
+      <edge id="e62" source="lamp.*.*.www00" target="lamp.us-east-1.*.webserver-elb00"/>
+      <edge id="e63" source="lamp.us-east-1.zoneC.webserver17" target="lamp.us-east-1.zoneB.rds-mysql01"/>
+      <edge id="e64" source="lamp.us-east-1.zoneC.webserver17" target="lamp.us-east-1.zoneA.rds-mysql00"/>
+      <edge id="e65" source="lamp.us-east-1.zoneB.webserver16" target="lamp.us-east-1.zoneA.rds-mysql00"/>
+      <edge id="e66" source="lamp.us-east-1.*.webserver-elb00" target="lamp.us-east-1.zoneC.webserver17"/>
+      <edge id="e67" source="lamp.us-east-1.zoneB.webserver16" target="lamp.us-east-1.zoneB.rds-mysql01"/>
+      <edge id="e68" source="lamp.us-east-1.zoneC.webserver02" target="lamp.us-east-1.zoneA.rds-mysql00"/>
+      <edge id="e69" source="lamp.us-east-1.zoneA.webserver00" target="lamp.us-east-1.zoneB.rds-mysql01"/>
+      <edge id="e70" source="lamp.us-east-1.zoneA.webserver00" target="lamp.us-east-1.zoneA.rds-mysql00"/>
+      <edge id="e71" source="lamp.us-east-1.zoneB.webserver01" target="lamp.us-east-1.zoneA.memcache00"/>
+      <edge id="e72" source="lamp.us-east-1.zoneB.webserver01" target="lamp.us-east-1.zoneA.rds-mysql00"/>
+      <edge id="e73" source="lamp.us-east-1.zoneB.webserver01" target="lamp.us-east-1.zoneB.rds-mysql01"/>
+    </graph>
+  </graphml>

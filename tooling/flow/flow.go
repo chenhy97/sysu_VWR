@@ -10,7 +10,7 @@ import (
 	"strings"
 	"sync"
 	"time"
-
+	
 	"github.com/adrianco/spigo/tooling/archaius"
 	"github.com/adrianco/spigo/tooling/collect"
 	"github.com/adrianco/spigo/tooling/dhcp"
@@ -58,6 +58,7 @@ type spannotype struct {
 	Intent    string `json:"intention"`  // request body
 	Timestamp int64  `json:"ts"`         // unix nanotimestamp
 	Value     string `json:"value"`      // direction of span
+	Delay	  string `json:"tag_dlay"`
 }
 
 // ByCtx sortable spans
@@ -96,6 +97,31 @@ func annotate(msg gotocol.Message, name string, t time.Time, resp, others Values
 	annotation.Imp = msg.Imposition.String()
 	annotation.Intent = msg.Intention
 	annotation.Timestamp = t.UnixNano()
+
+	if msg.Imposition == gotocol.GetResponse {
+		annotation.Value = resp.String()
+	} else {
+		annotation.Value = others.String()
+	}
+	return annotation
+}
+func annotate_tag(msg gotocol.Message, name string, t time.Time, resp, others Values,tag_symbol string) *spannotype {
+	if flowmap == nil {
+		flowmap = make(flowmaptype, archaius.Conf.Population)
+
+	}
+	if flowmap[msg.Ctx.Trace] == nil {
+		flowmap[msg.Ctx.Trace] = make([]*spannotype, 0, 2) // reserve space for at least 2 annotations in a span
+	}
+	annotation := new(spannotype)
+	annotation.Host = name
+	annotation.Ctx = msg.Ctx.String()
+	annotation.Imp = msg.Imposition.String()
+	annotation.Intent = msg.Intention
+	annotation.Timestamp = t.UnixNano()
+
+	annotation.Delay = tag_symbol//tag the request annotation
+
 	if msg.Imposition == gotocol.GetResponse {
 		annotation.Value = resp.String()
 	} else {
@@ -105,12 +131,18 @@ func annotate(msg gotocol.Message, name string, t time.Time, resp, others Values
 }
 
 // AnnotateReceive service activity when receiving a message
-func AnnotateReceive(msg gotocol.Message, name string, received time.Time) {
+func AnnotateReceive(msg gotocol.Message, name string, received time.Time,tag_symbol string) {
 	if !archaius.Conf.Collect {
 		return
 	}
 	flowlock.Lock()
-	flowmap[msg.Ctx.Trace] = append(flowmap[msg.Ctx.Trace], annotate(msg, name, received, CR, SR))
+	//log.Println(msg.Ctx.Trace)
+	//log.Println("###################")
+	if tag_symbol == "YES"{
+		flowmap[msg.Ctx.Trace] = append(flowmap[msg.Ctx.Trace], annotate_tag(msg, name, received, CR, SR,tag_symbol))
+	}else if tag_symbol == "NO"{
+		flowmap[msg.Ctx.Trace] = append(flowmap[msg.Ctx.Trace], annotate(msg, name, received, CR, SR))
+	}
 	flowlock.Unlock()
 	if graphneo4j.Enabled {
 		trace := flowmap[msg.Ctx.Trace]
@@ -120,18 +152,23 @@ func AnnotateReceive(msg gotocol.Message, name string, received time.Time) {
 	}
 	return
 }
-
 // AnnotateSend service sends on a flow
-func AnnotateSend(msg gotocol.Message, name string) {
+func AnnotateSend(msg gotocol.Message, name string,tag_symbol string) {
 	if !archaius.Conf.Collect {
 		return
 	}
 	flowlock.Lock()
-	flowmap[msg.Ctx.Trace] = append(flowmap[msg.Ctx.Trace], annotate(msg, name, msg.Sent, SS, CS))
+	if tag_symbol == "YES"{
+		flowmap[msg.Ctx.Trace] = append(flowmap[msg.Ctx.Trace], annotate_tag(msg, name, msg.Sent, SS, CS,tag_symbol))
+
+	}else if tag_symbol == "NO"{
+		flowmap[msg.Ctx.Trace] = append(flowmap[msg.Ctx.Trace], annotate(msg, name, msg.Sent, SS, CS))
+	}
+	//log.Println(flowmap[msg.Ctx.Trace])
+	//log.Println("^^^^^^^^^^^^^^")
 	flowlock.Unlock()
 	return
 }
-
 // End a flow, flushing output and freeing the request id to keep the map smaller
 func End(msg gotocol.Message, resphist, servhist, rthist *generic.Histogram) {
 	if !archaius.Conf.Collect {
@@ -260,6 +297,7 @@ type zipkinannotation struct {
 	Endpoint  zipkinendpoint `json:"endpoint"`
 	Timestamp int64          `json:"timestamp"`
 	Value     string         `json:"value"`
+	Delay 	  string         `json:"tag_dlay"`
 }
 
 // trace for zipkin
@@ -274,6 +312,7 @@ type zipkinspan struct {
 // WriteZip stores zipkin as json
 func WriteZip(zip zipkinspan) {
 	j, err := json.Marshal([]*zipkinspan{&zip})
+	// print(j,"try")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -290,7 +329,7 @@ func Flush(t gotocol.TraceContextType, trace []*spannotype) {
 	n := -1
 	sort.Sort(ByCtx(trace))
 	for _, a := range trace {
-		//fmt.Println(*a)
+		// fmt.Println(*a,"hihihihihi")
 		if ctx != a.Ctx { // new span
 			if ctx != "" { // not the first
 				WriteZip(zip)
@@ -314,19 +353,26 @@ func Flush(t gotocol.TraceContextType, trace []*spannotype) {
 		ann.Endpoint.Port = 8080
 		ann.Timestamp = a.Timestamp / 1000 // convert from UnixNano to Microseconds
 		ann.Value = a.Value
+		ann.Delay = a.Delay
+		// fmt.Println(a.delay,"hi")
+		if(ann.Delay == "YES"){
+			fmt.Println(ann)
+		}
 		zip.Annotations = append(zip.Annotations, ann)
 	}
+	log.Println(zip)
 	WriteZip(zip)
 }
 
 // Instrument common code for requests
-func Instrument(msg gotocol.Message, name string, hist *generic.Histogram) {
-	received := time.Now()
+func Instrument(msg gotocol.Message, name string, hist *generic.Histogram,tag_symbol string) {
+	received := time.Now()//感觉这里可以有点东西，加个随机值
 	collect.Measure(hist, received.Sub(msg.Sent))
 	if archaius.Conf.Msglog {
-		log.Printf("%v: %v\n", name, msg)
+		log.Printf("%v: %v +++++====\n", name, msg)
 	}
 	if msg.Ctx != gotocol.NilContext {
-		AnnotateReceive(msg, name, received) // store the annotation for this request
+		AnnotateReceive(msg, name, received,tag_symbol) // store the annotation for this request
+		//tag_symbol in order to tag the requeset since delay
 	}
 }

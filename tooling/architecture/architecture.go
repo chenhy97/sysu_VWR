@@ -21,6 +21,7 @@ type archV0r1 struct {
 	Args        string          `json:"args,omitempty"`
 	Date        string          `json:"date,omitempty"`
 	Victim      string          `json:"victim,omitempty"`
+	DelayVictim string          `json:"delayvictim,omitempty"`
 	Services    []containerV0r0 `json:"services"`
 }
 
@@ -59,14 +60,28 @@ func Start(a *archV0r1) {
 		log.Printf("Starting: %v\n", s)
 		r = asgard.Create(s.Name, s.Gopackage, s.Regions*archaius.Conf.Regions, s.Count*archaius.Conf.Population/100, s.Dependencies...)
 	}
-	asgard.Run(r, a.Victim) // run the last service in the list, and point chaos monkey at the victim
+	ServiceIndex,ServiceNames := ListNames(a)
+	asgard.Run(r, a.Victim,a.DelayVictim,ServiceNames,ServiceIndex) // run the last service in the list, and point chaos monkey at the victim	
+	log.Println(ServiceIndex)
+	for index,_ := range ServiceNames {
+		log.Println(ServiceNames[index])
+	}
 }
 
 // Connection
 type Connection struct {
 	Source, Dest string
 }
-
+//Extract the name of all services for arch
+func ListNames(a *archV0r1) (int, map[int]string){
+	names := make(map[int]string)
+	index := 0
+	for _,s := range a.Services {
+		names[index] = s.Name
+		index = index + 1
+	}
+	return index,names
+}
 // Extract dependencies from an architecture
 func ListDependencies(a *archV0r1, nodes *[]string, dependencies *[]Connection) {
 	for _, s := range a.Services {
@@ -135,6 +150,7 @@ func MakeArch(arch, des string) *archV0r1 {
 	a.Args = fmt.Sprintf("%v", os.Args)
 	a.Date = time.Now().Format(time.RFC3339Nano)
 	a.Victim = ""
+	a.DelayVictim = ""
 	return a
 }
 

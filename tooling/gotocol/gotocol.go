@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"sync/atomic"
 	"time"
+	//"log"
 )
 
 // Impositions is the promise theory term for requests made to a service
@@ -35,6 +36,8 @@ const (
 	Forget
 	// Delete - key Remove key and value
 	Delete
+	// Delay - delay node
+	Delay
 	// Goodbye - name // tell FSM and exit
 	Goodbye // test assumes this is the last and exits
 	numOfImpositions
@@ -65,6 +68,8 @@ func (imps Impositions) String() string {
 		return "Forget"
 	case Delete:
 		return "Delete"
+	case Delay:
+		return "Delay"
 	case Goodbye:
 		return "Goodbye"
 	}

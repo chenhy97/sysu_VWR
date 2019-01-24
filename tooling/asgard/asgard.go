@@ -23,6 +23,7 @@ import (
 	"github.com/adrianco/spigo/tooling/names" // manage service name hierarchy
 	"log"
 	"time"
+	// "math/rand"
 )
 
 var (
@@ -102,7 +103,7 @@ func Reload(arch string) string {
 	for _, element := range g.Graph {
 		if element.Node != "" {
 			name := element.Node
-			StartNode(name, "")
+			StartNode(name, "")//这里可以延迟开启一个节点*****************
 			if names.Package(name) == DenominatorPkg {
 				root = name
 			}
@@ -140,6 +141,7 @@ func Connect(source, target string) {
 // SendToName sends a message directly to a name via asgard, only used during setup
 func SendToName(name string, msg gotocol.Message) {
 	if noodles[name] != nil {
+		log.Println("testing"+"haha:"+name)
 		gotocol.Send(noodles[name], msg)
 	} else {
 		log.Fatal("Asgard can't send to " + name)
@@ -183,6 +185,8 @@ func StartNode(name string, dependencies ...string) {
 	default:
 		log.Fatal("asgard: unknown package: " + names.Package(name))
 	}
+	log.Println(name+"-----------========")
+	log.Println(listener)
 	noodles[name] <- gotocol.Message{gotocol.Hello, listener, time.Now(), handlers.DebugContext(gotocol.NilContext), name}
 	// there is a eureka service registry in each zone, so in-zone services just get to talk to their local registry
 	// elb are cross zone, so need to see all registries in a region
@@ -194,7 +198,10 @@ func StartNode(name string, dependencies ...string) {
 			crossregion = true
 		}
 	}
+	log.Println(eurekachan)
+	log.Println(names.RegionZone(name) + ")))))))))))))))")
 	for n, ch := range eurekachan {
+		log.Println(names.Region(name) + "~~~~~~~~~~~~~" + names.Zone(name) + "<<<,,<<" + n + "-----"+names.RegionZone(n))
 		if names.Region(name) == "*" || crossregion {
 			// need to know every eureka in all zones and regions
 			gotocol.Send(noodles[name], gotocol.Message{gotocol.Inform, ch, time.Now(), handlers.DebugContext(gotocol.NilContext), n})
@@ -205,16 +212,19 @@ func StartNode(name string, dependencies ...string) {
 			} else {
 				if names.RegionZone(name) == names.RegionZone(n) {
 					// just the eureka in this specific zone
+					log.Println(ch)
+					log.Println("((((((((((")
 					gotocol.Send(noodles[name], gotocol.Message{gotocol.Inform, ch, time.Now(), handlers.DebugContext(gotocol.NilContext), n})
 				}
 			}
 		}
 	}
-	//log.Println(dependencies)
+	log.Println(dependencies)
+	log.Println("......................")
 	// pass on symbolic dependencies without channels that will be looked up in Eureka later
 	for _, dep := range dependencies {
 		if dep != "" && dep != "eureka" { // ignore special case of eureka in dependency list
-			//log.Println(name + " depends on " + dep)
+			log.Println(name + " depends on " + dep)
 			gotocol.Send(noodles[name], gotocol.Message{gotocol.NameDrop, nil, time.Now(), handlers.DebugContext(gotocol.NilContext), dep})
 		}
 	}
@@ -240,7 +250,7 @@ func CreateEureka() {
 		}
 		for nn, cch := range eurekachan {
 			if names.Region(nn) == names.Region(n) && (names.Zone(nn) == n1 || names.Zone(nn) == n2) {
-				//log.Println("Eureka cross connect from: " + n + " to " + nn)
+				//log.Println("Eureka cross connect from: " + n + " to " + nn +"````````````====")
 				gotocol.Send(ch, gotocol.Message{gotocol.NameDrop, cch, time.Now(), handlers.DebugContext(gotocol.NilContext), nn})
 			}
 		}
@@ -255,7 +265,7 @@ func ConnectEveryEureka(name string) {
 }
 
 // Run architecture for a while then shut down
-func Run(rootservice, victim string) {
+func Run(rootservice, victim string, delayvictim string,ServiceNames map[int]string,ServiceIndex int) {
 	// tell denominator to start chatting with microservices every 0.01 secs by default
 	delay := archaius.Key(archaius.Conf, "chat")
 	if delay == "" {
@@ -265,13 +275,30 @@ func Run(rootservice, victim string) {
 	SendToName(rootservice, gotocol.Message{gotocol.Chat, nil, time.Now(), handlers.DebugContext(gotocol.NilContext), delay})
 	// wait until the delay has finished
 	if archaius.Conf.RunDuration >= time.Millisecond {
+		
 		time.Sleep(archaius.Conf.RunDuration / 2)
-		chaosmonkey.Delete(&noodles, victim) // kill a random victim half way through
+		// temp := rand.Intn(30)
+		temp := 10
+		log.Println(temp)
+		log.Println("-=-=-=-=-=-=-=-=-=-=-=-=")
+		delaytime := fmt.Sprintf("%dms",temp)
+		chaosmonkey.Delay(&noodles,delayvictim,delaytime)
+		//chaosmonkey.Delete(&noodles, victim) // kill a random victim half way through
 		time.Sleep(archaius.Conf.RunDuration / 2)
+		//log.Println(noodles)
+		//log.Println("XXXXXX")
+		//time.Sleep(archaius.Conf.RunDuration / 2)
+		//chaosmonkey.Delete(&noodles, victim) // kill a random victim half way through
+		//time.Sleep(archaius.Conf.RunDuration / 2)
 	}
 	log.Println("asgard: Shutdown")
 	ShutdownNodes()
 	ShutdownEureka()
+	log.Println(ServiceIndex)
+	for index,_ := range ServiceNames {
+		log.Println(ServiceNames[index])
+	}
+	log.Println("()()()()()()()(")
 	collect.Save()
 }
 

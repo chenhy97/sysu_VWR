@@ -120,6 +120,11 @@ export default React.createClass({
 						<option value="cassandra">Cassandra only</option>
 						<option value="yogi">Contributed data science</option>
 						<option value="riak">IoT model based on Riak</option>
+						<option value="try">Some Try on my test</option>
+						<option value="testyaml">Testing...</option>
+						<option value="mytest">MYTesting...</option>
+						<option value="ts">Train ticket</option>
+						<option value="container">container</option>
 					</select>
 				</span>
 			</section>

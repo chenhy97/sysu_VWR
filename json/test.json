@@ -1,0 +1,16 @@
+{
+  "arch":"test",
+  "version":"spigo-0.4",
+  "args":"[./spigo -c -a test -d 30 -j -g -m]",
+  "date":"2018-11-13T13:37:11.457979944+08:00",
+  "graph":[
+    {"node":"test.us-east-1.zoneA.rds-mysql00","package":"store","timestamp":"2018-11-13T13:37:11.456868618+08:00","metadata":"IP/54.198.0.1"},
+    {"node":"test.us-east-1.zoneA.webserver00","package":"monolith","timestamp":"2018-11-13T13:37:11.457105881+08:00","metadata":"IP/54.198.0.2"},
+    {"edge":"e1","source":"test.us-east-1.zoneA.webserver00","target":"test.us-east-1.zoneA.rds-mysql00","timestamp":"2018-11-13T13:37:11.457356082+08:00"},
+    {"node":"test.us-east-1.zoneA.webserver-elb00","package":"elb","timestamp":"2018-11-13T13:37:11.457372929+08:00","metadata":"IP/54.198.0.3"},
+    {"edge":"e2","source":"test.us-east-1.zoneA.webserver-elb00","target":"test.us-east-1.zoneA.webserver00","timestamp":"2018-11-13T13:37:11.45756584+08:00"},
+    {"node":"test.*.*.www00","package":"denominator","timestamp":"2018-11-13T13:37:11.457608637+08:00","metadata":"IP/54.198.0.4"},
+    {"edge":"e3","source":"test.*.*.www00","target":"test.us-east-1.zoneA.webserver-elb00","timestamp":"2018-11-13T13:37:11.466350789+08:00"},
+    {"done":"test.us-east-1.zoneA.webserver00","exit":"normal","timestamp":"2018-11-13T13:37:41.470562488+08:00"}
+  ]
+}

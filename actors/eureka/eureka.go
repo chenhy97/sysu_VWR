@@ -41,6 +41,8 @@ func Start(listener chan gotocol.Message, name string) {
 	metadata := make(map[string]meta, archaius.Conf.Dunbar)
 	lastrequest := make(map[callback]time.Time) // remember time of last request for a service from this requestor
 	log.Println(name + ": starting")
+	// var delaytime time.Duration
+	// var delaysymbol int = 0
 	for {
 		msg, ok = <-listener
 		collect.Measure(hist, time.Since(msg.Sent))
@@ -74,6 +76,8 @@ func Start(listener chan gotocol.Message, name string) {
 			if microservices[msg.Intention] == nil { // ignore multiple requests
 				microservices[msg.Intention] = msg.ResponseChan
 				metadata[msg.Intention] = meta{true, msg.Sent}
+				//log.Println("$$$")
+				//log.Println(metadata[msg.Intention])
 			}
 		case gotocol.Inform:
 			// don't store edges in discovery but do log them
@@ -81,6 +85,8 @@ func Start(listener chan gotocol.Message, name string) {
 				edda.Logchan <- msg
 			}
 		case gotocol.GetRequest:
+			log.Println(msg.Intention + "----------*****xw")
+			log.Println(microservices)
 			if msg.Intention == "" {
 				log.Fatal(name + ": empty GetRequest")
 			}
@@ -89,9 +95,10 @@ func Start(listener chan gotocol.Message, name string) {
 				break
 			}
 			for n, ch := range microservices { // respond with all the online names that match the service component
+				log.Println(n + "!!!!!!!!!" + names.Service(n)+":::::::::::")
 				if names.Service(n) == msg.Intention {
 					// if there was an update for the looked up service since last check
-					// log.Printf("%v: matching %v with %v, last: %v metadata: %v\n", name, n, msg.Intention, lastrequest[callback{n, msg.ResponseChan}], metadata[n].registered)
+					log.Printf("%v: matching %v with %v, last: %v metadata: %v\n", name, n, msg.Intention, lastrequest[callback{n, msg.ResponseChan}], metadata[n].registered)
 					if metadata[n].registered.After(lastrequest[callback{n, msg.ResponseChan}]) {
 						if metadata[n].online {
 							gotocol.Message{gotocol.NameDrop, ch, time.Now(), gotocol.NilContext, n}.GoSend(msg.ResponseChan)
@@ -108,13 +115,29 @@ func Start(listener chan gotocol.Message, name string) {
 			if microservices[msg.Intention] != nil { // matched a unique full name
 				metadata[msg.Intention] = meta{false, time.Now()}
 				// replicate request
+				log.Println(eurekaservices)
+				log.Println(gotocol.Replicate)
+				log.Println(msg.Intention+"////////")
+				log.Println(microservices[msg.Intention])
 				for _, c := range eurekaservices {
+					log.Println(c)
+					log.Println("%%%%")
 					gotocol.Message{gotocol.Replicate, nil, time.Now(), gotocol.NilContext, msg.Intention}.GoSend(c)
 				}
 				if edda.Logchan != nil {
 					edda.Logchan <- msg
 				}
 			}
+		// case gotocol.Delay:
+		// 	delaysymbol = 1
+		// 	d, e := time.ParseDuration(msg.Intention)
+		// 	if e == nil && d >= time.Millisecond && d <= time.Hour {
+		// 		delaytime = d
+		// 	}
+			// log.Println("begin")
+			// time.Sleep(delaytime)
+			// //delaysymbol = 0
+			// log.Println("end")
 		case gotocol.Goodbye:
 			gotocol.Message{gotocol.Goodbye, nil, time.Now(), gotocol.NilContext, name}.GoSend(msg.ResponseChan)
 			log.Println(name + ": closing")

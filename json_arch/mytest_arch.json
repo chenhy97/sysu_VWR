@@ -1,0 +1,56 @@
+{
+    "arch": "test.yml",
+    "args": "[./compose2arch -file test.yml]",
+    "date": "2018-08-02T18:22:17.189877878+08:00",
+    "description": "compose yaml",
+    "services": [
+
+        {
+            "container": "redis",
+            "count": 1,
+            "dependencies": ["db"],
+            "instance": "instance",
+            "machine": "machine",
+            "name": "db",
+            "package": "staash",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "./app",
+            "count": 3,
+            "dependencies": [
+                "db"
+            ],
+            "instance": "instance",
+            "machine": "machine",
+            "name": "web",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "container": "./nginx/",
+            "count": 3,
+            "dependencies": [
+                "web"
+            ],
+            "instance": "instance",
+            "machine": "machine",
+            "name": "nginx",
+            "package": "monolith",
+            "process": "process",
+            "regions": 1
+        },
+        {
+            "count": 0,
+            "dependencies": [
+                "nginx"
+            ],
+            "machine": "external",
+            "name": "www-nginx",
+            "package": "denominator"
+        }
+    ],
+    "version": "arch-0.1"
+}

@@ -3,6 +3,7 @@
     "description":"Simple Cassandra model for the Cassandra Summit 2015 paper",
     "version": "arch-0.0",
     "victim": "",
+    "delayvictim": "",
     "services": [
         { "name": "cassandra",  "package": "priamCassandra", "count": 6, "regions": 1, "dependencies": ["cassandra", "eureka"]},
         { "name": "restdata",   "package": "staash",         "count": 6, "regions": 1, "dependencies": ["cassandra"]},
