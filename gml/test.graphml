@@ -9,10 +9,10 @@
     <graph id="spigo" edgedefault="directed">
       <node id="test.us-east-1.zoneA.rds-mysql00"><data key="service">store</data></node>
       <node id="test.us-east-1.zoneA.webserver00"><data key="service">monolith</data></node>
-      <edge id="e1" source="test.us-east-1.zoneA.webserver00" target="test.us-east-1.zoneA.rds-mysql00"/>
       <node id="test.us-east-1.zoneA.webserver-elb00"><data key="service">elb</data></node>
-      <edge id="e2" source="test.us-east-1.zoneA.webserver-elb00" target="test.us-east-1.zoneA.webserver00"/>
+      <edge id="e1" source="test.us-east-1.zoneA.webserver00" target="test.us-east-1.zoneA.rds-mysql00"/>
       <node id="test.*.*.www00"><data key="service">denominator</data></node>
+      <edge id="e2" source="test.us-east-1.zoneA.webserver-elb00" target="test.us-east-1.zoneA.webserver00"/>
       <edge id="e3" source="test.*.*.www00" target="test.us-east-1.zoneA.webserver-elb00"/>
     </graph>
   </graphml>

@@ -10,21 +10,19 @@
       <node id="sockshop.us-east-1.zoneA.user-db00"><data key="service">store</data></node>
       <node id="sockshop.us-east-1.zoneA.user00"><data key="service">karyon</data></node>
       <node id="sockshop.us-east-1.zoneA.carts-db00"><data key="service">priamCassandra</data></node>
-      <edge id="e1" source="sockshop.us-east-1.zoneA.user00" target="sockshop.us-east-1.zoneA.user-db00"/>
       <node id="sockshop.us-east-1.zoneA.carts00"><data key="service">karyon</data></node>
-      <edge id="e2" source="sockshop.us-east-1.zoneA.carts00" target="sockshop.us-east-1.zoneA.carts-db00"/>
+      <edge id="e1" source="sockshop.us-east-1.zoneA.user00" target="sockshop.us-east-1.zoneA.user-db00"/>
       <node id="sockshop.us-east-1.zoneA.payment00"><data key="service">karyon</data></node>
+      <edge id="e2" source="sockshop.us-east-1.zoneA.carts00" target="sockshop.us-east-1.zoneA.carts-db00"/>
       <node id="sockshop.us-east-1.zoneA.shipping00"><data key="service">karyon</data></node>
       <node id="sockshop.us-east-1.zoneA.orders00"><data key="service">monolith</data></node>
       <edge id="e3" source="sockshop.us-east-1.zoneA.orders00" target="sockshop.us-east-1.zoneA.user00"/>
+      <node id="sockshop.*.*.front-end00"><data key="service">denominator</data></node>
       <edge id="e4" source="sockshop.us-east-1.zoneA.orders00" target="sockshop.us-east-1.zoneA.carts00"/>
       <node id="sockshop.us-east-1.zoneA.catalog-db00"><data key="service">store</data></node>
-      <node id="sockshop.us-east-1.zoneA.catalog00"><data key="service">monolith</data></node>
       <edge id="e5" source="sockshop.us-east-1.zoneA.orders00" target="sockshop.us-east-1.zoneA.payment00"/>
+      <node id="sockshop.us-east-1.zoneA.catalog00"><data key="service">monolith</data></node>
       <edge id="e6" source="sockshop.us-east-1.zoneA.orders00" target="sockshop.us-east-1.zoneA.shipping00"/>
       <edge id="e7" source="sockshop.us-east-1.zoneA.catalog00" target="sockshop.us-east-1.zoneA.catalog-db00"/>
-      <node id="sockshop.*.*.front-end00"><data key="service">denominator</data></node>
-      <edge id="e8" source="sockshop.*.*.front-end00" target="sockshop.us-east-1.zoneA.orders00"/>
-      <edge id="e9" source="sockshop.*.*.front-end00" target="sockshop.us-east-1.zoneA.catalog00"/>
-    </graph>
-  </graphml>
+      <edge id="e8" source="sockshop.*.*.front-end00" target="sockshop.us-east-1.zoneA.catalog00"/>
+      <edge id="e9" source="sockshop.*.*.front-end00" target="sockshop.us-east-1.zoneA.orders00"/>
