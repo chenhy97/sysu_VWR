@@ -136,8 +136,6 @@ func AnnotateReceive(msg gotocol.Message, name string, received time.Time,tag_sy
 		return
 	}
 	flowlock.Lock()
-	//log.Println(msg.Ctx.Trace)
-	//log.Println("###################")
 	if tag_symbol == "YES"{
 		flowmap[msg.Ctx.Trace] = append(flowmap[msg.Ctx.Trace], annotate_tag(msg, name, received, CR, SR,tag_symbol))
 	}else if tag_symbol == "NO"{

@@ -70,7 +70,7 @@ func Start(listener chan gotocol.Message) {
 				// return path from a request, send payload back up (not currently used)
 			case gotocol.Put:
 				// set a key value pair and replicate to other stores
-				var key, value string
+				var key , value string
 				fmt.Sscanf(msg.Intention, "%s%s", &key, &value)
 				log.Println(msg.Intention+"~~~~~~~~~~~~~~~~!!!@@@")
 				log.Println(key,value)

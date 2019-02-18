@@ -128,9 +128,9 @@ func Start(listener chan gotocol.Message) {
 					sm = gotocol.Message{gotocol.GetRequest, listener, now, ctx, "why?"}
 				case 1:
 					q := rand.Intn(w) // pick a random key that has already been put
-					sm = gotocol.Message{gotocol.GetRequest, listener, now, ctx, fmt.Sprintf("Why%v%v", q, q*q)}
+					sm = gotocol.Message{gotocol.GetRequest, listener, now, ctx, fmt.Sprintf("Why%v", q)}
 				case 2:
-					sm = gotocol.Message{gotocol.Put, listener, now, ctx, fmt.Sprintf("Why%v%v me", w, w*w)}
+					sm = gotocol.Message{gotocol.Put, listener, now, ctx, fmt.Sprintf("Why%v %v", w, w*w)}
 					w++ // put a new key each time
 				}
 				flow.AnnotateSend(sm, name,"NO") // service send logs creation time for this flow
