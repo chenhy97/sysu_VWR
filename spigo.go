@@ -69,7 +69,7 @@ func main() {
 		defer pprof.StopCPUProfile()
 	}
 	if archaius.Conf.Collect {
-		collect.Serve(8123) // start web server at port
+		collect.Serve(5210) // start web server at port
 	}
 	if graphjsonEnabled || graphmlEnabled || neo4jEnabled {
 		if graphjsonEnabled {

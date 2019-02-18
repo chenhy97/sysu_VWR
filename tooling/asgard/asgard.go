@@ -15,8 +15,8 @@ import (
 	"github.com/adrianco/spigo/actors/store"          // generic storage service
 	"github.com/adrianco/spigo/actors/zuul"           // API proxy microservice router
 	"github.com/adrianco/spigo/tooling/archaius"      // global configuration
-	"github.com/adrianco/spigo/tooling/chaosmonkey"   // delete nodes at random
-	"github.com/adrianco/spigo/tooling/collect"       // metrics collector
+	"github.com/adrianco/spigo/tooling/chaosmonkey"
+	"github.com/adrianco/spigo/tooling/collect" // metrics collector
 	"github.com/adrianco/spigo/tooling/gotocol"
 	"github.com/adrianco/spigo/tooling/graphjson"
 	"github.com/adrianco/spigo/tooling/handlers"
@@ -276,34 +276,38 @@ func Run(rootservice, victim string, delayvictim string,ServiceNames map[int]str
 	// wait until the delay has finished
 	if archaius.Conf.RunDuration >= time.Millisecond {
 		
-		// time.Sleep(archaius.Conf.RunDuration / 2)
-		// // temp := rand.Intn(30)
-		// temp := 10
-		// log.Println(temp)
-		// log.Println("-=-=-=-=-=-=-=-=-=-=-=-=")
-		// delaytime := fmt.Sprintf("%dms",temp)
-		// chaosmonkey.Delay(&noodles,delayvictim,delaytime)
-		// //chaosmonkey.Delete(&noodles, victim) // kill a random victim half way through
-		// time.Sleep(archaius.Conf.RunDuration / 2)
-		// //log.Println(noodles)
-		// //log.Println("XXXXXX")
-		// //time.Sleep(archaius.Conf.RunDuration / 2)
-		// //chaosmonkey.Delete(&noodles, victim) // kill a random victim half way through
-		// //time.Sleep(archaius.Conf.RunDuration / 2)
-		for{
-			var ans string
-			fmt.Scanln(&ans)
-			if ans == "d"{
-				fmt.Println("Trigger Delay,*****")
-				temp := 10
-				delaytime := fmt.Sprintf("%dms",temp)
-				chaosmonkey.Delay(&noodles,delayvictim,delaytime)
-			}
-			if ans == "b"{
-				fmt.Println("exit Trigger,***")
-				break
-			}
-		}
+		time.Sleep(archaius.Conf.RunDuration / 2)
+		// temp := rand.Intn(30)
+		temp := 10
+		log.Println(temp)
+		log.Println("-=-=-=-=-=-=-=-=-=-=-=-=")
+		delaytime := fmt.Sprintf("%dms",temp)
+		chaosmonkey.Delay(&noodles,delayvictim,delaytime)
+		//chaosmonkey.Delete(&noodles, victim) // kill a random victim half way through
+		time.Sleep(archaius.Conf.RunDuration / 2)
+
+
+		//log.Println(noodles)
+		//log.Println("XXXXXX")
+		//time.Sleep(archaius.Conf.RunDuration / 2)
+		//chaosmonkey.Delete(&noodles, victim) // kill a random victim half way through
+		//time.Sleep(archaius.Conf.RunDuration / 2)
+
+
+		//for{
+		//	var ans string
+		//	fmt.Scanln(&ans)
+		//	if ans == "d"{
+		//		fmt.Println("Trigger Delay,*****")
+		//		temp := 10
+		//		delaytime := fmt.Sprintf("%dms",temp)
+		//		chaosmonkey.Delay(&noodles,delayvictim,delaytime)
+		//	}
+		//	if ans == "b"{
+		//		fmt.Println("exit Trigger,***")
+		//		break
+		//	}
+		//}
 	}
 	log.Println("asgard: Shutdown")
 	ShutdownNodes()
@@ -312,7 +316,6 @@ func Run(rootservice, victim string, delayvictim string,ServiceNames map[int]str
 	for index,_ := range ServiceNames {
 		log.Println(ServiceNames[index])
 	}
-	log.Println("()()()()()()()(")
 	collect.Save()
 }
 

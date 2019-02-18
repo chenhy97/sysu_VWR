@@ -86,16 +86,17 @@ func Put(msg gotocol.Message, name string, listener chan gotocol.Message, reques
 func GetRequest(msg gotocol.Message, name string, listener chan gotocol.Message, requestor *map[string]gotocol.Routetype, router *ribbon.Router) {
 	// pass on request to a random service - client send
 	c := router.Random()
-	//log.Println(listener)
-	//log.Println(name)
-	//log.Println(msg.Route())
-	//log.Println(router)
-	//log.Println("-----------------------")
+	log.Println(listener)
+	log.Println(name)
+	log.Println(msg.Route())
+	log.Println(router)
+	log.Println("-----------------------")
 	if c == nil {
 		return
 	}
+	log.Println(msg.Ctx )
+	log.Println("************************~~")
 	outmsg := gotocol.Message{gotocol.GetRequest, listener, time.Now(), msg.Ctx.NewParent(), msg.Intention}
-	flow.AnnotateSend(outmsg, name,"NO")
 	(*requestor)[outmsg.Ctx.Route()] = msg.Route() // remember where to respond to when this span comes back
 	outmsg.GoSend(c)
 }

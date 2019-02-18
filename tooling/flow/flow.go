@@ -297,6 +297,7 @@ type zipkinannotation struct {
 	Endpoint  zipkinendpoint `json:"endpoint"`
 	Timestamp int64          `json:"timestamp"`
 	Value     string         `json:"value"`
+	Intent_code string       `json:"intent_code"`
 	Delay 	  string         `json:"tag_dlay"`
 }
 
@@ -353,6 +354,7 @@ func Flush(t gotocol.TraceContextType, trace []*spannotype) {
 		ann.Endpoint.Port = 8080
 		ann.Timestamp = a.Timestamp / 1000 // convert from UnixNano to Microseconds
 		ann.Value = a.Value
+		ann.Intent_code = a.Intent
 		ann.Delay = a.Delay
 		// fmt.Println(a.delay,"hi")
 		if(ann.Delay == "YES"){
