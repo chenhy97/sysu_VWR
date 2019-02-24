@@ -97,6 +97,7 @@ func GetRequest(msg gotocol.Message, name string, listener chan gotocol.Message,
 	log.Println(msg.Ctx )
 	log.Println("************************~~")
 	outmsg := gotocol.Message{gotocol.GetRequest, listener, time.Now(), msg.Ctx.NewParent(), msg.Intention}
+	flow.AnnotateSend(outmsg, name,"NO")
 	(*requestor)[outmsg.Ctx.Route()] = msg.Route() // remember where to respond to when this span comes back
 	outmsg.GoSend(c)
 }
