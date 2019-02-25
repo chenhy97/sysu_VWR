@@ -22,9 +22,14 @@ type archV0r1 struct {
 	Date        string          `json:"date,omitempty"`
 	Victim      string          `json:"victim,omitempty"`
 	DelayVictim string          `json:"delayvictim,omitempty"`
+	DisConnection []ConnectDes  `json:"disconnection,omitempty"`
 	Services    []containerV0r0 `json:"services"`
 }
 
+type ConnectDes struct {
+	ServiceA string `json:"A_name"`
+	ServiceB string `json:"B_name"`
+}
 type serviceV0r0 struct {
 	Name         string   `json:"name"`
 	Package      string   `json:"package"`
@@ -61,7 +66,7 @@ func Start(a *archV0r1) {
 		r = asgard.Create(s.Name, s.Gopackage, s.Regions*archaius.Conf.Regions, s.Count*archaius.Conf.Population/100, s.Dependencies...)
 	}
 	ServiceIndex,ServiceNames := ListNames(a)
-	asgard.Run(r, a.Victim,a.DelayVictim,ServiceNames,ServiceIndex) // run the last service in the list, and point chaos monkey at the victim	
+	asgard.Run(r, a.Victim,a.DelayVictim,a.DisConnection[0].ServiceA,a.DisConnection[0].ServiceB,ServiceNames,ServiceIndex) // run the last service in the list, and point chaos monkey at the victim	
 	log.Println(ServiceIndex)
 	for index,_ := range ServiceNames {
 		log.Println(ServiceNames[index])

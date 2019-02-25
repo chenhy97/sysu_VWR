@@ -1,9 +1,12 @@
 {
-    "arch": "lamp",
+    "arch": "test",
     "description":"Simple LAMP stack",
     "version": "arch-0.0",
     "victim": "",
     "delayvictim": "webserver-elb",
+    "disconnection": [
+        {"A_name" : "rds-mysql",  "B_name" : "webserver-elb"}
+    ],
     "services": [
         { "name": "rds-mysql",     "package": "store",       "count": 1,  "regions": 1, "dependencies": [] },
         { "name": "webserver",     "package": "monolith",    "count": 1, "regions": 1, "dependencies": ["rds-mysql"] },

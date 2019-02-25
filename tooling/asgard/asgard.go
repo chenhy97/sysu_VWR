@@ -42,6 +42,11 @@ func CreateChannels() {
 
 type mapchan map[string]chan gotocol.Message
 
+type ConnDes struct {
+	A_name string
+	B_name string
+}
+
 // Create a tier and specify any dependencies, return the full name of the last node created
 func Create(servicename, packagename string, regions, count int, dependencies ...string) string {
 	var name string
@@ -265,7 +270,7 @@ func ConnectEveryEureka(name string) {
 }
 
 // Run architecture for a while then shut down
-func Run(rootservice, victim string, delayvictim string,ServiceNames map[int]string,ServiceIndex int) {
+func Run(rootservice, victim string, delayvictim string,diabledConA string,disabledConB string,ServiceNames map[int]string,ServiceIndex int) {
 	// tell denominator to start chatting with microservices every 0.01 secs by default
 	delay := archaius.Key(archaius.Conf, "chat")
 	if delay == "" {

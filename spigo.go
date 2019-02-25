@@ -110,7 +110,7 @@ func main() {
 		var ServiceNames map[int]string
 		a := architecture.ReadArch(archaius.Conf.Arch)
 		ServiceIndex,ServiceNames = architecture.ListNames(a)
-		asgard.Run(asgard.Reload(archaius.Conf.Arch), "","",ServiceNames,ServiceIndex)
+		asgard.Run(asgard.Reload(archaius.Conf.Arch), "","","","",ServiceNames,ServiceIndex)
 	} else {
 		switch archaius.Conf.Arch {
 		case "fsm":

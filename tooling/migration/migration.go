@@ -222,5 +222,5 @@ func Start() {
 		ServiceName[6] = elbname
 	}
 	dnsname := asgard.Create(dns, DenominatorPkg, 0, 0, elbname)
-	asgard.Run(dnsname, "","",ServiceName,ServiceIndex)
+	asgard.Run(dnsname, "","","","",ServiceName,ServiceIndex)
 }
