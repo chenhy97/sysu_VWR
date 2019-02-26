@@ -9,8 +9,10 @@ import (
 	"github.com/adrianco/spigo/tooling/gotocol"
 	"github.com/adrianco/spigo/tooling/handlers"
 	"github.com/adrianco/spigo/tooling/ribbon"
+	// "github.com/adrianco/spigo/tooling/names"
 	"time"
 	"log"
+	"strings"
 )
 
 // Start - all configuration and state is sent via messages
@@ -21,6 +23,7 @@ func Start(listener chan gotocol.Message) {
 	requestor := make(map[string]gotocol.Routetype)    // remember where requests came from when responding
 	var name string                                    // remember my name
 	eureka := make(map[string]chan gotocol.Message, 1) // service registry
+	http_status := make(map[string]int)				   // record http_connection_status
 	hist := collect.NewHist("")
 	ep, _ := time.ParseDuration(archaius.Conf.EurekaPoll)
 	eurekaTicker := time.NewTicker(ep)
@@ -51,13 +54,19 @@ func Start(listener chan gotocol.Message) {
 			case gotocol.Inform:
 				eureka[msg.Intention] = handlers.Inform(msg, name, listener)
 			case gotocol.NameDrop:
+				log.Println(msg.Intention,"!!!!!^^^^^^^")
+				if strings.Contains(msg.Intention,"."){
+					http_status[msg.Intention] = 200
+				}
 				handlers.NameDrop(&dependencies, microservices, msg, name, listener, eureka, true) // true to setup cross region routing
 			case gotocol.Forget:
 				// forget a buddy
+				http_status[msg.Intention] = 503
 				handlers.Forget(&dependencies, microservices, msg)
 			case gotocol.GetRequest:
 				// route the request on to microservices
 				handlers.GetRequest(msg, name, listener, &requestor, microservices)
+				// log.Println(names.Service(microservices.Names()[0]),"~~~~~~~~~~~~~|||~~~~~~~~~12")
 			case gotocol.GetResponse:
 				// return path from a request, send payload back up using saved span context - server send
 				handlers.GetResponse(msg, name, listener, &requestor)

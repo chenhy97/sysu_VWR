@@ -89,12 +89,13 @@ func GetRequest(msg gotocol.Message, name string, listener chan gotocol.Message,
 	//log.Println(listener)
 	//log.Println(name)
 	//log.Println(msg.Route())
-	//log.Println(router)
-	//log.Println("-----------------------")
+	log.Println(name,"*",router,"*",c)
+	log.Println("-----------------------")
 	if c == nil {
+		log.Println("I am out")
 		return
 	}
-	log.Println(msg.Ctx )
+	log.Println(msg.Ctx)
 	log.Println("************************~~")
 	outmsg := gotocol.Message{gotocol.GetRequest, listener, time.Now(), msg.Ctx.NewParent(), msg.Intention}
 	flow.AnnotateSend(outmsg, name,"NO")
@@ -109,7 +110,8 @@ func GetResponse(msg gotocol.Message, name string, listener chan gotocol.Message
 	if r.ResponseChan != nil {
 		outmsg := gotocol.Message{gotocol.GetResponse, listener, time.Now(), r.Ctx, msg.Intention}
 		flow.AnnotateSend(outmsg, name,"NO")
-		outmsg.GoSend(r.ResponseChan)
+		// outmsg.GoSend(r.ResponseChan)
+		log.Println(msg.Ctx,ctr,r.ResponseChan,"???????????")
 		delete(*requestor, ctr)
 	}
 }

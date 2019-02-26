@@ -203,10 +203,7 @@ func StartNode(name string, dependencies ...string) {
 			crossregion = true
 		}
 	}
-	log.Println(eurekachan)
-	log.Println(names.RegionZone(name) + ")))))))))))))))")
 	for n, ch := range eurekachan {
-		log.Println(names.Region(name) + "~~~~~~~~~~~~~" + names.Zone(name) + "<<<,,<<" + n + "-----"+names.RegionZone(n))
 		if names.Region(name) == "*" || crossregion {
 			// need to know every eureka in all zones and regions
 			gotocol.Send(noodles[name], gotocol.Message{gotocol.Inform, ch, time.Now(), handlers.DebugContext(gotocol.NilContext), n})
@@ -217,8 +214,6 @@ func StartNode(name string, dependencies ...string) {
 			} else {
 				if names.RegionZone(name) == names.RegionZone(n) {
 					// just the eureka in this specific zone
-					log.Println(ch)
-					log.Println("((((((((((")
 					gotocol.Send(noodles[name], gotocol.Message{gotocol.Inform, ch, time.Now(), handlers.DebugContext(gotocol.NilContext), n})
 				}
 			}
@@ -255,7 +250,7 @@ func CreateEureka() {
 		}
 		for nn, cch := range eurekachan {
 			if names.Region(nn) == names.Region(n) && (names.Zone(nn) == n1 || names.Zone(nn) == n2) {
-				//log.Println("Eureka cross connect from: " + n + " to " + nn +"````````````====")
+				log.Println("Eureka cross connect from: " + n + " to " + nn +"````````````====")
 				gotocol.Send(ch, gotocol.Message{gotocol.NameDrop, cch, time.Now(), handlers.DebugContext(gotocol.NilContext), nn})
 			}
 		}
@@ -270,7 +265,7 @@ func ConnectEveryEureka(name string) {
 }
 
 // Run architecture for a while then shut down
-func Run(rootservice, victim string, delayvictim string,diabledConA string,disabledConB string,ServiceNames map[int]string,ServiceIndex int) {
+func Run(rootservice, victim string, delayvictim string,disabledConA string,disabledConB string,ServiceNames map[int]string,ServiceIndex int) {
 	// tell denominator to start chatting with microservices every 0.01 secs by default
 	delay := archaius.Key(archaius.Conf, "chat")
 	if delay == "" {
@@ -283,12 +278,11 @@ func Run(rootservice, victim string, delayvictim string,diabledConA string,disab
 		
 		time.Sleep(archaius.Conf.RunDuration / 2)
 		// temp := rand.Intn(30)
-		temp := 10
-		log.Println(temp)
-		log.Println("-=-=-=-=-=-=-=-=-=-=-=-=")
-		delaytime := fmt.Sprintf("%dms",temp)
-		chaosmonkey.Delay(&noodles,delayvictim,delaytime)
-		//chaosmonkey.Delete(&noodles, victim) // kill a random victim half way through
+		// temp := 10
+		// delaytime := fmt.Sprintf("%dms",temp)
+		// chaosmonkey.Delay(&noodles,delayvictim,delaytime)
+		chaosmonkey.Delete(&noodles, victim) // kill a random victim half way through
+		// chaosmonkey.Disconnect(&noodles,disabledConA,disabledConB,1)//最后一位是disconnect概率 模仿Gremlin
 		time.Sleep(archaius.Conf.RunDuration / 2)
 
 

@@ -65,6 +65,8 @@ func Start(listener chan gotocol.Message) {
 				outmsg := gotocol.Message{gotocol.GetResponse, listener, time.Now(), msg.Ctx, store[msg.Intention]}
 				fmt.Println(msg.Intention,"TTTTTT",store[msg.Intention],"XXX~~~~~***////")
 				flow.AnnotateSend(outmsg, name,"NO")
+				log.Println(microservices,"~~~~~~~~~~~~~|||~~~~~~~~~")
+
 				outmsg.GoSend(msg.ResponseChan)
 			case gotocol.GetResponse:
 				// return path from a request, send payload back up (not currently used)

@@ -2,15 +2,15 @@
     "arch": "test",
     "description":"Simple LAMP stack",
     "version": "arch-0.0",
-    "victim": "",
+    "victim": "webserver",
     "delayvictim": "webserver-elb",
     "disconnection": [
-        {"A_name" : "rds-mysql",  "B_name" : "webserver-elb"}
+        {"A_name" : "webserver",  "B_name" : "rds-mysql"}
     ],
     "services": [
-        { "name": "rds-mysql",     "package": "store",       "count": 1,  "regions": 1, "dependencies": [] },
+        { "name": "rds-mysql",     "package": "store",       "count": 2,  "regions": 1, "dependencies": [] },
         { "name": "webserver",     "package": "monolith",    "count": 1, "regions": 1, "dependencies": ["rds-mysql"] },
-        { "name": "webserver-elb", "package": "elb",         "count": 1,  "regions": 1, "dependencies": ["webserver"] },
+        { "name": "webserver-elb", "package": "elb",         "count": 0,  "regions": 1, "dependencies": ["webserver"] },
         { "name": "www",           "package": "denominator", "count": 0,  "regions": 0, "dependencies": ["webserver-elb"] }
     ]
 }
