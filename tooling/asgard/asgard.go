@@ -281,8 +281,8 @@ func Run(rootservice, victim string, delayvictim string,disabledConA string,disa
 		// temp := 10
 		// delaytime := fmt.Sprintf("%dms",temp)
 		// chaosmonkey.Delay(&noodles,delayvictim,delaytime)
-		chaosmonkey.Delete(&noodles, victim) // kill a random victim half way through
-		// chaosmonkey.Disconnect(&noodles,disabledConA,disabledConB,1)//最后一位是disconnect概率 模仿Gremlin
+		// chaosmonkey.Delete(&noodles, victim) // kill a random victim half way through
+		chaosmonkey.Disconnect(&noodles,disabledConA,disabledConB,1)//最后一位是disconnect概率 模仿Gremlin
 		time.Sleep(archaius.Conf.RunDuration / 2)
 
 
@@ -308,7 +308,7 @@ func Run(rootservice, victim string, delayvictim string,disabledConA string,disa
 		//	}
 		//}
 	}
-	log.Println("asgard: Shutdown")
+	log.Println("asgard: Shutdown",listener)
 	ShutdownNodes()
 	ShutdownEureka()
 	log.Println(ServiceIndex)
@@ -331,6 +331,7 @@ func ShutdownNodes() {
 		switch msg.Imposition {
 		case gotocol.Goodbye:
 			delete(noodles, msg.Intention)
+			log.Println(noodles,"LLLLLLLL++++")
 			if archaius.Conf.Msglog {
 				log.Printf("asgard: %v shutdown, population: %v    \n", msg.Intention, len(noodles))
 			}

@@ -2,7 +2,7 @@
     "arch": "test",
     "description":"Simple LAMP stack",
     "version": "arch-0.0",
-    "victim": "webserver",
+    "victim": "webserver-elb",
     "delayvictim": "webserver-elb",
     "disconnection": [
         {"A_name" : "webserver",  "B_name" : "rds-mysql"}

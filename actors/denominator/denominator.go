@@ -87,6 +87,7 @@ func Start(listener chan gotocol.Message) {
 				// return path from a request, terminate and log response time in histograms
 				flow.End(msg, resphist, servhist, rthist)
 			case gotocol.Goodbye:
+				log.Println(msg.Intention,"denominator+++",listener)
 				if archaius.Conf.Msglog {
 					log.Printf("%v: Going away, was chatting every %v\n", name, chatrate)
 				}
@@ -117,7 +118,7 @@ func Start(listener chan gotocol.Message) {
 				}
 			}
 			c := microservices.Random()
-			log.Println(microservices)
+			log.Println(microservices,c,parent)
 			log.Println("ahahahahahah~~~~~~~~")
 			if c != nil {
 				ctx := gotocol.NewTrace()

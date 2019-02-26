@@ -78,9 +78,8 @@ func Start(listener chan gotocol.Message) {
 				// log.Println("end")
 			
 			case gotocol.Goodbye:
-				//log.Println("---++++++======")
 				//log.Println(eureka)
-				//log.Println(parent)
+				// log.Println(parent)
 				gotocol.Message{gotocol.Goodbye, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
 				return
 			}

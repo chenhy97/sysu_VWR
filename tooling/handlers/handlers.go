@@ -93,7 +93,11 @@ func GetRequest(msg gotocol.Message, name string, listener chan gotocol.Message,
 	log.Println("-----------------------")
 	if c == nil {
 		log.Println("I am out")
-		return
+		outmsg := gotocol.Message{gotocol.GetResponse, listener, time.Now(), msg.Ctx, "503"}
+		log.Println(msg.Intention,"TTTTTT","503","XXX~~~~~***////")
+		flow.AnnotateSend(outmsg, name,"NO")
+		outmsg.GoSend(msg.ResponseChan)
+		return 
 	}
 	log.Println(msg.Ctx)
 	log.Println("************************~~")
@@ -110,7 +114,7 @@ func GetResponse(msg gotocol.Message, name string, listener chan gotocol.Message
 	if r.ResponseChan != nil {
 		outmsg := gotocol.Message{gotocol.GetResponse, listener, time.Now(), r.Ctx, msg.Intention}
 		flow.AnnotateSend(outmsg, name,"NO")
-		// outmsg.GoSend(r.ResponseChan)
+		outmsg.GoSend(r.ResponseChan)
 		log.Println(msg.Ctx,ctr,r.ResponseChan,"???????????")
 		delete(*requestor, ctr)
 	}

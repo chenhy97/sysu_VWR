@@ -85,8 +85,6 @@ func Start(listener chan gotocol.Message, name string) {
 				edda.Logchan <- msg
 			}
 		case gotocol.GetRequest:
-			log.Println(msg.Intention + "----------*****xw")
-			log.Println(microservices)
 			if msg.Intention == "" {
 				log.Fatal(name + ": empty GetRequest")
 			}
