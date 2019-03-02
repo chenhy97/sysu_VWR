@@ -66,6 +66,8 @@ type Configuration struct {
 
 	// Keys and values for configuring services, passed in as one string
 	Keyvals string `json:"keyvals"`
+
+	RunToEnd bool `json:"Runendless"`
 }
 
 // Conf data instance

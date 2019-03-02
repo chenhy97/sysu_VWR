@@ -4,6 +4,9 @@
     "version": "arch-0.0",
     "victim": "rds-mysql",
     "delayvictim":"",
+    "disconnection": [
+        {"A_name" : "webserver",  "B_name" : "rds-mysql"}
+    ],
     "services": [
         { "name": "rds-mysql",     "package": "store",       "count": 2,  "regions": 1, "dependencies": [] },
 	{ "name": "memcache",      "package": "store",       "count": 1,  "regions": 1, "dependencies": [] },

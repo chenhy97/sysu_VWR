@@ -17,6 +17,7 @@ import (
 	"github.com/adrianco/spigo/tooling/gotocol"
 	"github.com/adrianco/spigo/tooling/graphneo4j"
 	"github.com/go-kit/kit/metrics/generic"
+
 )
 
 // Values for zipkin span direction
@@ -82,6 +83,8 @@ var file *os.File
 
 var collector *KafkaCollector
 
+var sync_flowmap sync.Map
+var write_flowlock sync.RWMutex
 // Common Annotation code
 func annotate(msg gotocol.Message, name string, t time.Time, resp, others Values) *spannotype {
 	if flowmap == nil {
@@ -198,7 +201,11 @@ func End(msg gotocol.Message, resphist, servhist, rthist *generic.Histogram) {
 		collect.Measure(rthist, time.Unix(0, sr).Sub(time.Unix(0, cs))+time.Unix(0, cr).Sub(time.Unix(0, ss)))
 	}
 }
-
+func Add2Buffer(msg gotocol.Message){
+	write_flowlock.RLock()
+	sync_flowmap.Store(msg.Ctx.Trace,flowmap[msg.Ctx.Trace])
+	write_flowlock.RUnlock()
+}
 // Shutdown the flow mapping system and flush remaining flows
 func Shutdown() {
 	if !archaius.Conf.Collect {
@@ -234,12 +241,46 @@ func Shutdown() {
 		} else {
 			comma = true
 		}
+		log.Println(c,f,"*********...")
 		Flush(c, f)
 	}
 	file.WriteString("\n]\n")
 	file.Close()
 }
-
+//kafka arch don't set,so we can't collect flow metrics during running
+//这种方法的bug,当出现Delete类型的错误时，无法抓到路径上经过Delete节点的所有trace
+//
+func Interval_save(){
+	if !archaius.Conf.RunToEnd {
+		return
+	}
+	store_ticker := time.NewTicker(time.Second*1/4)
+	for _ = range store_ticker.C{
+		func(){
+			fi,err := os.OpenFile("json_metrics/" + archaius.Conf.Arch + "_flow.json", os.O_APPEND|os.O_WRONLY, 0600)
+			if err != nil {
+				log.Fatal(err)
+			} else {
+				file = fi
+			}
+			write_flowlock.Lock()
+			sync_flowmap.Range(func(k,v interface{})bool {
+				c,ok1 := k.(gotocol.TraceContextType)
+				f,ok2 := v.([]*spannotype)
+				if ok1 && ok2 {
+					Flush(c, f)
+					sync_flowmap.Delete(k)
+				}else{
+					fmt.Println("Wrong insertion!!!!")
+				}
+				file.WriteString(",\n")
+				return true
+			})
+			write_flowlock.Unlock()
+			file.Close()
+		}()
+	}
+}
 /* example: Zipkin format is an array of these
 {
   "traceId": "5e27c67030932221",
@@ -326,9 +367,14 @@ func Flush(t gotocol.TraceContextType, trace []*spannotype) {
 	var zip zipkinspan
 	var ctx string
 	n := -1
+	fmt.Println("............")
+	for _,ta := range trace{
+		fmt.Println(t,ta)
+	}
+	fmt.Println("-------------")
 	sort.Sort(ByCtx(trace))
 	for _, a := range trace {
-		// fmt.Println(*a,"hihihihihi")
+		fmt.Println(a,t,"hihihihihi")
 		if ctx != a.Ctx { // new span
 			if ctx != "" { // not the first
 				WriteZip(zip)
@@ -355,9 +401,9 @@ func Flush(t gotocol.TraceContextType, trace []*spannotype) {
 		ann.Intent_code = a.Intent
 		ann.Delay = a.Delay
 		// fmt.Println(a.delay,"hi")
-		if(ann.Delay == "YES"){
-			fmt.Println(ann)
-		}
+		// if(ann.Delay == "YES"){
+		// 	fmt.Println(ann)
+		// }
 		zip.Annotations = append(zip.Annotations, ann)
 	}
 	log.Println(zip)

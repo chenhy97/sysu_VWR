@@ -21,6 +21,7 @@ import (
 	"github.com/adrianco/spigo/tooling/graphjson"
 	"github.com/adrianco/spigo/tooling/handlers"
 	"github.com/adrianco/spigo/tooling/names" // manage service name hierarchy
+	"github.com/adrianco/spigo/tooling/flow"
 	"log"
 	"time"
 	// "math/rand"
@@ -274,15 +275,18 @@ func Run(rootservice, victim string, delayvictim string,disabledConA string,disa
 	log.Println(rootservice+" activity rate ", delay)
 	SendToName(rootservice, gotocol.Message{gotocol.Chat, nil, time.Now(), handlers.DebugContext(gotocol.NilContext), delay})
 	// wait until the delay has finished
+	if archaius.Conf.Collect{
+		go flow.Interval_save()
+	}
 	if archaius.Conf.RunDuration >= time.Millisecond {
 		
 		time.Sleep(archaius.Conf.RunDuration / 2)
 		// temp := rand.Intn(30)
-		// temp := 10
-		// delaytime := fmt.Sprintf("%dms",temp)
-		// chaosmonkey.Delay(&noodles,delayvictim,delaytime)
+		temp := 10
+		delaytime := fmt.Sprintf("%dms",temp)
+		chaosmonkey.Delay(&noodles,delayvictim,delaytime)
 		// chaosmonkey.Delete(&noodles, victim) // kill a random victim half way through
-		chaosmonkey.Disconnect(&noodles,disabledConA,disabledConB,1)//最后一位是disconnect概率 模仿Gremlin
+		// chaosmonkey.Disconnect(&noodles,disabledConA,disabledConB,1)//最后一位是disconnect概率 模仿Gremlin
 		time.Sleep(archaius.Conf.RunDuration / 2)
 
 

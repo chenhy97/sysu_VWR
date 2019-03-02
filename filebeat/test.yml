@@ -1,0 +1,20 @@
+filebeat.prospectors:
+- type: log
+  enabled: true
+  paths:
+  - data/test.json
+  # json.message_key: true
+  # json.ignore_decoding_error: true
+  json.overwrite_keys: true
+  json.keys_under_root: true
+# processors:
+#   - decode_json_fields:
+#       # fields:["annotations"]
+# output.console:
+#   enabled: true
+#   pretty: true
+setup.template.name: "testflow"        #顶格，和output对其
+setup.template.pattern: "testflow-*"   #顶格，和output对其
+output.elasticsearch:
+  hosts: ["http://134.175.62.237:9200"]
+  index: "testflow-%{+yyyy.MM.dd}"

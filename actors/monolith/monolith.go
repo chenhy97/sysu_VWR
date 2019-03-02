@@ -80,6 +80,7 @@ func Start(listener chan gotocol.Message) {
 				if e == nil && d >= time.Millisecond && d <= time.Hour {
 					delaytime = d
 				}
+				flow.Add2Buffer(msg)
 				// log.Println("begin")
 				// time.Sleep(delaytime)
 				// delaysymbol = 0
@@ -93,6 +94,7 @@ func Start(listener chan gotocol.Message) {
 					ch <- gotocol.Message{gotocol.Delete, nil, time.Now(), gotocol.NilContext, name}
 				}
 				gotocol.Message{gotocol.Goodbye, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
+				flow.Add2Buffer(msg)
 				return
 			}
 		case <-eurekaTicker.C: // check to see if any new dependencies have appeared

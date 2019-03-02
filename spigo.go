@@ -44,6 +44,7 @@ func main() {
 	flag.StringVar(&archaius.Conf.Keyvals, "kv", "", "Configuration key:value - chat:10ms sets default message insert rate")
 	flag.BoolVar(&archaius.Conf.Filter, "f", false, "Filter output names to simplify graph by collapsing instances to services")
 	flag.IntVar(&cpucount, "cpus", runtime.NumCPU(), "Number of CPUs for Go runtime")
+	flag.BoolVar(&archaius.Conf.RunToEnd,"re",false,"Running not endless")
 	runtime.GOMAXPROCS(cpucount)
 	var cpuprofile = flag.String("cpuprofile", "", "Write cpu profile to file")
 	var confFile = flag.String("config", "", "Config file to read from json_arch/<config>_conf.json. This config overrides any other command-line arguments.")
@@ -102,7 +103,10 @@ func main() {
 	if *saveConfFile {
 		archaius.WriteConf()
 	}
-
+	if archaius.Conf.Collect{
+		f_flow,_ := os.Create("json_metrics/" + archaius.Conf.Arch + "_flow.json")
+		f_flow.Close()//可否不在此处close()???
+	}
 	// start up the selected architecture
 	go edda.Start(archaius.Conf.Arch + ".edda") // start edda first
 	if reload {
@@ -132,5 +136,7 @@ func main() {
 		close(edda.Logchan)
 	}
 	edda.Wg.Wait()
-	flow.Shutdown()
+	if !archaius.Conf.RunToEnd{
+		flow.Shutdown()
+	}
 }

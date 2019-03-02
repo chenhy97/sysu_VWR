@@ -68,6 +68,7 @@ func Forget(dependencies *map[string]time.Time, router *ribbon.Router, msg gotoc
 		(*dependencies)[names.Service(microservice)] = msg.Sent // remember when we were told to forget this service
 		router.Remove(microservice)
 	}
+	flow.Add2Buffer(msg)
 }
 
 // Put sends a Put message to a service

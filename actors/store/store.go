@@ -60,6 +60,7 @@ func Start(listener chan gotocol.Message) {
 			case gotocol.Forget:
 				// forget a buddy
 				handlers.Forget(&dependencies, microservices, msg)
+				
 			case gotocol.GetRequest:
 				// return any stored value for this key
 				outmsg := gotocol.Message{gotocol.GetResponse, listener, time.Now(), msg.Ctx, store[msg.Intention]}
@@ -76,7 +77,8 @@ func Start(listener chan gotocol.Message) {
 				fmt.Sscanf(msg.Intention, "%s%s", &key, &value)
 				log.Println(msg.Intention+"~~~~~~~~~~~~~~~~!!!@@@")
 				log.Println(key,value)
-				if key != "" && value != "" {
+				flow.Add2Buffer(msg)
+				if key != "" && value != "" {//Put 了一个新的值，然后要更新所有。
 					store[key] = value
 					// duplicate the request on to all connected store nodes with the same package name as this one
 					for _, n := range microservices.All(names.Package(name)).Names() {
@@ -91,6 +93,7 @@ func Start(listener chan gotocol.Message) {
 				if e == nil && d >= time.Millisecond && d <= time.Hour {
 					delaytime = d
 				}
+				flow.Add2Buffer(msg)
 				// log.Println("begin")
 				// time.Sleep(delaytime)
 				// delaysymbol = 0
@@ -99,6 +102,7 @@ func Start(listener chan gotocol.Message) {
 				// Replicate is used between store nodes
 				// end point for a request
 				var key, value string
+				// flow.Add2Buffer(msg)
 				fmt.Sscanf(msg.Intention, "%s%s", &key, &value)
 				// log.Printf("store: %v:%v", key, value)
 				if key != "" && value != "" {
@@ -106,6 +110,7 @@ func Start(listener chan gotocol.Message) {
 				}
 			case gotocol.Goodbye:
 				gotocol.Message{gotocol.Goodbye, nil, time.Now(), gotocol.NilContext, name}.GoSend(netflixoss)
+				flow.Add2Buffer(msg)
 				return
 			}
 		case <-eurekaTicker.C: // check to see if any new dependencies have appeared
