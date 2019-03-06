@@ -8,6 +8,7 @@ import (
 	"github.com/adrianco/spigo/actors/packagenames" // name definitions
 	"github.com/adrianco/spigo/tooling/archaius"    // global configuration
 	"github.com/adrianco/spigo/tooling/asgard"      // tools to create an architecture
+	"github.com/adrianco/spigo/tooling/gotocol"
 	"io/ioutil"
 	"log"
 	"os"
@@ -49,17 +50,16 @@ type containerV0r0 struct {
 	Count        int      `json:"count"`
 	Dependencies []string `json:"dependencies"`
 }
+//Create noodles,eureka
+func Pre_Handle()(chan gotocol.Message,map[string]chan gotocol.Message,map[string]chan gotocol.Message){
+	listener,noodles,eurekachan := asgard.CreateChannels()
+	asgard.CreateEureka()// service registries for each zone
+	return listener,noodles,eurekachan
+}
 
 // Start architecture
 func Start(a *archV0r1) {
 	var r string
-	if archaius.Conf.Population < 1 {
-		log.Fatal("architecture: can't create less than 1 microservice")
-	} else {
-		log.Printf("architecture: scaling to %v%%", archaius.Conf.Population)
-	}
-	asgard.CreateChannels()
-	asgard.CreateEureka() // service registries for each zone
 
 	for _, s := range a.Services {
 		log.Printf("Starting: %v\n", s)

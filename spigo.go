@@ -114,6 +114,8 @@ func main() {
 		var ServiceNames map[int]string
 		a := architecture.ReadArch(archaius.Conf.Arch)
 		ServiceIndex,ServiceNames = architecture.ListNames(a)
+		listener,noodles,eurekachan := architecture.Pre_Handle()
+		log.Println(listener,noodles,eurekachan)
 		asgard.Run(asgard.Reload(archaius.Conf.Arch), "","","","",ServiceNames,ServiceIndex)
 	} else {
 		switch archaius.Conf.Arch {
@@ -126,6 +128,13 @@ func main() {
 			if a == nil {
 				log.Fatal("Architecture " + archaius.Conf.Arch + " isn't recognized")
 			} else {
+				if archaius.Conf.Population < 1 {
+					log.Fatal("architecture: can't create less than 1 microservice")
+				} else {
+					log.Printf("architecture: scaling to %v%%", archaius.Conf.Population)
+				}
+				listener,noodles,eurekachan := architecture.Pre_Handle()
+				log.Println(listener,noodles,eurekachan)
 				architecture.Start(a)
 			}
 		}

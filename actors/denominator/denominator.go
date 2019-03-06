@@ -32,11 +32,16 @@ func Start(listener chan gotocol.Message) {
 	chatTicker := time.NewTicker(time.Hour)
 	chatTicker.Stop()
 	var delaysymbol int = 0
+	var exit_symbol int = 0
 	var delaytime time.Duration
 	w := 1 // counter for random messages
 	for {
 		select {
 		case msg := <-listener:
+			if exit_symbol == 1{
+				flow.Add2Buffer(msg)
+				continue
+			}
 			if msg.Imposition == gotocol.Put{
 				flow.Instrument(msg, name, nethist, "NO")
 			}else if delaysymbol == 1 {
@@ -101,7 +106,8 @@ func Start(listener chan gotocol.Message) {
 				//log.Println(parent)
 				gotocol.Message{gotocol.Goodbye, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
 				flow.Add2Buffer(msg)
-				return
+				exit_symbol = 1
+				// return
 			}
 		case <-eurekaTicker.C: // check to see if any new dependencies have appeared
 			for {//这一部分是否多余(select 好像可以保证一次只有一个case在执行)或者不够合理(也许会产生竞争)，

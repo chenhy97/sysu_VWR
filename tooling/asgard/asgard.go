@@ -35,10 +35,11 @@ var (
 )
 
 // CreateChannels makes the maps of channels
-func CreateChannels() {
+func CreateChannels()(chan gotocol.Message,map[string]chan gotocol.Message,map[string]chan gotocol.Message) {
 	listener = make(chan gotocol.Message) // listener for architecture
 	noodles = make(map[string]chan gotocol.Message, archaius.Conf.Population)
 	eurekachan = make(map[string]chan gotocol.Message, len(archaius.Conf.ZoneNames)*archaius.Conf.Regions)
+	return listener,noodles,eurekachan
 }
 
 type mapchan map[string]chan gotocol.Message
@@ -101,8 +102,8 @@ func Reload(arch string) string {
 			archaius.Conf.Population++
 		}
 	}
-	CreateChannels()
-	CreateEureka()
+	// CreateChannels()
+	// CreateEureka()
 	// eureka and edda aren't recorded in the json file to simplify the graph
 	// Start all the services
 	cass := make(map[string]chan gotocol.Message) // for token distribution
@@ -282,10 +283,10 @@ func Run(rootservice, victim string, delayvictim string,disabledConA string,disa
 		
 		time.Sleep(archaius.Conf.RunDuration / 2)
 		// temp := rand.Intn(30)
-		temp := 10
-		delaytime := fmt.Sprintf("%dms",temp)
-		chaosmonkey.Delay(&noodles,delayvictim,delaytime)
-		// chaosmonkey.Delete(&noodles, victim) // kill a random victim half way through
+		// temp := 10
+		// delaytime := fmt.Sprintf("%dms",temp)
+		// chaosmonkey.Delay(&noodles,delayvictim,delaytime)
+		chaosmonkey.Delete(&noodles, victim) // kill a random victim half way through
 		// chaosmonkey.Disconnect(&noodles,disabledConA,disabledConB,1)//最后一位是disconnect概率 模仿Gremlin
 		time.Sleep(archaius.Conf.RunDuration / 2)
 

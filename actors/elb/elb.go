@@ -23,6 +23,7 @@ func Start(listener chan gotocol.Message) {
 	var name string                                                               // remember my name
 	var delaysymbol int = 0														  // to record if it is needed to be delayed
 	var delaytime time.Duration
+	var exit_symbol int = 0
 	eureka := make(map[string]chan gotocol.Message, len(archaius.Conf.ZoneNames)) // service registry per zone
 	ep, _ := time.ParseDuration(archaius.Conf.EurekaPoll)
 	eurekaTicker := time.NewTicker(ep)
@@ -31,6 +32,10 @@ func Start(listener chan gotocol.Message) {
 	for {
 		select {
 		case msg := <-listener:
+			if exit_symbol == 1{
+				flow.Add2Buffer(msg)
+				continue
+			}
 			if msg.Imposition == gotocol.Put{
 				flow.Instrument(msg, name, hist, "NO")
 			}else if delaysymbol == 1 {
@@ -83,7 +88,8 @@ func Start(listener chan gotocol.Message) {
 				// log.Println(parent)
 				gotocol.Message{gotocol.Goodbye, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
 				flow.Add2Buffer(msg)
-				return
+				exit_symbol = 1//为了可以在注入了delete类型错误之后，还可以记录trace，不让其推出，改为使用标识位判断退出
+				// return
 			}
 		case <-eurekaTicker.C: // check to see if any new dependencies have appeared
 			for {//这一部分是否多余(select 好像可以保证一次只有一个case在执行)或者不够合理(也许会产生竞争)，
