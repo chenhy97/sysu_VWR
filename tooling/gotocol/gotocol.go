@@ -123,7 +123,9 @@ func (ctx Context) NewParent() Context {
 	ctx.Parent = ctx.Span
 	return ctx.AddSpan()
 }
-
+func ClearTrace(){
+	spanner = TraceContextType(0)
+}
 // NilContext makes an empty context, I can't figure out how to make this a const
 var NilContext Context
 

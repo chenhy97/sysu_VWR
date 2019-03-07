@@ -60,7 +60,6 @@ func Start(listener chan gotocol.Message) {
 			case gotocol.Inform:
 				eureka[msg.Intention] = handlers.Inform(msg, name, listener)
 			case gotocol.NameDrop:
-				log.Println(msg.Intention,"!!!!!^^^^^^^")
 				if strings.Contains(msg.Intention,"."){
 					http_status[msg.Intention] = 200
 				}
@@ -91,11 +90,8 @@ func Start(listener chan gotocol.Message) {
 				// delaysymbol = 0
 				// log.Println("end")
 			case gotocol.Goodbye:
-				log.Println(eureka)
 				for _, ch := range eureka { // tell name service I'm not going to be here
-					log.Println(ch)
-					log.Println(name+"|||||||||||||||")
-					log.Println(msg)
+					
 					ch <- gotocol.Message{gotocol.Delete, nil, time.Now(), gotocol.NilContext, name}
 				}
 				gotocol.Message{gotocol.Goodbye, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)

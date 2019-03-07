@@ -93,7 +93,6 @@ func Start(listener chan gotocol.Message, name string) {
 				break
 			}
 			for n, ch := range microservices { // respond with all the online names that match the service component
-				log.Println(n + "!!!!!!!!!" + names.Service(n)+":::::::::::")
 				if names.Service(n) == msg.Intention {
 					// if there was an update for the looked up service since last check
 					log.Printf("%v: matching %v with %v, last: %v metadata: %v\n", name, n, msg.Intention, lastrequest[callback{n, msg.ResponseChan}], metadata[n].registered)
@@ -113,13 +112,7 @@ func Start(listener chan gotocol.Message, name string) {
 			if microservices[msg.Intention] != nil { // matched a unique full name
 				metadata[msg.Intention] = meta{false, time.Now()}
 				// replicate request
-				log.Println(eurekaservices)
-				log.Println(gotocol.Replicate)
-				log.Println(msg.Intention+"////////")
-				log.Println(microservices[msg.Intention])
 				for _, c := range eurekaservices {
-					log.Println(c)
-					log.Println("%%%%")
 					gotocol.Message{gotocol.Replicate, nil, time.Now(), gotocol.NilContext, msg.Intention}.GoSend(c)
 				}
 				if edda.Logchan != nil {

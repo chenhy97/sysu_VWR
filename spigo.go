@@ -1,76 +1,92 @@
-// Package main for spigo - simulate protocol interactions in go.
-// Terminology is a mix of NetflixOSS, promise theory and flying spaghetti monster lore
 package main
-
 import (
-	"flag"
+	"github.com/gin-gonic/gin";
+	// "flag"
 	"log"
 	"os"
 	"runtime"
 	"runtime/pprof"
 	"strings"
 	"time"
+	"strconv"
+	"io/ioutil"
+	"fmt"
 
 	"github.com/adrianco/spigo/actors/edda"          // log configuration state
 	"github.com/adrianco/spigo/tooling/archaius"     // store the config for global lookup
 	"github.com/adrianco/spigo/tooling/architecture" // run an architecture from a json definition
 	"github.com/adrianco/spigo/tooling/asgard"       // tools to create an architecture
-	"github.com/adrianco/spigo/tooling/collect"      // metrics to extvar
+	// "github.com/adrianco/spigo/tooling/collect"      // metrics to extvar
 	"github.com/adrianco/spigo/tooling/flow"         // flow logging
 	"github.com/adrianco/spigo/tooling/fsm"          // fsm and pirates
 	"github.com/adrianco/spigo/tooling/gotocol"      // message protocol spec
 	"github.com/adrianco/spigo/tooling/migration"    // migration from LAMP to netflixoss
+	// "runtime/pprof"
 )
-
 var addrs string
 var reload, graphmlEnabled, graphjsonEnabled, neo4jEnabled bool
 var duration, cpucount int
-
-// main handles command line flags and starts up an architecture
-func main() {
-	flag.StringVar(&archaius.Conf.Arch, "a", "netflixoss", "Architecture to create or read, fsm, migration, or read from json_arch/<arch>_arch.json")
-	flag.IntVar(&archaius.Conf.Population, "p", 100, "Pirate population for fsm or scale factor % for other architectures")
-	flag.IntVar(&duration, "d", 10, "Simulation duration in seconds")
-	flag.IntVar(&archaius.Conf.Regions, "w", 1, "Wide area regions to replicate architecture into, defaults based on 6 AWS region names")
-	flag.BoolVar(&graphmlEnabled, "g", false, "Enable GraphML logging of nodes and edges to gml/<arch>.graphml")
-	flag.BoolVar(&graphjsonEnabled, "j", false, "Enable GraphJSON logging of nodes and edges to json/<arch>.json")
-	flag.BoolVar(&neo4jEnabled, "n", false, "Enable Neo4j logging of nodes and edges")
-	flag.BoolVar(&archaius.Conf.Msglog, "m", false, "Enable console logging of every message")
-	flag.BoolVar(&reload, "r", false, "Reload graph from json/<arch>.json to setup architecture")
-	flag.BoolVar(&archaius.Conf.Collect, "c", false, "Collect metrics and flows to json_metrics csv_metrics neo4j and via http: extvars")
-	flag.StringVar(&addrs, "k", "", "Send Zipkin spans to Kafka if Collect is enabled. Provide list of comma separated host:port addresses")
-	flag.IntVar(&archaius.Conf.StopStep, "s", 0, "Sequence number to create multiple runs for ui to step through in json/<arch><s>.json")
-	flag.StringVar(&archaius.Conf.EurekaPoll, "u", "1s", "Polling interval for Eureka name service, increase for large populations")
-	flag.StringVar(&archaius.Conf.Keyvals, "kv", "", "Configuration key:value - chat:10ms sets default message insert rate")
-	flag.BoolVar(&archaius.Conf.Filter, "f", false, "Filter output names to simplify graph by collapsing instances to services")
-	flag.IntVar(&cpucount, "cpus", runtime.NumCPU(), "Number of CPUs for Go runtime")
-	flag.BoolVar(&archaius.Conf.RunToEnd,"re",false,"Running not endless")
+func test_func(index int){
+	for a := 0;a < 10;a ++{
+		fmt.Println("I am runner ",index, "No.",a)
+		time.Sleep(time.Second)
+	}
+}
+func test_func_1() (string, int, int){
+	return "abc",1,2
+}
+func HandlePost(C *gin.Context){
+	body,_ := ioutil.ReadAll(C.Request.Body)
+	fmt.Println(string(body))
+}
+func HandlePost1(C *gin.Context){
+	id,_ :=strconv.ParseBool(C.DefaultQuery("id","false"))
+	fmt.Println("id :",id)
+	C.JSON(200,gin.H{
+		"id":id,
+		})
+}
+func StartArch(c *gin.Context){
+	archaius.Conf.Arch = c.DefaultQuery("a","netflixoss")
+	archaius.Conf.Population,_ = strconv.Atoi(c.DefaultQuery("p","100"))
+	duration,_ = strconv.Atoi(c.DefaultQuery("d","10"))
+	archaius.Conf.Regions,_ = strconv.Atoi(c.DefaultQuery("w","1"))
+	graphmlEnabled,_ = strconv.ParseBool(c.DefaultQuery("g","false"))
+	graphjsonEnabled,_ = strconv.ParseBool(c.DefaultQuery("j","false"))
+	neo4jEnabled,_ = strconv.ParseBool(c.DefaultQuery("n","false"))
+	archaius.Conf.Msglog,_=strconv.ParseBool(c.DefaultQuery("m","false"))
+	reload,_=strconv.ParseBool(c.DefaultQuery("r","false"))
+	archaius.Conf.Collect,_=strconv.ParseBool(c.DefaultQuery("c","false"))
+	addrs  = c.DefaultQuery("k","")
+	archaius.Conf.StopStep,_  = strconv.Atoi(c.DefaultQuery("s","0"))
+	archaius.Conf.EurekaPoll  = c.DefaultQuery("u","1s")
+	archaius.Conf.Keyvals  = c.DefaultQuery("kv","")
+	archaius.Conf.Filter,_  = strconv.ParseBool(c.DefaultQuery("f","false"))
+	cpucount,_  = strconv.Atoi(c.DefaultQuery("cpus",string(runtime.NumCPU())))
+	archaius.Conf.RunToEnd,_ =strconv.ParseBool(c.DefaultQuery("re","false"))
+	// fmt.Println("Arch: ",Arch,"Population: ", Population,duration,Regions,graphmlEnabled,graphjsonEnabled)
+	// fmt.Println(neo4jEnabled,Msglog,reload,Collect,addrs,StopStep,EurekaPoll,Keyvals,Filter,cpucount,RunToEnd)
+	
 	runtime.GOMAXPROCS(cpucount)
-	var cpuprofile = flag.String("cpuprofile", "", "Write cpu profile to file")
-	var confFile = flag.String("config", "", "Config file to read from json_arch/<config>_conf.json. This config overrides any other command-line arguments.")
-	var saveConfFile = flag.Bool("saveconfig", false, "Save config file to json_arch/<arch>_conf.json, using the arch name from -a.")
-	flag.Parse()
-
-	kafkaAddrs := strings.Split(addrs, ",")
+	var cpuprofile = c.DefaultQuery("cpuprofile","")
+	var confFile = c.DefaultQuery("config","")
+	var saveConfFile,_ = strconv.ParseBool(c.DefaultQuery("saveconfig","false"))
+	kafkaAddrs := strings.Split(addrs,",")
 	for _, addr := range kafkaAddrs {
 		if len(addr) > 0 {
-			archaius.Conf.Kafka = append(archaius.Conf.Kafka, addr)
+			archaius.Conf.Kafka = append(archaius.Conf.Kafka,addr)
 		}
 	}
-
-	if *confFile != "" {
-		archaius.ReadConf(*confFile)
+	if confFile != ""{
+		archaius.ReadConf(confFile)
 	}
-	if *cpuprofile != "" {
-		f, err := os.Create(*cpuprofile)
+	if cpuprofile != "" {
+		f, err := os.Create(cpuprofile)
 		if err != nil {
 			log.Fatal(err)
 		}
 		pprof.StartCPUProfile(f)
 		defer pprof.StopCPUProfile()
-	}
-	if archaius.Conf.Collect {
-		collect.Serve(5210) // start web server at port
 	}
 	if graphjsonEnabled || graphmlEnabled || neo4jEnabled {
 		if graphjsonEnabled {
@@ -99,8 +115,10 @@ func main() {
 		edda.Logchan = make(chan gotocol.Message, 1000)
 	}
 	archaius.Conf.RunDuration = time.Duration(duration) * time.Second
-
-	if *saveConfFile {
+	fmt.Println(duration,archaius.Conf.RunDuration)
+	// return
+	
+	if saveConfFile {
 		archaius.WriteConf()
 	}
 	if archaius.Conf.Collect{
@@ -148,4 +166,17 @@ func main() {
 	if !archaius.Conf.RunToEnd{
 		flow.Shutdown()
 	}
+	c.JSON(200,gin.H{
+		"Runtime":archaius.Conf.RunDuration ,
+		"endless":archaius.Conf.RunToEnd,
+	})
+	return
+}
+func main(){
+	r := gin.Default()
+	// count := 0
+	str,temp1,temp2 := test_func_1()
+	fmt.Println(str,temp1,temp2)
+    r.POST("/start", StartArch)
+    r.Run() // listen and serve on 0.0.0.0:8080
 }

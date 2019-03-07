@@ -67,10 +67,6 @@ func Start(a *archV0r1) {
 	}
 	ServiceIndex,ServiceNames := ListNames(a)
 	asgard.Run(r, a.Victim,a.DelayVictim,a.DisConnection[0].ServiceA,a.DisConnection[0].ServiceB,ServiceNames,ServiceIndex) // run the last service in the list, and point chaos monkey at the victim	
-	log.Println(ServiceIndex)
-	for index,_ := range ServiceNames {
-		log.Println(ServiceNames[index])
-	}
 }
 
 // Connection
@@ -117,15 +113,11 @@ func ReadArch(arch string) *archV0r1 {
 		// map all the service names and check packages exist
 		for _, s := range a.Services {
 			if names[s.Name] == true {
-				log.Println(names)
-				log.Println(s)
 				log.Fatal("Duplicate service name in architecture: " + s.Name)
 			} else {
 				names[s.Name] = true
 			}
 			if packs[s.Gopackage] != true {
-				log.Println(packs)
-				log.Println(s)
 				log.Fatal("Unknown package name in architecture: " + s.Gopackage)
 			}
 		}
@@ -133,8 +125,6 @@ func ReadArch(arch string) *archV0r1 {
 		for _, s := range a.Services {
 			for _, d := range s.Dependencies {
 				if names[d] == false {
-					log.Println(names)
-					log.Println(s)
 					log.Fatal("Unknown dependency name in architecture: " + d)
 				}
 			}

@@ -90,18 +90,13 @@ func GetRequest(msg gotocol.Message, name string, listener chan gotocol.Message,
 	//log.Println(listener)
 	//log.Println(name)
 	//log.Println(msg.Route())
-	log.Println(name,"*",router,"*",c)
-	log.Println("-----------------------")
 	if c == nil {
-		log.Println("I am out")
 		outmsg := gotocol.Message{gotocol.GetResponse, listener, time.Now(), msg.Ctx, "503"}
-		log.Println(msg.Intention,"TTTTTT","503","XXX~~~~~***////")
+		// log.Println(msg.Intention,"TTTTTT","503","XXX~~~~~***////")
 		flow.AnnotateSend(outmsg, name,"NO")
 		outmsg.GoSend(msg.ResponseChan)
 		return 
 	}
-	log.Println(msg.Ctx)
-	log.Println("************************~~")
 	outmsg := gotocol.Message{gotocol.GetRequest, listener, time.Now(), msg.Ctx.NewParent(), msg.Intention}
 	flow.AnnotateSend(outmsg, name,"NO")
 	(*requestor)[outmsg.Ctx.Route()] = msg.Route() // remember where to respond to when this span comes back
@@ -116,7 +111,6 @@ func GetResponse(msg gotocol.Message, name string, listener chan gotocol.Message
 		outmsg := gotocol.Message{gotocol.GetResponse, listener, time.Now(), r.Ctx, msg.Intention}
 		flow.AnnotateSend(outmsg, name,"NO")
 		outmsg.GoSend(r.ResponseChan)
-		log.Println(msg.Ctx,ctr,r.ResponseChan,"???????????")
 		delete(*requestor, ctr)
 	}
 }

@@ -38,6 +38,9 @@ func Start(listener chan gotocol.Message) {
 	for {
 		select {
 		case msg := <-listener:
+			if msg.Imposition == gotocol.Final{
+				return
+			}
 			if exit_symbol == 1{
 				flow.Add2Buffer(msg)
 				continue
@@ -94,7 +97,6 @@ func Start(listener chan gotocol.Message) {
 				flow.End(msg, resphist, servhist, rthist)
 				flow.Add2Buffer(msg)
 			case gotocol.Goodbye:
-				log.Println(msg.Intention,"denominator+++",listener)
 				if archaius.Conf.Msglog {
 					log.Printf("%v: Going away, was chatting every %v\n", name, chatrate)
 				}
@@ -107,6 +109,9 @@ func Start(listener chan gotocol.Message) {
 				gotocol.Message{gotocol.Goodbye, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
 				flow.Add2Buffer(msg)
 				exit_symbol = 1
+				if !archaius.Conf.RunToEnd{
+					return
+				}
 				// return
 			}
 		case <-eurekaTicker.C: // check to see if any new dependencies have appeared
@@ -127,8 +132,6 @@ func Start(listener chan gotocol.Message) {
 				}
 			}
 			c := microservices.Random()
-			log.Println(microservices,c,parent)
-			log.Println("ahahahahahah~~~~~~~~")
 			if c != nil {
 				ctx := gotocol.NewTrace()
 				now := time.Now()

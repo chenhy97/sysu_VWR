@@ -69,9 +69,7 @@ func Start(listener chan gotocol.Message) {
 			case gotocol.GetRequest:
 				// return any stored value for this key
 				outmsg := gotocol.Message{gotocol.GetResponse, listener, time.Now(), msg.Ctx, store[msg.Intention]}
-				fmt.Println(msg.Intention,"TTTTTT",store[msg.Intention],"XXX~~~~~***////")
 				flow.AnnotateSend(outmsg, name,"NO")
-				log.Println(microservices,"~~~~~~~~~~~~~|||~~~~~~~~~")
 
 				outmsg.GoSend(msg.ResponseChan)
 			case gotocol.GetResponse:
@@ -80,8 +78,6 @@ func Start(listener chan gotocol.Message) {
 				// set a key value pair and replicate to other stores
 				var key , value string
 				fmt.Sscanf(msg.Intention, "%s%s", &key, &value)
-				log.Println(msg.Intention+"~~~~~~~~~~~~~~~~!!!@@@")
-				log.Println(key,value)
 				flow.Add2Buffer(msg)
 				if key != "" && value != "" {//Put 了一个新的值，然后要更新所有。
 					store[key] = value

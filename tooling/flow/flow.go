@@ -241,11 +241,13 @@ func Shutdown() {
 		} else {
 			comma = true
 		}
-		log.Println(c,f,"*********...")
 		Flush(c, f)
 	}
 	file.WriteString("\n]\n")
 	file.Close()
+	flowmap = nil
+	gotocol.ClearTrace()
+	return
 }
 //kafka arch don't set,so we can't collect flow metrics during running
 //这种方法的bug,当出现Delete类型的错误时，无法抓到路径上经过Delete节点的所有trace
@@ -367,14 +369,8 @@ func Flush(t gotocol.TraceContextType, trace []*spannotype) {
 	var zip zipkinspan
 	var ctx string
 	n := -1
-	fmt.Println("............")
-	for _,ta := range trace{
-		fmt.Println(t,ta)
-	}
-	fmt.Println("-------------")
 	sort.Sort(ByCtx(trace))
 	for _, a := range trace {
-		fmt.Println(a,t,"hihihihihi")
 		if ctx != a.Ctx { // new span
 			if ctx != "" { // not the first
 				WriteZip(zip)
@@ -406,7 +402,6 @@ func Flush(t gotocol.TraceContextType, trace []*spannotype) {
 		// }
 		zip.Annotations = append(zip.Annotations, ann)
 	}
-	log.Println(zip)
 	WriteZip(zip)
 }
 

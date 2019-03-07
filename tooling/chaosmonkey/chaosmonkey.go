@@ -16,8 +16,6 @@ func Delete(noodles *map[string]chan gotocol.Message, service string) {
 		for node, ch := range *noodles {
 			if names.Service(node) == service {//names.Service(node)返回的是服务类型
 				gotocol.Message{gotocol.Goodbye, nil, time.Now(), gotocol.NewTrace(), "chaosmonkey"}.GoSend(ch)
-				log.Println("chaosmonkey delete: " + node)
-				log.Println("lslslslsls:"+names.Service(node)+"xsdsssdd:"+node+"xxxxx:")
 				return
 			}
 		}

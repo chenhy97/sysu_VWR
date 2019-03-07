@@ -148,7 +148,6 @@ func Connect(source, target string) {
 // SendToName sends a message directly to a name via asgard, only used during setup
 func SendToName(name string, msg gotocol.Message) {
 	if noodles[name] != nil {
-		log.Println("testing"+"haha:"+name)
 		gotocol.Send(noodles[name], msg)
 	} else {
 		log.Fatal("Asgard can't send to " + name)
@@ -192,8 +191,6 @@ func StartNode(name string, dependencies ...string) {
 	default:
 		log.Fatal("asgard: unknown package: " + names.Package(name))
 	}
-	log.Println(name+"-----------========")
-	log.Println(listener)
 	noodles[name] <- gotocol.Message{gotocol.Hello, listener, time.Now(), handlers.DebugContext(gotocol.NilContext), name}
 	// there is a eureka service registry in each zone, so in-zone services just get to talk to their local registry
 	// elb are cross zone, so need to see all registries in a region
@@ -221,12 +218,10 @@ func StartNode(name string, dependencies ...string) {
 			}
 		}
 	}
-	log.Println(dependencies)
-	log.Println("......................")
 	// pass on symbolic dependencies without channels that will be looked up in Eureka later
 	for _, dep := range dependencies {
 		if dep != "" && dep != "eureka" { // ignore special case of eureka in dependency list
-			log.Println(name + " depends on " + dep)
+			// log.Println(name + " depends on " + dep)
 			gotocol.Send(noodles[name], gotocol.Message{gotocol.NameDrop, nil, time.Now(), handlers.DebugContext(gotocol.NilContext), dep})
 		}
 	}
@@ -252,7 +247,6 @@ func CreateEureka() {
 		}
 		for nn, cch := range eurekachan {
 			if names.Region(nn) == names.Region(n) && (names.Zone(nn) == n1 || names.Zone(nn) == n2) {
-				log.Println("Eureka cross connect from: " + n + " to " + nn +"````````````====")
 				gotocol.Send(ch, gotocol.Message{gotocol.NameDrop, cch, time.Now(), handlers.DebugContext(gotocol.NilContext), nn})
 			}
 		}
@@ -280,7 +274,6 @@ func Run(rootservice, victim string, delayvictim string,disabledConA string,disa
 		go flow.Interval_save()
 	}
 	if archaius.Conf.RunDuration >= time.Millisecond {
-		
 		time.Sleep(archaius.Conf.RunDuration / 2)
 		// temp := rand.Intn(30)
 		// temp := 10
@@ -316,10 +309,6 @@ func Run(rootservice, victim string, delayvictim string,disabledConA string,disa
 	log.Println("asgard: Shutdown",listener)
 	ShutdownNodes()
 	ShutdownEureka()
-	log.Println(ServiceIndex)
-	for index,_ := range ServiceNames {
-		log.Println(ServiceNames[index])
-	}
 	collect.Save()
 }
 
@@ -336,7 +325,6 @@ func ShutdownNodes() {
 		switch msg.Imposition {
 		case gotocol.Goodbye:
 			delete(noodles, msg.Intention)
-			log.Println(noodles,"LLLLLLLL++++")
 			if archaius.Conf.Msglog {
 				log.Printf("asgard: %v shutdown, population: %v    \n", msg.Intention, len(noodles))
 			}
