@@ -21,6 +21,7 @@ import (
 	"github.com/adrianco/spigo/tooling/fsm"          // fsm and pirates
 	"github.com/adrianco/spigo/tooling/gotocol"      // message protocol spec
 	"github.com/adrianco/spigo/tooling/migration"    // migration from LAMP to netflixoss
+	"github.com/adrianco/spigo/tooling/chaosmonkey"
 	// "runtime/pprof"
 )
 var addrs string
@@ -28,9 +29,12 @@ var reload, graphmlEnabled, graphjsonEnabled, neo4jEnabled bool
 var cpuprofile,confFile string 
 var saveConfFile bool
 var duration, cpucount int
-func test_func(index int){
+var listener chan gotocol.Message
+var noodles map[string]chan gotocol.Message
+var eurekachan map[string]chan gotocol.Message
+func test_func(c *gin.Context){
 	for a := 0;a < 10;a ++{
-		fmt.Println("I am runner ",index, "No.",a)
+		fmt.Println("I am runner ", "No.",a)
 		time.Sleep(time.Second)
 	}
 }
@@ -126,13 +130,7 @@ func pre_StartArch(c *gin.Context){
 		f_flow,_ := os.Create("json_metrics/" + archaius.Conf.Arch + "_flow.json")
 		f_flow.Close()//可否不在此处close()???
 	}
-	if !archaius.Conf.RunToEnd{
-    	StartArch()
-    }else{
-    	//problem
-    	time.Sleep(time.Second*2)
-    	go StartArch()
-    }
+	StartArch()//直接调用即可，多个http请求之间是可以异步处理的，所以没关系。
 	c.JSON(200,gin.H{
 		"Runtime":archaius.Conf.RunDuration ,
 		"endless":archaius.Conf.RunToEnd,
@@ -146,8 +144,7 @@ func StartArch(){
 		var ServiceNames map[int]string
 		a := architecture.ReadArch(archaius.Conf.Arch)
 		ServiceIndex,ServiceNames = architecture.ListNames(a)
-		listener,noodles,eurekachan := architecture.Pre_Handle()
-		log.Println(listener,noodles,eurekachan)
+		listener,noodles,eurekachan = architecture.Pre_Handle()
 		asgard.Run(asgard.Reload(archaius.Conf.Arch), "","","","",ServiceNames,ServiceIndex)
 	} else {
 		switch archaius.Conf.Arch {
@@ -165,7 +162,8 @@ func StartArch(){
 				} else {
 					log.Printf("architecture: scaling to %v%%", archaius.Conf.Population)
 				}
-				listener,noodles,eurekachan := architecture.Pre_Handle()
+				listener,noodles,eurekachan = architecture.Pre_Handle()
+				fmt.Println(listener,noodles,eurekachan,"TY")
 				log.Println(listener,noodles,eurekachan)
 				architecture.Start(a)
 			}
@@ -180,18 +178,77 @@ func StartArch(){
 	if !archaius.Conf.RunToEnd{
 		flow.Shutdown()
 	}
+	fmt.Println(listener,noodles,eurekachan,"TY")
 	return
 }
 func EjectError(c *gin.Context){
+	ErrorType := c.DefaultQuery("type","")
+	Service1 := c.DefaultQuery("service1","")
+	Service2 := c.DefaultQuery("service2","")
+	DelayTime := c.DefaultQuery("dtime","")
+	probability,_ := strconv.ParseFloat(c.DefaultQuery("pb","1.00"),32)
+	if ErrorType == ""{
+		c.JSON(200,gin.H{
+			"ErrorCode":"Failed,need to set ErrorType",
+		})
+		return
+	}
+	if ErrorType == "Delete"{
+		if Service1 != ""{
+			chaosmonkey.Delete(&noodles,Service1)
+			c.JSON(200,gin.H{
+				"ErrorCode":0,
+			})
+			return
+		}else{
+			c.JSON(200,gin.H{
+				"ErrorCode":"Need to set Delete Service",
+			})
+			return
+		}
+	}
+	if ErrorType == "Delay"{
+		if Service1 != "" && DelayTime != ""{
+			chaosmonkey.Delay(&noodles,Service1,DelayTime)
+			c.JSON(200,gin.H{
+				"ErrorCode":0,
+			})
+			return
+		}else{
+			c.JSON(200,gin.H{
+				"ErrorCode":"Need to set Delay Service or Delay Time",
+			})
+			return
+		}
+	}
+	if ErrorType == "Disconnect"{
+		if Service1 != "" && Service2 != ""{
+			chaosmonkey.Disconnect(&noodles,Service1,DelayTime,float32(probability))
+			c.JSON(200,gin.H{
+				"ErrorCode":0,
+			})
+			return
+		}else{
+			c.JSON(200,gin.H{
+				"ErrorCode":"Need to set Disconnect Service1 & 2",
+			})
+			return
+		}
+	}
+	fmt.Println(listener,noodles,eurekachan,"Eject main")
 
+	c.JSON(200,gin.H{
+		"Result":"Success",
+	})
 }
+
 func main(){
 	r := gin.Default()
 	// count := 0
 	str,temp1,temp2 := test_func_1()
 	fmt.Println(str,temp1,temp2)
     r.POST("/start", pre_StartArch)
-    
+    r.GET("/testSleep",test_func)
     r.POST("/eject",EjectError)
     r.Run() // listen and serve on 0.0.0.0:8080
 }

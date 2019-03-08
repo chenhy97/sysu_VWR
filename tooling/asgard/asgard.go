@@ -56,21 +56,21 @@ func Create(servicename, packagename string, regions, count int, dependencies ..
 	rnames := archaius.Conf.RegionNames
 	znames := archaius.Conf.ZoneNames
 	if regions == 0 { // for dns that isn't in a region or zone
-		//log.Printf("Create cross region: " + servicename)
+		log.Printf("Create cross region: " + servicename)
 		name = names.Make(arch, "*", "*", servicename, packagename, 0)
 		StartNode(name, dependencies...)
 	}
 	for r := 0; r < regions; r++ {
 		if count == 0 { // for AWS services that are cross zone like elb and S3
-			//log.Printf("Create cross zone: " + servicename)
+			log.Printf("Create cross zone: " + servicename)
 			name = names.Make(arch, rnames[r], "*", servicename, packagename, 0)
 			StartNode(name, dependencies...)
 		} else {
-			//log.Printf("Create service: " + servicename)
+			log.Printf("Create service: " + servicename)
 			cass := make(map[string]mapchan) // for token distribution
 			for i := r * count; i < (r+1)*count; i++ {
 				name = names.Make(arch, rnames[r], znames[i%len(archaius.Conf.ZoneNames)], servicename, packagename, i)
-				//log.Println(dependencies)
+				log.Println(name,dependencies)
 				StartNode(name, dependencies...)
 				if packagename == "priamCassandra" {
 					rz := names.RegionZone(name)
@@ -196,6 +196,7 @@ func StartNode(name string, dependencies ...string) {
 	// elb are cross zone, so need to see all registries in a region
 	// denominator are cross region so need to see all registries globally
 	// priamCassandra depends explicitly on eureka for cross region clusters
+	log.Println(name,"Start right now")
 	crossregion := false
 	for _, d := range dependencies {
 		if d == "eureka" {
