@@ -315,7 +315,7 @@ func Run(rootservice, victim string, delayvictim string,disabledConA string,disa
 // ShutdownNodes - shut down the nodes and wait for them to go away
 func ShutdownNodes() {
 	for _, noodle := range noodles {
-		gotocol.Message{gotocol.Goodbye, nil, time.Now(), handlers.DebugContext(gotocol.NilContext), "shutdown"}.GoSend(noodle)
+		gotocol.Message{gotocol.Final, nil, time.Now(), handlers.DebugContext(gotocol.NilContext), "shutdown1"}.GoSend(noodle)
 	}
 	for len(noodles) > 0 {
 		msg := <-listener
@@ -323,7 +323,7 @@ func ShutdownNodes() {
 			log.Printf("asgard: %v\n", msg)
 		}
 		switch msg.Imposition {
-		case gotocol.Goodbye:
+		case gotocol.Final:
 			delete(noodles, msg.Intention)
 			if archaius.Conf.Msglog {
 				log.Printf("asgard: %v shutdown, population: %v    \n", msg.Intention, len(noodles))
@@ -337,6 +337,7 @@ func ShutdownEureka() {
 	// shutdown eureka and wait to catch eureka reply
 	//log.Println(eurekachan)
 	for _, ch := range eurekachan {
+		fmt.Println("Bye???")
 		gotocol.Message{gotocol.Goodbye, listener, time.Now(), handlers.DebugContext(gotocol.NilContext), "shutdown"}.GoSend(ch)
 	}
 	for range eurekachan {

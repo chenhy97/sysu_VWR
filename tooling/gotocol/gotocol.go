@@ -38,6 +38,8 @@ const (
 	Delete
 	// Delay - delay node
 	Delay
+	//Final - End all Program
+	Final
 	// Goodbye - name // tell FSM and exit
 	Goodbye // test assumes this is the last and exits
 	numOfImpositions
@@ -72,6 +74,8 @@ func (imps Impositions) String() string {
 		return "Delay"
 	case Goodbye:
 		return "Goodbye"
+	case Final:
+		return "Final"
 	}
 	return "Unknown"
 }

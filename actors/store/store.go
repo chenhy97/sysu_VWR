@@ -35,6 +35,10 @@ func Start(listener chan gotocol.Message) {
 	for {
 		select {
 		case msg := <-listener:
+			if msg.Imposition == gotocol.Final{
+				gotocol.Message{gotocol.Final, nil, time.Now(), gotocol.NilContext, name}.GoSend(netflixoss)
+				return
+			}
 			if exit_symbol == 1{
 				flow.Add2Buffer(msg)
 				continue
@@ -110,7 +114,8 @@ func Start(listener chan gotocol.Message) {
 					store[key] = value
 				}
 			case gotocol.Goodbye:
-				gotocol.Message{gotocol.Goodbye, nil, time.Now(), gotocol.NilContext, name}.GoSend(netflixoss)
+				fmt.Println(netflixoss,msg.Intention)
+				gotocol.Message{gotocol.Final, nil, time.Now(), gotocol.NilContext, name}.GoSend(netflixoss)
 				flow.Add2Buffer(msg)
 				exit_symbol = 1
 				// return

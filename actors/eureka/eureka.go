@@ -130,6 +130,7 @@ func Start(listener chan gotocol.Message, name string) {
 			// //delaysymbol = 0
 			// log.Println("end")
 		case gotocol.Goodbye:
+			log.Println(msg.ResponseChan,msg.Intention)
 			gotocol.Message{gotocol.Goodbye, nil, time.Now(), gotocol.NilContext, name}.GoSend(msg.ResponseChan)
 			log.Println(name + ": closing")
 			return

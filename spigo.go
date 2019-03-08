@@ -25,6 +25,8 @@ import (
 )
 var addrs string
 var reload, graphmlEnabled, graphjsonEnabled, neo4jEnabled bool
+var cpuprofile,confFile string 
+var saveConfFile bool
 var duration, cpucount int
 func test_func(index int){
 	for a := 0;a < 10;a ++{
@@ -46,7 +48,7 @@ func HandlePost1(C *gin.Context){
 		"id":id,
 		})
 }
-func StartArch(c *gin.Context){
+func pre_StartArch(c *gin.Context){
 	archaius.Conf.Arch = c.DefaultQuery("a","netflixoss")
 	archaius.Conf.Population,_ = strconv.Atoi(c.DefaultQuery("p","100"))
 	duration,_ = strconv.Atoi(c.DefaultQuery("d","10"))
@@ -115,7 +117,6 @@ func StartArch(c *gin.Context){
 		edda.Logchan = make(chan gotocol.Message, 1000)
 	}
 	archaius.Conf.RunDuration = time.Duration(duration) * time.Second
-	fmt.Println(duration,archaius.Conf.RunDuration)
 	// return
 	
 	if saveConfFile {
@@ -125,6 +126,19 @@ func StartArch(c *gin.Context){
 		f_flow,_ := os.Create("json_metrics/" + archaius.Conf.Arch + "_flow.json")
 		f_flow.Close()//可否不在此处close()???
 	}
+	if !archaius.Conf.RunToEnd{
+    	StartArch()
+    }else{
+    	//problem
+    	time.Sleep(time.Second*2)
+    	go StartArch()
+    }
+	c.JSON(200,gin.H{
+		"Runtime":archaius.Conf.RunDuration ,
+		"endless":archaius.Conf.RunToEnd,
+	})
+}
+func StartArch(){
 	// start up the selected architecture
 	go edda.Start(archaius.Conf.Arch + ".edda") // start edda first
 	if reload {
@@ -166,17 +180,18 @@ func StartArch(c *gin.Context){
 	if !archaius.Conf.RunToEnd{
 		flow.Shutdown()
 	}
-	c.JSON(200,gin.H{
-		"Runtime":archaius.Conf.RunDuration ,
-		"endless":archaius.Conf.RunToEnd,
-	})
 	return
+}
+func EjectError(c *gin.Context){
+
 }
 func main(){
 	r := gin.Default()
 	// count := 0
 	str,temp1,temp2 := test_func_1()
 	fmt.Println(str,temp1,temp2)
-    r.POST("/start", StartArch)
+    r.POST("/start", pre_StartArch)
+    
+    r.POST("/eject",EjectError)
     r.Run() // listen and serve on 0.0.0.0:8080
 }

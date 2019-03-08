@@ -38,7 +38,16 @@ func Start(listener chan gotocol.Message) {
 	for {
 		select {
 		case msg := <-listener:
-			if msg.Imposition == gotocol.Final{
+			if msg.Imposition == gotocol.Final {
+				if archaius.Conf.Msglog {
+					log.Printf("%v: Going away, was chatting every %v\n", name, chatrate)
+				}
+				collect.SaveHist(nethist, name, "_net")
+				collect.SaveHist(resphist, name, "_resp")
+				collect.SaveHist(servhist, name, "_serv")
+				collect.SaveHist(rthist, name, "_rt")
+				collect.SaveAllGuesses(name)
+				gotocol.Message{gotocol.Final, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
 				return
 			}
 			if exit_symbol == 1{
@@ -97,21 +106,11 @@ func Start(listener chan gotocol.Message) {
 				flow.End(msg, resphist, servhist, rthist)
 				flow.Add2Buffer(msg)
 			case gotocol.Goodbye:
-				if archaius.Conf.Msglog {
-					log.Printf("%v: Going away, was chatting every %v\n", name, chatrate)
-				}
-				collect.SaveHist(nethist, name, "_net")
-				collect.SaveHist(resphist, name, "_resp")
-				collect.SaveHist(servhist, name, "_serv")
-				collect.SaveHist(rthist, name, "_rt")
-				collect.SaveAllGuesses(name)
+				
 				//log.Println(parent)
-				gotocol.Message{gotocol.Goodbye, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
+				gotocol.Message{gotocol.Final, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
 				flow.Add2Buffer(msg)
 				exit_symbol = 1
-				if !archaius.Conf.RunToEnd{
-					return
-				}
 				// return
 			}
 		case <-eurekaTicker.C: // check to see if any new dependencies have appeared

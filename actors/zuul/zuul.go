@@ -30,6 +30,10 @@ func Start(listener chan gotocol.Message) {
 	for {
 		select {
 		case msg := <-listener:
+			if msg.Imposition == gotocol.Final{
+				gotocol.Message{gotocol.Final, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
+				return
+			}
 			if exit_symbol == 1{
 				flow.Add2Buffer(msg)
 				continue
@@ -84,7 +88,7 @@ func Start(listener chan gotocol.Message) {
 				for _, ch := range eureka { // tell name service I'm not going to be here
 					ch <- gotocol.Message{gotocol.Delete, nil, time.Now(), gotocol.NilContext, name}
 				}
-				gotocol.Message{gotocol.Goodbye, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
+				gotocol.Message{gotocol.Final, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
 				flow.Add2Buffer(msg)
 				exit_symbol = 1
 				// return
