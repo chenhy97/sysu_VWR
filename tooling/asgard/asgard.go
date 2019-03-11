@@ -15,13 +15,12 @@ import (
 	"github.com/adrianco/spigo/actors/store"          // generic storage service
 	"github.com/adrianco/spigo/actors/zuul"           // API proxy microservice router
 	"github.com/adrianco/spigo/tooling/archaius"      // global configuration
-	"github.com/adrianco/spigo/tooling/chaosmonkey"
-	"github.com/adrianco/spigo/tooling/collect" // metrics collector
+	"github.com/adrianco/spigo/tooling/collect"       // metrics collector
+	"github.com/adrianco/spigo/tooling/flow"
 	"github.com/adrianco/spigo/tooling/gotocol"
 	"github.com/adrianco/spigo/tooling/graphjson"
 	"github.com/adrianco/spigo/tooling/handlers"
 	"github.com/adrianco/spigo/tooling/names" // manage service name hierarchy
-	"github.com/adrianco/spigo/tooling/flow"
 	"log"
 	"time"
 	// "math/rand"
@@ -35,11 +34,11 @@ var (
 )
 
 // CreateChannels makes the maps of channels
-func CreateChannels()(chan gotocol.Message,map[string]chan gotocol.Message,map[string]chan gotocol.Message) {
+func CreateChannels()(*chan gotocol.Message,*map[string]chan gotocol.Message,*map[string]chan gotocol.Message) {
 	listener = make(chan gotocol.Message) // listener for architecture
 	noodles = make(map[string]chan gotocol.Message, archaius.Conf.Population)
 	eurekachan = make(map[string]chan gotocol.Message, len(archaius.Conf.ZoneNames)*archaius.Conf.Regions)
-	return listener,noodles,eurekachan
+	return &listener,&noodles,&eurekachan
 }
 
 type mapchan map[string]chan gotocol.Message
@@ -280,7 +279,7 @@ func Run(rootservice, victim string, delayvictim string,disabledConA string,disa
 		// temp := 10
 		// delaytime := fmt.Sprintf("%dms",temp)
 		// chaosmonkey.Delay(&noodles,delayvictim,delaytime)
-		chaosmonkey.Delete(&noodles, victim) // kill a random victim half way through
+		//chaosmonkey.Delete(&noodles, victim) // kill a random victim half way through
 		// chaosmonkey.Disconnect(&noodles,disabledConA,disabledConB,1)//最后一位是disconnect概率 模仿Gremlin
 		time.Sleep(archaius.Conf.RunDuration / 2)
 

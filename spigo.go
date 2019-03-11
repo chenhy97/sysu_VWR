@@ -1,27 +1,29 @@
 package main
+
 import (
 	"github.com/gin-gonic/gin";
+	"fmt"
 	// "flag"
+	"io"
+	// "net/http"
 	"log"
 	"os"
 	"runtime"
 	"runtime/pprof"
+	"strconv"
 	"strings"
 	"time"
-	"strconv"
-	"io/ioutil"
-	"fmt"
 
 	"github.com/adrianco/spigo/actors/edda"          // log configuration state
 	"github.com/adrianco/spigo/tooling/archaius"     // store the config for global lookup
 	"github.com/adrianco/spigo/tooling/architecture" // run an architecture from a json definition
 	"github.com/adrianco/spigo/tooling/asgard"       // tools to create an architecture
-	// "github.com/adrianco/spigo/tooling/collect"      // metrics to extvar
-	"github.com/adrianco/spigo/tooling/flow"         // flow logging
-	"github.com/adrianco/spigo/tooling/fsm"          // fsm and pirates
-	"github.com/adrianco/spigo/tooling/gotocol"      // message protocol spec
-	"github.com/adrianco/spigo/tooling/migration"    // migration from LAMP to netflixoss
 	"github.com/adrianco/spigo/tooling/chaosmonkey"
+	// "github.com/adrianco/spigo/tooling/collect"      // metrics to extvar
+	"github.com/adrianco/spigo/tooling/flow"      // flow logging
+	"github.com/adrianco/spigo/tooling/fsm"       // fsm and pirates
+	"github.com/adrianco/spigo/tooling/gotocol"   // message protocol spec
+	"github.com/adrianco/spigo/tooling/migration" // migration from LAMP to netflixoss
 	// "runtime/pprof"
 )
 var addrs string
@@ -29,54 +31,102 @@ var reload, graphmlEnabled, graphjsonEnabled, neo4jEnabled bool
 var cpuprofile,confFile string 
 var saveConfFile bool
 var duration, cpucount int
-var listener chan gotocol.Message
-var noodles map[string]chan gotocol.Message
-var eurekachan map[string]chan gotocol.Message
-func test_func(c *gin.Context){
-	for a := 0;a < 10;a ++{
-		fmt.Println("I am runner ", "No.",a)
-		time.Sleep(time.Second)
+var listener *chan gotocol.Message
+var noodles *map[string]chan gotocol.Message
+var eurekachan *map[string]chan gotocol.Message
+var user_name string
+//调用os.MkdirAll递归创建文件夹
+func createFile(filePath string)  error  {
+	if !isExist(filePath) {
+		err := os.MkdirAll(filePath,os.ModePerm)
+		return err
 	}
+	return nil
 }
-func test_func_1() (string, int, int){
-	return "abc",1,2
+// 判断所给路径文件/文件夹是否存在(返回true是存在)
+func isExist(path string) bool {
+	_, err := os.Stat(path)    //os.Stat获取文件信息
+	if err != nil {
+		if os.IsExist(err) {
+			return true
+		}
+		return false
+	}
+	return true
 }
-func HandlePost(C *gin.Context){
-	body,_ := ioutil.ReadAll(C.Request.Body)
-	fmt.Println(string(body))
-}
-func HandlePost1(C *gin.Context){
-	id,_ :=strconv.ParseBool(C.DefaultQuery("id","false"))
-	fmt.Println("id :",id)
-	C.JSON(200,gin.H{
-		"id":id,
+func upload_file(c *gin.Context){
+	name := c.PostForm("a")
+	user_name = c.PostForm("u")
+	RunToEnd := c.PostForm("re")
+	fmt.Println(name,user_name,RunToEnd)
+	file, header, err := c.Request.FormFile("file")
+	if err != nil {
+		fmt.Println("error")
+		c.JSON(404,gin.H{
+			"ErrorCode":"Set File",
 		})
+		return
+	}
+	filename := header.Filename
+	fmt.Println("json_arch/"+user_name,filename)
+	createFile("json_arch/" + user_name)
+	out, err := os.Create("json_arch/" + user_name +"/"  +name+"_arch.json")
+	defer out.Close()
+	io.Copy(out, file)
+	c.JSON(200,gin.H{
+			"ErrorCode":"Failed,need to set ErrorType",
+		})
+	return
 }
 func pre_StartArch(c *gin.Context){
-	archaius.Conf.Arch = c.DefaultQuery("a","netflixoss")
-	archaius.Conf.Population,_ = strconv.Atoi(c.DefaultQuery("p","100"))
-	duration,_ = strconv.Atoi(c.DefaultQuery("d","10"))
-	archaius.Conf.Regions,_ = strconv.Atoi(c.DefaultQuery("w","1"))
-	graphmlEnabled,_ = strconv.ParseBool(c.DefaultQuery("g","false"))
-	graphjsonEnabled,_ = strconv.ParseBool(c.DefaultQuery("j","false"))
-	neo4jEnabled,_ = strconv.ParseBool(c.DefaultQuery("n","false"))
-	archaius.Conf.Msglog,_=strconv.ParseBool(c.DefaultQuery("m","false"))
-	reload,_=strconv.ParseBool(c.DefaultQuery("r","false"))
-	archaius.Conf.Collect,_=strconv.ParseBool(c.DefaultQuery("c","false"))
-	addrs  = c.DefaultQuery("k","")
-	archaius.Conf.StopStep,_  = strconv.Atoi(c.DefaultQuery("s","0"))
-	archaius.Conf.EurekaPoll  = c.DefaultQuery("u","1s")
-	archaius.Conf.Keyvals  = c.DefaultQuery("kv","")
-	archaius.Conf.Filter,_  = strconv.ParseBool(c.DefaultQuery("f","false"))
-	cpucount,_  = strconv.Atoi(c.DefaultQuery("cpus",string(runtime.NumCPU())))
-	archaius.Conf.RunToEnd,_ =strconv.ParseBool(c.DefaultQuery("re","false"))
+	user_name = c.PostForm("un")
+	createFile("json_arch/"+user_name)
+	createFile("json_metrics/"+user_name)
+	createFile("gml/"+user_name)
+	createFile("json/"+user_name)
+	createFile("csv_metrics/"+user_name)
+	inputfile_name := c.DefaultPostForm("a","netflixoss")
+	archaius.Conf.Arch = user_name + "/" + inputfile_name
+	file, header, err := c.Request.FormFile("file")
+	if err != nil {
+		fmt.Println("error")
+		c.JSON(404,gin.H{
+			"ErrorCode":"Set File",
+		})
+		return
+	}
+	filename := header.Filename
+	fmt.Println("json_arch/"+user_name,filename)
+	createFile("json_arch/" + user_name)
+	out, err := os.Create("json_arch/" + user_name +"/"  +inputfile_name +"_arch.json")
+	
+	io.Copy(out, file)
+	out.Close()
+	archaius.Conf.Population,_ = strconv.Atoi(c.DefaultPostForm("p","100"))
+	fmt.Println(archaius.Conf.Population,c.DefaultPostForm("p","100"))
+	duration,_ = strconv.Atoi(c.DefaultPostForm("d","10"))
+	archaius.Conf.Regions,_ = strconv.Atoi(c.DefaultPostForm("w","1"))
+	graphmlEnabled,_ = strconv.ParseBool(c.DefaultPostForm("g","false"))
+	graphjsonEnabled,_ = strconv.ParseBool(c.DefaultPostForm("j","false"))
+	neo4jEnabled,_ = strconv.ParseBool(c.DefaultPostForm("n","false"))
+	archaius.Conf.Msglog,_=strconv.ParseBool(c.DefaultPostForm("m","false"))
+	reload,_=strconv.ParseBool(c.DefaultPostForm("r","false"))
+	archaius.Conf.Collect,_=strconv.ParseBool(c.DefaultPostForm("c","false"))
+	addrs  = c.DefaultPostForm("k","")
+	archaius.Conf.StopStep,_  = strconv.Atoi(c.DefaultPostForm("s","0"))
+	archaius.Conf.EurekaPoll  = c.DefaultPostForm("u","1s")
+	fmt.Println(archaius.Conf.EurekaPoll)
+	archaius.Conf.Keyvals  = c.DefaultPostForm("kv","")
+	archaius.Conf.Filter,_  = strconv.ParseBool(c.DefaultPostForm("f","false"))
+	cpucount = runtime.NumCPU()
+	archaius.Conf.RunToEnd,_ =strconv.ParseBool(c.DefaultPostForm("re","false"))
 	// fmt.Println("Arch: ",Arch,"Population: ", Population,duration,Regions,graphmlEnabled,graphjsonEnabled)
 	// fmt.Println(neo4jEnabled,Msglog,reload,Collect,addrs,StopStep,EurekaPoll,Keyvals,Filter,cpucount,RunToEnd)
 	
 	runtime.GOMAXPROCS(cpucount)
-	var cpuprofile = c.DefaultQuery("cpuprofile","")
-	var confFile = c.DefaultQuery("config","")
-	var saveConfFile,_ = strconv.ParseBool(c.DefaultQuery("saveconfig","false"))
+	var cpuprofile = c.DefaultPostForm("cpuprofile","")
+	var confFile = c.DefaultPostForm("config","")
+	var saveConfFile,_ = strconv.ParseBool(c.DefaultPostForm("saveconfig","false"))
 	kafkaAddrs := strings.Split(addrs,",")
 	for _, addr := range kafkaAddrs {
 		if len(addr) > 0 {
@@ -165,7 +215,7 @@ func StartArch(){
 				listener,noodles,eurekachan = architecture.Pre_Handle()
 				fmt.Println(listener,noodles,eurekachan,"TY")
 				log.Println(listener,noodles,eurekachan)
-				architecture.Start(a)
+				architecture.Start(noodles,a)
 			}
 		}
 	}
@@ -178,30 +228,32 @@ func StartArch(){
 	if !archaius.Conf.RunToEnd{
 		flow.Shutdown()
 	}
-	fmt.Println(listener,noodles,eurekachan,"TY")
+	fmt.Println(listener,*noodles,eurekachan,"TY")
 	return
 }
-func EjectError(c *gin.Context){
-	ErrorType := c.DefaultQuery("type","")
-	Service1 := c.DefaultQuery("service1","")
-	Service2 := c.DefaultQuery("service2","")
-	DelayTime := c.DefaultQuery("dtime","")
-	probability,_ := strconv.ParseFloat(c.DefaultQuery("pb","1.00"),32)
+func ejectError(c *gin.Context){
+	ErrorType := c.DefaultPostForm("type","")
+	Service1 := c.DefaultPostForm("service1","")
+	Service2 := c.DefaultPostForm("service2","")
+	DelayTime := c.DefaultPostForm("dtime","")
+	probability,_ := strconv.ParseFloat(c.DefaultPostForm("pb","1.00"),32)
+	fmt.Println(ErrorType,Service1,Service2,DelayTime,probability)
+	return
 	if ErrorType == ""{
-		c.JSON(200,gin.H{
+		c.JSON(404,gin.H{
 			"ErrorCode":"Failed,need to set ErrorType",
 		})
 		return
 	}
 	if ErrorType == "Delete"{
 		if Service1 != ""{
-			chaosmonkey.Delete(&noodles,Service1)
+			chaosmonkey.Delete(noodles,Service1)
 			c.JSON(200,gin.H{
 				"ErrorCode":0,
 			})
 			return
 		}else{
-			c.JSON(200,gin.H{
+			c.JSON(404,gin.H{
 				"ErrorCode":"Need to set Delete Service",
 			})
 			return
@@ -209,13 +261,14 @@ func EjectError(c *gin.Context){
 	}
 	if ErrorType == "Delay"{
 		if Service1 != "" && DelayTime != ""{
-			chaosmonkey.Delay(&noodles,Service1,DelayTime)
+			DelayTime = DelayTime + "ms"
+			chaosmonkey.Delay(noodles,Service1,DelayTime)
 			c.JSON(200,gin.H{
 				"ErrorCode":0,
 			})
 			return
 		}else{
-			c.JSON(200,gin.H{
+			c.JSON(404,gin.H{
 				"ErrorCode":"Need to set Delay Service or Delay Time",
 			})
 			return
@@ -223,32 +276,41 @@ func EjectError(c *gin.Context){
 	}
 	if ErrorType == "Disconnect"{
 		if Service1 != "" && Service2 != ""{
-			chaosmonkey.Disconnect(&noodles,Service1,DelayTime,float32(probability))
+			chaosmonkey.Disconnect(noodles,Service1,DelayTime,float32(probability))
 			c.JSON(200,gin.H{
 				"ErrorCode":0,
 			})
 			return
 		}else{
-			c.JSON(200,gin.H{
+			c.JSON(404,gin.H{
 				"ErrorCode":"Need to set Disconnect Service1 & 2",
 			})
 			return
 		}
 	}
-	fmt.Println(listener,noodles,eurekachan,"Eject main")
+	fmt.Println(listener,*noodles,eurekachan,"Eject main")
 
 	c.JSON(200,gin.H{
 		"Result":"Success",
 	})
 }
-
+func test(c *gin.Context){
+	check := c.DefaultPostForm("check_data","winner")
+	time :=c.DefaultPostForm("time","~")
+	fmt.Println(check)
+	fmt.Println("YES")
+	c.JSON(200,gin.H{
+		"return":"Success",
+		"check_data":check,
+		"time":time,
+		})
+}
 func main(){
 	r := gin.Default()
 	// count := 0
-	str,temp1,temp2 := test_func_1()
-	fmt.Println(str,temp1,temp2)
-    r.POST("/start", pre_StartArch)
-    r.GET("/testSleep",test_func)
-    r.POST("/eject",EjectError)
+    // r.POST("/start", pre_StartArch)
+    r.POST("/start",pre_StartArch)
+    r.POST("/eject",ejectError)
+    r.POST("/test",test)
     r.Run() // listen and serve on 0.0.0.0:8080
 }

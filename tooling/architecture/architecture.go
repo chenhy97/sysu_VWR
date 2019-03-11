@@ -51,20 +51,21 @@ type containerV0r0 struct {
 	Dependencies []string `json:"dependencies"`
 }
 //Create noodles,eureka
-func Pre_Handle()(chan gotocol.Message,map[string]chan gotocol.Message,map[string]chan gotocol.Message){
+func Pre_Handle()(*chan gotocol.Message,*map[string]chan gotocol.Message,*map[string]chan gotocol.Message){
 	listener,noodles,eurekachan := asgard.CreateChannels()
 	asgard.CreateEureka()// service registries for each zone
 	return listener,noodles,eurekachan
 }
 
 // Start architecture
-func Start(a *archV0r1) {
+func Start(noodles *map[string]chan gotocol.Message,a *archV0r1) {
 	var r string
 
 	for _, s := range a.Services {
 		log.Printf("Starting: %v\n", s)
 		r = asgard.Create(s.Name, s.Gopackage, s.Regions*archaius.Conf.Regions, s.Count*archaius.Conf.Population/100, s.Dependencies...)
 	}
+	fmt.Println(noodles,"inside out")
 	ServiceIndex,ServiceNames := ListNames(a)
 	asgard.Run(r, a.Victim,a.DelayVictim,a.DisConnection[0].ServiceA,a.DisConnection[0].ServiceB,ServiceNames,ServiceIndex) // run the last service in the list, and point chaos monkey at the victim	
 }
