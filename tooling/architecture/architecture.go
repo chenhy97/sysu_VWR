@@ -21,16 +21,10 @@ type archV0r1 struct {
 	Description string          `json:"description,omitempty"`
 	Args        string          `json:"args,omitempty"`
 	Date        string          `json:"date,omitempty"`
-	Victim      string          `json:"victim,omitempty"`
-	DelayVictim string          `json:"delayvictim,omitempty"`
-	DisConnection []ConnectDes  `json:"disconnection,omitempty"`
 	Services    []containerV0r0 `json:"services"`
 }
 
-type ConnectDes struct {
-	ServiceA string `json:"A_name"`
-	ServiceB string `json:"B_name"`
-}
+
 type serviceV0r0 struct {
 	Name         string   `json:"name"`
 	Package      string   `json:"package"`
@@ -67,7 +61,7 @@ func Start(noodles *map[string]chan gotocol.Message,a *archV0r1) {
 	}
 	fmt.Println(noodles,"inside out")
 	ServiceIndex,ServiceNames := ListNames(a)
-	asgard.Run(r, a.Victim,a.DelayVictim,a.DisConnection[0].ServiceA,a.DisConnection[0].ServiceB,ServiceNames,ServiceIndex) // run the last service in the list, and point chaos monkey at the victim	
+	asgard.Run(r,ServiceNames,ServiceIndex) // run the last service in the list, and point chaos monkey at the victim	
 }
 
 // Connection
@@ -95,8 +89,14 @@ func ListDependencies(a *archV0r1, nodes *[]string, dependencies *[]Connection) 
 }
 
 // ReadArch parses archjson
-func ReadArch(arch string) *archV0r1 {
-	fn := "json_arch/" + arch + "_arch.json"
+func ReadArch(arch string,judge_type bool) *archV0r1 {
+	var fn string
+	if judge_type == false{
+		fn = "../spigo/json_arch/" + arch + "_arch.json"
+	}else{
+		fn = "json_arch/" + arch + "_arch.json"
+	}
+	fmt.Println()
 	log.Println("Loading architecture from " + fn)
 	data, err := ioutil.ReadFile(fn)
 	if err != nil {
@@ -145,8 +145,7 @@ func MakeArch(arch, des string) *archV0r1 {
 	a.Description = des
 	a.Args = fmt.Sprintf("%v", os.Args)
 	a.Date = time.Now().Format(time.RFC3339Nano)
-	a.Victim = ""
-	a.DelayVictim = ""
+	
 	return a
 }
 

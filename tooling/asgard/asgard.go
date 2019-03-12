@@ -261,7 +261,7 @@ func ConnectEveryEureka(name string) {
 }
 
 // Run architecture for a while then shut down
-func Run(rootservice, victim string, delayvictim string,disabledConA string,disabledConB string,ServiceNames map[int]string,ServiceIndex int) {
+func Run(rootservice string,ServiceNames map[int]string,ServiceIndex int) {
 	// tell denominator to start chatting with microservices every 0.01 secs by default
 	delay := archaius.Key(archaius.Conf, "chat")
 	if delay == "" {
@@ -315,6 +315,7 @@ func Run(rootservice, victim string, delayvictim string,disabledConA string,disa
 // ShutdownNodes - shut down the nodes and wait for them to go away
 func ShutdownNodes() {
 	for _, noodle := range noodles {
+		log.Println(noodle)
 		gotocol.Message{gotocol.Final, nil, time.Now(), handlers.DebugContext(gotocol.NilContext), "shutdown1"}.GoSend(noodle)
 	}
 	for len(noodles) > 0 {
@@ -324,6 +325,7 @@ func ShutdownNodes() {
 		}
 		switch msg.Imposition {
 		case gotocol.Final:
+			log.Println(msg.Intention)
 			delete(noodles, msg.Intention)
 			if archaius.Conf.Msglog {
 				log.Printf("asgard: %v shutdown, population: %v    \n", msg.Intention, len(noodles))

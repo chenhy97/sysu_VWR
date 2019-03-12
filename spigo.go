@@ -25,6 +25,7 @@ import (
 	"github.com/adrianco/spigo/tooling/gotocol"   // message protocol spec
 	"github.com/adrianco/spigo/tooling/migration" // migration from LAMP to netflixoss
 	// "runtime/pprof"
+	"github.com/adrianco/go-vizceral/arch2vizceral"
 )
 var addrs string
 var reload, graphmlEnabled, graphjsonEnabled, neo4jEnabled bool
@@ -99,9 +100,10 @@ func pre_StartArch(c *gin.Context){
 	fmt.Println("json_arch/"+user_name,filename)
 	createFile("json_arch/" + user_name)
 	out, err := os.Create("json_arch/" + user_name +"/"  +inputfile_name +"_arch.json")
-	
 	io.Copy(out, file)
 	out.Close()
+
+	str := arch2vizceral.A2v(archaius.Conf.Arch)
 	archaius.Conf.Population,_ = strconv.Atoi(c.DefaultPostForm("p","100"))
 	fmt.Println(archaius.Conf.Population,c.DefaultPostForm("p","100"))
 	duration,_ = strconv.Atoi(c.DefaultPostForm("d","10"))
@@ -180,10 +182,14 @@ func pre_StartArch(c *gin.Context){
 		f_flow,_ := os.Create("json_metrics/" + archaius.Conf.Arch + "_flow.json")
 		f_flow.Close()//可否不在此处close()???
 	}
+	
 	StartArch()//直接调用即可，多个http请求之间是可以异步处理的，所以没关系。
+	fmt.Println("Success!")
+	fmt.Println(str)
 	c.JSON(200,gin.H{
 		"Runtime":archaius.Conf.RunDuration ,
 		"endless":archaius.Conf.RunToEnd,
+		"vizceral-file":str,
 	})
 }
 func StartArch(){
@@ -192,10 +198,10 @@ func StartArch(){
 	if reload {
 		var ServiceIndex int
 		var ServiceNames map[int]string
-		a := architecture.ReadArch(archaius.Conf.Arch)
+		a := architecture.ReadArch(archaius.Conf.Arch,true)
 		ServiceIndex,ServiceNames = architecture.ListNames(a)
 		listener,noodles,eurekachan = architecture.Pre_Handle()
-		asgard.Run(asgard.Reload(archaius.Conf.Arch), "","","","",ServiceNames,ServiceIndex)
+		asgard.Run(asgard.Reload(archaius.Conf.Arch),ServiceNames,ServiceIndex)
 	} else {
 		switch archaius.Conf.Arch {
 		case "fsm":
@@ -203,7 +209,7 @@ func StartArch(){
 		case "migration":
 			migration.Start() // step by step from lamp to netflixoss
 		default:
-			a := architecture.ReadArch(archaius.Conf.Arch)
+			a := architecture.ReadArch(archaius.Conf.Arch,true)
 			if a == nil {
 				log.Fatal("Architecture " + archaius.Conf.Arch + " isn't recognized")
 			} else {
@@ -295,6 +301,7 @@ func ejectError(c *gin.Context){
 	})
 }
 func test(c *gin.Context){
+	arch2vizceral.A2v("test")
 	check := c.DefaultPostForm("check_data","winner")
 	time :=c.DefaultPostForm("time","~")
 	fmt.Println(check)
@@ -306,6 +313,7 @@ func test(c *gin.Context){
 		})
 }
 func main(){
+	//fmt.Println(arch2vizceral.A2v("test"))
 	r := gin.Default()
 	// count := 0
     // r.POST("/start", pre_StartArch)

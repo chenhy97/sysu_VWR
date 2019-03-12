@@ -103,9 +103,18 @@ func Start(listener chan gotocol.Message) {
 	eurekaTicker := time.NewTicker(ep)
 	var delaytime time.Duration
 	var delaysymbol int = 0
+	var exit_symbol int = 0
 	for {
 		select {
 		case msg := <-listener:
+			if msg.Imposition == gotocol.Final{
+				gotocol.Message{gotocol.Final, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
+				return
+			}
+			if exit_symbol == 1{
+				flow.Add2Buffer(msg)
+				continue
+			}
 			if msg.Imposition == gotocol.Put{
 				flow.Instrument(msg, name, hist, "NO")
 			}else if delaysymbol == 1 {
@@ -156,6 +165,7 @@ func Start(listener chan gotocol.Message) {
 				// set a key value pair and replicate globally
 				var key, value string
 				fmt.Sscanf(msg.Intention, "%s%s", &key, &value)
+				flow.Add2Buffer(msg)
 				if key != "" && value != "" {
 					i := ring.Find(ringHash(key))
 					if len(ring) == 0 || ring[i].name == name { // ring is setup so only store if this is the right place
@@ -233,13 +243,15 @@ func Start(listener chan gotocol.Message) {
 				if e == nil && d >= time.Millisecond && d <= time.Hour {
 					delaytime = d
 				}
+				flow.Add2Buffer(msg)
 				// log.Println("begin")
 				// time.Sleep(delaytime)
 				// delaysymbol = 0
 				// log.Println("end")
 			case gotocol.Goodbye:
-				gotocol.Message{gotocol.Goodbye, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
-				return
+				gotocol.Message{gotocol.Final, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
+				flow.Add2Buffer(msg)
+				exit_symbol = 1
 			}
 		case <-eurekaTicker.C: // check to see if any new dependencies have appeared
 			for {//这一部分是否多余(select 好像可以保证一次只有一个case在执行)或者不够合理(也许会产生竞争)，

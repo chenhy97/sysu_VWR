@@ -2,7 +2,7 @@
     "arch": "sockshop",
     "description":"A simulation of the sock-shop benchmark",
     "version": "arch-0.0",
-    "delayvictim": "user",
+    
     "services": [
         { "name": "user-db",     "package": "store",    "count": 1, "regions": 1, "dependencies": [] },
         { "name": "user",     "package": "karyon",    "count": 1, "regions": 1, "dependencies": ["user-db"] },
