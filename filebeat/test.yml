@@ -2,7 +2,7 @@ filebeat.prospectors:
 - type: log
   enabled: true
   paths:
-  - ../json_metrics/chenhy/test_flow.json
+  - ../json_metrics/*/*.json
   # json.message_key: true
   # json.ignore_decoding_error: true
   json.overwrite_keys: true
@@ -13,9 +13,9 @@ filebeat.prospectors:
 # output.console:
 #   enabled: true
 #   pretty: true
-setup.template.name: "testflow1-"        #顶格，和output对其
-setup.template.pattern: "testflow1-*"   #顶格，和output对其
+setup.template.name: "testflow-"        #顶格，和output对其
+setup.template.pattern: "testflow-*"   #顶格，和output对其
 output.elasticsearch:
-  enabled: true
+  # enabled: true
   hosts: ["http://134.175.62.237:9200"]
-  index: "testflow1-%{[filebeat.prospectors.paths]}-%{+yyyy.MM.dd}"
+  index: "testflow-%{+yyyy.MM.dd}"

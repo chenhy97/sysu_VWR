@@ -15,6 +15,7 @@ import (
 	"time"
 	"net/http"
     "regexp"
+    // "time"
 	// "github.com/gin-contrib/cors"
 	"github.com/adrianco/spigo/actors/edda"          // log configuration state
 	"github.com/adrianco/spigo/tooling/archaius"     // store the config for global lookup
@@ -39,7 +40,7 @@ var noodles *map[string]chan gotocol.Message
 var eurekachan *map[string]chan gotocol.Message
 var user_name string
 //调用os.MkdirAll递归创建文件夹
-func createFile(filePath string)  error  {
+func createDir(filePath string)  error  {
 	if !isExist(filePath) {
 		err := os.MkdirAll(filePath,os.ModePerm)
 		return err
@@ -72,7 +73,7 @@ func upload_file(c *gin.Context){
 	}
 	filename := header.Filename
 	fmt.Println("json_arch/"+user_name,filename)
-	createFile("json_arch/" + user_name)
+	createDir("json_arch/" + user_name)
 	out, err := os.Create("json_arch/" + user_name +"/"  +name+"_arch.json")
 	defer out.Close()
 	io.Copy(out, file)
@@ -82,14 +83,15 @@ func upload_file(c *gin.Context){
 	return
 }
 func pre_StartArch(c *gin.Context){
+	timeStr := time.Now().Format("2006-01-02 15:04:05")
 	user_name = c.PostForm("un")
-	createFile("json_arch/"+user_name)
-	createFile("json_metrics/"+user_name)
-	createFile("gml/"+user_name)
-	createFile("json/"+user_name)
-	createFile("csv_metrics/"+user_name)
+	createDir("json_arch/"+user_name)
+	createDir("json_metrics/"+user_name)
+	createDir("gml/"+user_name)
+	createDir("json/"+user_name)
+	createDir("csv_metrics/"+user_name)
 	inputfile_name := c.DefaultPostForm("a","netflixoss")
-	archaius.Conf.Arch = user_name + "/" + inputfile_name
+	archaius.Conf.Arch = user_name + "/" + inputfile_name + timeStr
 	file, header, err := c.Request.FormFile("file")
 	if err != nil {
 		fmt.Println("error")
@@ -100,8 +102,8 @@ func pre_StartArch(c *gin.Context){
 	}
 	filename := header.Filename
 	fmt.Println("json_arch/"+user_name,filename)
-	createFile("json_arch/" + user_name)
-	out, err := os.Create("json_arch/" + user_name +"/"  +inputfile_name +"_arch.json")
+	createDir("json_arch/" + user_name)
+	out, err := os.Create("json_arch/" + user_name +"/"  +inputfile_name + timeStr +"_arch.json")
 	io.Copy(out, file)
 	out.Close()
 
@@ -187,6 +189,7 @@ func pre_StartArch(c *gin.Context){
 	c.JSON(200,gin.H{
 		"Runtime":archaius.Conf.RunDuration ,
 		"endless":archaius.Conf.RunToEnd,
+		"elsatic_search":"json_arch/" + user_name +"/"  +inputfile_name + timeStr +"_arch.json",
 		"vizceral_file":str,
 	})
 	StartArch()//直接调用即可，多个http请求之间是可以异步处理的，所以没关系。
