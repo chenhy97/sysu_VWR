@@ -31,6 +31,7 @@ var (
 	eurekachan map[string]chan gotocol.Message // eureka for each region and zone
 	// noodles channels mapped by microservice name connects netflixoss to everyone
 	noodles map[string]chan gotocol.Message
+	ans int = 0
 )
 
 // CreateChannels makes the maps of channels
@@ -263,6 +264,7 @@ func ConnectEveryEureka(name string) {
 // Run architecture for a while then shut down
 func Run(rootservice string,ServiceNames map[int]string,ServiceIndex int) {
 	// tell denominator to start chatting with microservices every 0.01 secs by default
+	ans = 0
 	delay := archaius.Key(archaius.Conf, "chat")
 	if delay == "" {
 		delay = fmt.Sprintf("%dms", 10)
@@ -270,10 +272,10 @@ func Run(rootservice string,ServiceNames map[int]string,ServiceIndex int) {
 	log.Println(rootservice+" activity rate ", delay)
 	SendToName(rootservice, gotocol.Message{gotocol.Chat, nil, time.Now(), handlers.DebugContext(gotocol.NilContext), delay})
 	// wait until the delay has finished
-	if archaius.Conf.Collect{
+	if archaius.Conf.Collect && archaius.Conf.RunToEnd{
 		go flow.Interval_save()
 	}
-	if archaius.Conf.RunDuration >= time.Millisecond {
+	if archaius.Conf.RunDuration >= time.Millisecond && !archaius.Conf.RunToEnd {
 		time.Sleep(archaius.Conf.RunDuration / 2)
 		// temp := rand.Intn(30)
 		// temp := 10
@@ -282,7 +284,18 @@ func Run(rootservice string,ServiceNames map[int]string,ServiceIndex int) {
 		//chaosmonkey.Delete(&noodles, victim) // kill a random victim half way through
 		// chaosmonkey.Disconnect(&noodles,disabledConA,disabledConB,1)//最后一位是disconnect概率 模仿Gremlin
 		time.Sleep(archaius.Conf.RunDuration / 2)
-
+	}else if archaius.Conf.RunToEnd{
+		for{
+			time.Sleep(time.Second * 1)
+			// fmt.Println("ans",ans)
+			if ans == 1{
+				flow.Endless_clear()
+				// flowmap = nil
+				// gotocol.ClearTrace()
+				break
+			}
+		}
+	}
 
 		//log.Println(noodles)
 		//log.Println("XXXXXX")
@@ -305,13 +318,15 @@ func Run(rootservice string,ServiceNames map[int]string,ServiceIndex int) {
 		//		break
 		//	}
 		//}
-	}
+	
 	log.Println("asgard: Shutdown",listener)
 	ShutdownNodes()
 	ShutdownEureka()
 	collect.Save()
 }
-
+func Exit(){
+	ans = 1
+}
 // ShutdownNodes - shut down the nodes and wait for them to go away
 func ShutdownNodes() {
 	for _, noodle := range noodles {

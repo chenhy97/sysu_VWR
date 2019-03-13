@@ -201,6 +201,25 @@ func End(msg gotocol.Message, resphist, servhist, rthist *generic.Histogram) {
 		collect.Measure(rthist, time.Unix(0, sr).Sub(time.Unix(0, cs))+time.Unix(0, cr).Sub(time.Unix(0, ss)))
 	}
 }
+func Endless_clear(){
+	// sync_flowmap = var sync_flowmap sync.Map
+	write_flowlock.Lock()
+	sync_flowmap.Range(func(k,v interface{})bool {
+		c,ok1 := k.(gotocol.TraceContextType)
+		f,ok2 := v.([]*spannotype)
+		if ok1 && ok2 {
+			Flush(c, f)
+			sync_flowmap.Delete(k)
+		}else{
+			fmt.Println("Wrong insertion!!!!")
+		}
+		file.WriteString(",\n")
+		return true
+	})
+	write_flowlock.Unlock()
+	flowmap = nil
+	gotocol.ClearTrace()
+}
 func Add2Buffer(msg gotocol.Message){
 	write_flowlock.RLock()
 	sync_flowmap.Store(msg.Ctx.Trace,flowmap[msg.Ctx.Trace])

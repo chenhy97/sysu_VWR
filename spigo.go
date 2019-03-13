@@ -13,7 +13,9 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
+	"net/http"
+    "regexp"
+	// "github.com/gin-contrib/cors"
 	"github.com/adrianco/spigo/actors/edda"          // log configuration state
 	"github.com/adrianco/spigo/tooling/archaius"     // store the config for global lookup
 	"github.com/adrianco/spigo/tooling/architecture" // run an architecture from a json definition
@@ -182,15 +184,17 @@ func pre_StartArch(c *gin.Context){
 		f_flow,_ := os.Create("json_metrics/" + archaius.Conf.Arch + "_flow.json")
 		f_flow.Close()//可否不在此处close()???
 	}
-	
-	StartArch()//直接调用即可，多个http请求之间是可以异步处理的，所以没关系。
-	fmt.Println("Success!")
-	fmt.Println(str)
 	c.JSON(200,gin.H{
 		"Runtime":archaius.Conf.RunDuration ,
 		"endless":archaius.Conf.RunToEnd,
-		"vizceral-file":str,
+		"vizceral_file":str,
 	})
+	StartArch()//直接调用即可，多个http请求之间是可以异步处理的，所以没关系。
+	// fmt.Println("Success!")
+	
+	// fmt.Println(str)
+	
+	// return
 }
 func StartArch(){
 	// start up the selected architecture
@@ -244,7 +248,7 @@ func ejectError(c *gin.Context){
 	DelayTime := c.DefaultPostForm("dtime","")
 	probability,_ := strconv.ParseFloat(c.DefaultPostForm("pb","1.00"),32)
 	fmt.Println(ErrorType,Service1,Service2,DelayTime,probability)
-	return
+	// return
 	if ErrorType == ""{
 		c.JSON(404,gin.H{
 			"ErrorCode":"Failed,need to set ErrorType",
@@ -300,6 +304,9 @@ func ejectError(c *gin.Context){
 		"Result":"Success",
 	})
 }
+func exit(c *gin.Context){
+	asgard.Exit()
+}
 func test(c *gin.Context){
 	arch2vizceral.A2v("test")
 	check := c.DefaultPostForm("check_data","winner")
@@ -315,10 +322,42 @@ func test(c *gin.Context){
 func main(){
 	//fmt.Println(arch2vizceral.A2v("test"))
 	r := gin.Default()
+	r.Use(CorsMiddleware())
 	// count := 0
     // r.POST("/start", pre_StartArch)
+
     r.POST("/start",pre_StartArch)
     r.POST("/eject",ejectError)
     r.POST("/test",test)
+    r.POST("/exit",exit)
     r.Run() // listen and serve on 0.0.0.0:8080
 }
+func CorsMiddleware() gin.HandlerFunc {
+    return func(c *gin.Context) {
+        method := c.Request.Method
+        origin := c.Request.Header.Get("Origin")
+        fmt.Println(origin)
+        var filterHost = [...]string{"http://0.0.0.0:8000"}
+        // filterHost 做过滤器，防止不合法的域名访问
+        var isAccess = false
+        for _, v := range(filterHost) {
+            match, _ := regexp.MatchString(v, origin)
+            if match {
+                isAccess = true
+            }
+        }
+        if isAccess {
+        // 核心处理方式
+            c.Header("Access-Control-Allow-Origin", "*")
+            c.Header("Access-Control-Allow-Headers", "access-control-allow-headers,access-control-allow-methods,access-control-allow-origin")
+            c.Header("Access-Control-Allow-Methods", "GET, OPTIONS, POST, PUT, DELETE")
+            c.Set("content-type", "application/json")
+        }
+        //放行所有OPTIONS方法
+        if method == "OPTIONS" {
+            // c.JSON(http.StatusOK, "Options Request!")
+        	c.AbortWithStatus(http.StatusNoContent)
+        }
+      	c.Next()
+    }
+ }
