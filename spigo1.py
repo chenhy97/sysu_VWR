@@ -255,7 +255,7 @@ def draw_acf_pacf(data):
 
 warnings.filterwarnings('ignore')
 
-file = open(r'json_metrics/test_flow.json', 'r').read()
+file = open(r'json_metrics/chenhy/sockshop_flow.json', 'r').read()
 raw_data = json.loads(file)
 
 nodes, delay_data = pre_process_data(raw_data, rolling=True)

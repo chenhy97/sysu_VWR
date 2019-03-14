@@ -289,7 +289,7 @@ func ejectError(c *gin.Context){
 	}
 	if ErrorType == "Disconnect"{
 		if Service1 != "" && Service2 != ""{
-			chaosmonkey.Disconnect(noodles,Service1,DelayTime,float32(probability))
+			chaosmonkey.Disconnect(noodles,Service1,Service2,float32(probability))
 			c.JSON(200,gin.H{
 				"ErrorCode":0,
 			})
