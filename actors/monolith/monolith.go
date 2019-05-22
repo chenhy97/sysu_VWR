@@ -13,6 +13,7 @@ import (
 	"time"
 	"log"
 	"strings"
+	"fmt"
 )
 
 // Start - all configuration and state is sent via messages
@@ -38,7 +39,7 @@ func Start(listener chan gotocol.Message) {
 				gotocol.Message{gotocol.Final, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
 				return
 			}
-			if exit_symbol == 1{
+			if exit_symbol == 1 && archaius.Conf.RunToEnd{
 				flow.Add2Buffer(msg)
 				continue
 			}
@@ -46,6 +47,7 @@ func Start(listener chan gotocol.Message) {
 				flow.Instrument(msg, name, hist, "NO")
 			}else if delaysymbol == 1 {
 				log.Println("begin")
+				fmt.Println("*******",delaysymbol)
 				time.Sleep(delaytime)
 				log.Println("end")
 				flow.Instrument(msg, name, hist, "YES")
@@ -81,14 +83,19 @@ func Start(listener chan gotocol.Message) {
 				handlers.GetResponse(msg, name, listener, &requestor)
 			case gotocol.Put:
 				// route the request on to a random dependency
+				
 				handlers.Put(msg, name, listener, &requestor, microservices)
 			case gotocol.Delay:
 				delaysymbol = 1
+
 				d, e := time.ParseDuration(msg.Intention)
 				if e == nil && d >= time.Millisecond && d <= time.Hour {
 					delaytime = d
 				}
-				flow.Add2Buffer(msg)
+				// fmt.Println(delaytime"DELAY,**********____")
+				// if archaius.Conf.RunToEnd{
+					flow.Add2Buffer(msg)
+				// }
 				// log.Println("begin")
 				// time.Sleep(delaytime)
 				// delaysymbol = 0
@@ -99,16 +106,17 @@ func Start(listener chan gotocol.Message) {
 					ch <- gotocol.Message{gotocol.Delete, nil, time.Now(), gotocol.NilContext, name}
 				}
 				gotocol.Message{gotocol.Final, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
-				flow.Add2Buffer(msg)
-				exit_symbol = 1
+					flow.Add2Buffer(msg)
+					exit_symbol = 1
+				
 				// return
 			}
 		case <-eurekaTicker.C: // check to see if any new dependencies have appeared
-			for {//这一部分是否多余(select 好像可以保证一次只有一个case在执行)或者不够合理(也许会产生竞争)，
-				if delaysymbol == 0 {
-					break
-				}
-			}
+			//for {//这一部分是否多余(select 好像可以保证一次只有一个case在执行)或者不够合理(也许会产生竞争)，
+			//	if delaysymbol == 0{
+			//		continue
+			//	}
+			//}
 			for dep := range dependencies {
 				for _, ch := range eureka {
 					ch <- gotocol.Message{gotocol.GetRequest, listener, time.Now(), gotocol.NilContext, dep}

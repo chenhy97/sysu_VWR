@@ -1,0 +1,17 @@
+{
+    "arch": "lamp",
+    "description":"Simple LAMP stack",
+    "version": "arch-0.0",
+    "victim": "",
+    "delayvictim":"myWebserver",
+    "disconnection": [
+        {"A_name" : "",  "B_name" : ""}
+    ],
+    "services": [
+        { "name": "rdsMysql",     "package": "store",       "count": 2,  "regions": 1, "dependencies": [] },
+	{ "name": "memcache",      "package": "store",       "count": 1,  "regions": 1, "dependencies": [] },
+        { "name": "myWebserver",     "package": "monolith",    "count": 6, "regions": 1, "dependencies": ["memcache", "rdsMysql"] },
+        { "name": "myWebserverELB", "package": "elb",         "count": 0,  "regions": 1, "dependencies": ["myWebserver"] },
+        { "name": "myWww",           "package": "denominator", "count": 0,  "regions": 0, "dependencies": ["myWebserverELB"] }
+    ]
+}

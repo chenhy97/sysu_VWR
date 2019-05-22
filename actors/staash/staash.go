@@ -191,11 +191,11 @@ func Start(listener chan gotocol.Message) {
 				// return
 			}
 		case <-eurekaTicker.C: // check to see if any new dependencies have appeared
-			for {//这一部分是否多余(select 好像可以保证一次只有一个case在执行)或者不够合理(也许会产生竞争)，
-				if delaysymbol == 0 {
-					break
-				}
-			}
+			//for {//这一部分是否多余(select 好像可以保证一次只有一个case在执行)或者不够合理(也许会产生竞争)，
+			//	if delaysymbol == 0 {
+			//		break
+			//	}
+			//}
 			for dep := range dependencies {
 				for _, ch := range eureka {
 					ch <- gotocol.Message{gotocol.GetRequest, listener, time.Now(), gotocol.NilContext, dep}
