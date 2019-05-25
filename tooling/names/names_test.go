@@ -3,7 +3,7 @@ package names
 
 import (
 	"fmt"
-	"github.com/adrianco/spigo/tooling/archaius"
+	"github.com/chenhy/spigo/tooling/archaius"
 	"testing"
 )
 
@@ -24,7 +24,7 @@ func TestNames(t *testing.T) {
 	archaius.Conf.Filter = true
 	fmt.Println("FilterReduce " + FilterNode(name))
 	archaius.Conf.Filter = false
-	fmt.Println("FilterContainer " + FilterNode("container.us-east-1.zoneA.ecs:1.frontend:1.adrianco/node.node:1.homepage.karyon"))
+	fmt.Println("FilterContainer " + FilterNode("container.us-east-1.zoneA.ecs:1.frontend:1.chenhy/node.node:1.homepage.karyon"))
 	fmt.Println("Edge:        " + FilterEdge(fmt.Sprintf("%v %v", name, name)))
 	fmt.Println("arch:        " + Arch(name))
 	fmt.Println("region:      " + Region(name))

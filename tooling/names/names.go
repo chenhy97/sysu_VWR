@@ -3,7 +3,7 @@ package names
 
 import (
 	"fmt"
-	"github.com/adrianco/spigo/tooling/archaius"
+	"github.com/chenhy/spigo/tooling/archaius"
 	"strings"
 )
 

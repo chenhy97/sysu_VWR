@@ -2,8 +2,8 @@
 package graphneo4j
 
 import (
-	"github.com/adrianco/spigo/tooling/archaius"
-	"github.com/adrianco/spigo/tooling/names"
+	"github.com/chenhy/spigo/tooling/archaius"
+	"github.com/chenhy/spigo/tooling/names"
 	"testing"
 	"time"
 )

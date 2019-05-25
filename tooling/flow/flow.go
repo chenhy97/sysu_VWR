@@ -11,11 +11,11 @@ import (
 	"sync"
 	"time"
 	
-	"github.com/adrianco/spigo/tooling/archaius"
-	"github.com/adrianco/spigo/tooling/collect"
-	"github.com/adrianco/spigo/tooling/dhcp"
-	"github.com/adrianco/spigo/tooling/gotocol"
-	"github.com/adrianco/spigo/tooling/graphneo4j"
+	"github.com/chenhy/spigo/tooling/archaius"
+	"github.com/chenhy/spigo/tooling/collect"
+	"github.com/chenhy/spigo/tooling/dhcp"
+	"github.com/chenhy/spigo/tooling/gotocol"
+	"github.com/chenhy/spigo/tooling/graphneo4j"
 	"github.com/go-kit/kit/metrics/generic"
 
 )

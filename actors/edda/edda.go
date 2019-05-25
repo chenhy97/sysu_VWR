@@ -2,13 +2,13 @@
 package edda
 
 import (
-	"github.com/adrianco/spigo/tooling/archaius"
-	"github.com/adrianco/spigo/tooling/collect"
-	"github.com/adrianco/spigo/tooling/gotocol"
-	"github.com/adrianco/spigo/tooling/graphjson"
-	"github.com/adrianco/spigo/tooling/graphml"
-	"github.com/adrianco/spigo/tooling/graphneo4j"
-	"github.com/adrianco/spigo/tooling/names"
+	"github.com/chenhy/spigo/tooling/archaius"
+	"github.com/chenhy/spigo/tooling/collect"
+	"github.com/chenhy/spigo/tooling/gotocol"
+	"github.com/chenhy/spigo/tooling/graphjson"
+	"github.com/chenhy/spigo/tooling/graphml"
+	"github.com/chenhy/spigo/tooling/graphneo4j"
+	"github.com/chenhy/spigo/tooling/names"
 	"log"
 	"strings"
 	"sync"

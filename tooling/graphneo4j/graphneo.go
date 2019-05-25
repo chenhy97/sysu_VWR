@@ -4,10 +4,10 @@ package graphneo4j
 import (
 	"database/sql"
 	"fmt"
-	"github.com/adrianco/spigo/tooling/archaius"
-	"github.com/adrianco/spigo/tooling/dhcp"
-	"github.com/adrianco/spigo/tooling/gotocol"
-	"github.com/adrianco/spigo/tooling/names"
+	"github.com/chenhy/spigo/tooling/archaius"
+	"github.com/chenhy/spigo/tooling/dhcp"
+	"github.com/chenhy/spigo/tooling/gotocol"
+	"github.com/chenhy/spigo/tooling/names"
 	_ "gopkg.in/cq.v1" // cq used without package prefix
 	"log"
 	"os"

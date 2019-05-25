@@ -4,7 +4,7 @@ package compose
 
 import (
 	//"fmt"
-	"github.com/adrianco/spigo/tooling/architecture"
+	"github.com/chenhy/spigo/tooling/architecture"
 	"github.com/cloudfoundry-incubator/candiedyaml"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"

@@ -4,10 +4,10 @@ package pirate
 
 import (
 	"fmt"
-	"github.com/adrianco/spigo/tooling/archaius"
-	"github.com/adrianco/spigo/tooling/collect"
-	"github.com/adrianco/spigo/tooling/gotocol"
-	"github.com/adrianco/spigo/tooling/handlers"
+	"github.com/chenhy/spigo/tooling/archaius"
+	"github.com/chenhy/spigo/tooling/collect"
+	"github.com/chenhy/spigo/tooling/gotocol"
+	"github.com/chenhy/spigo/tooling/handlers"
 	"log"
 	"math/rand"
 	"time"

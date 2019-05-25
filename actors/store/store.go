@@ -4,13 +4,13 @@ package store
 
 import (
 	"fmt"
-	"github.com/adrianco/spigo/tooling/archaius"
-	"github.com/adrianco/spigo/tooling/collect"
-	"github.com/adrianco/spigo/tooling/flow"
-	"github.com/adrianco/spigo/tooling/gotocol"
-	"github.com/adrianco/spigo/tooling/handlers"
-	"github.com/adrianco/spigo/tooling/names"
-	"github.com/adrianco/spigo/tooling/ribbon"
+	"github.com/chenhy/spigo/tooling/archaius"
+	"github.com/chenhy/spigo/tooling/collect"
+	"github.com/chenhy/spigo/tooling/flow"
+	"github.com/chenhy/spigo/tooling/gotocol"
+	"github.com/chenhy/spigo/tooling/handlers"
+	"github.com/chenhy/spigo/tooling/names"
+	"github.com/chenhy/spigo/tooling/ribbon"
 	"time"
 	"log"
 	

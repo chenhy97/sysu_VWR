@@ -2,11 +2,11 @@
 package handlers
 
 import (
-	"github.com/adrianco/spigo/tooling/archaius"
-	"github.com/adrianco/spigo/tooling/flow"
-	"github.com/adrianco/spigo/tooling/gotocol"
-	"github.com/adrianco/spigo/tooling/names"
-	"github.com/adrianco/spigo/tooling/ribbon"
+	"github.com/chenhy/spigo/tooling/archaius"
+	"github.com/chenhy/spigo/tooling/flow"
+	"github.com/chenhy/spigo/tooling/gotocol"
+	"github.com/chenhy/spigo/tooling/names"
+	"github.com/chenhy/spigo/tooling/ribbon"
 	"log"
 	"time"
 )

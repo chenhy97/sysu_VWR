@@ -3,7 +3,7 @@ package main
 
 import (
 	"flag"
-	"github.com/adrianco/spigo/compose"
+	"github.com/chenhy/spigo/compose"
 )
 
 func main() {

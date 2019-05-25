@@ -4,8 +4,8 @@ package graphjson
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/adrianco/spigo/tooling/archaius"
-	"github.com/adrianco/spigo/tooling/dhcp"
+	"github.com/chenhy/spigo/tooling/archaius"
+	"github.com/chenhy/spigo/tooling/dhcp"
 	"io/ioutil"
 	"log"
 	"os"

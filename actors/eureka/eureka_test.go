@@ -3,9 +3,9 @@ package eureka
 
 import (
 	"fmt"
-	"github.com/adrianco/spigo/actors/edda"
-	"github.com/adrianco/spigo/tooling/archaius"
-	"github.com/adrianco/spigo/tooling/gotocol"
+	"github.com/chenhy/spigo/actors/edda"
+	"github.com/chenhy/spigo/tooling/archaius"
+	"github.com/chenhy/spigo/tooling/gotocol"
 	"testing"
 	"time"
 )

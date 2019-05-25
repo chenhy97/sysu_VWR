@@ -2,8 +2,8 @@ package ribbon
 
 import (
 	"fmt"
-	"github.com/adrianco/spigo/tooling/gotocol"
-	"github.com/adrianco/spigo/tooling/names"
+	"github.com/chenhy/spigo/tooling/gotocol"
+	"github.com/chenhy/spigo/tooling/names"
 	"testing"
 	"time"
 )

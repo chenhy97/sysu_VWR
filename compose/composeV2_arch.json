@@ -1,6 +1,6 @@
 {
     "arch": "composeTestResult",
-    "args": "[/var/folders/pk/2108fnrs6xb2hfv5_92ywm3m0000gn/T/go-build331839131/github.com/adrianco/spigo/compose/_test/compose.test]",
+    "args": "[/var/folders/pk/2108fnrs6xb2hfv5_92ywm3m0000gn/T/go-build331839131/github.com/chenhy/spigo/compose/_test/compose.test]",
     "date": "2016-10-26T14:19:30.882219936+02:00",
     "description": "compose yaml",
     "services": [

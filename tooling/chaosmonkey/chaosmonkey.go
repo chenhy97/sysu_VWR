@@ -2,8 +2,8 @@
 package chaosmonkey
 
 import (
-	"github.com/adrianco/spigo/tooling/gotocol"
-	"github.com/adrianco/spigo/tooling/names"
+	"github.com/chenhy/spigo/tooling/gotocol"
+	"github.com/chenhy/spigo/tooling/names"
 	"log"
 	"time"
 	"math/rand"

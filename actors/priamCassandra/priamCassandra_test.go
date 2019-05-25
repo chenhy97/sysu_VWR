@@ -2,7 +2,7 @@ package priamCassandra
 
 import (
 	"fmt"
-	"github.com/adrianco/spigo/tooling/gotocol"
+	"github.com/chenhy/spigo/tooling/gotocol"
 	"testing"
 )
 

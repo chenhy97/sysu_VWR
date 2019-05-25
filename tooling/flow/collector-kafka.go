@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/Shopify/sarama"
-	"github.com/adrianco/spigo/tooling/archaius"
+	"github.com/chenhy/spigo/tooling/archaius"
 )
 
 // defaultKafkaTopic sets the standard Kafka topic our Collector will publish

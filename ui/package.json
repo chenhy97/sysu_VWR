@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/adrianco/spigo"
+    "url": "https://github.com/chenhy/spigo"
   },
   "author": "Adrian Cockcroft <adrian.cockcroft@gmail.com> (http://www.millicomputer.com)",
   "contributors": [
@@ -20,10 +20,10 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/adrianco/spigo/issues",
+    "url": "https://github.com/chenhy/spigo/issues",
     "email": "adrian.cockcroft@gmail.com"
   },
-  "homepage": "https://github.com/adrianco/spigo",
+  "homepage": "https://github.com/chenhy/spigo",
   "dependencies": {
     "ampersand-app": "^1.0.4",
     "ampersand-router": "^3.0.2",

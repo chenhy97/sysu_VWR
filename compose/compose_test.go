@@ -4,8 +4,8 @@ package compose
 import (
 	//"encoding/json"
 	"fmt"
-	"github.com/adrianco/spigo/tooling/archaius" // global configuration
-	"github.com/adrianco/spigo/tooling/architecture"
+	"github.com/chenhy/spigo/tooling/archaius" // global configuration
+	"github.com/chenhy/spigo/tooling/architecture"
 	"github.com/cloudfoundry-incubator/candiedyaml"
 	"gopkg.in/yaml.v2"
 	"log"

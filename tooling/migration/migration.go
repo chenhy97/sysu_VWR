@@ -4,9 +4,9 @@
 package migration
 
 import (
-	. "github.com/adrianco/spigo/actors/packagenames" // name definitions
-	"github.com/adrianco/spigo/tooling/archaius"      // global configuration
-	"github.com/adrianco/spigo/tooling/asgard"        // tools to create an architecture
+	. "github.com/chenhy/spigo/actors/packagenames" // name definitions
+	"github.com/chenhy/spigo/tooling/archaius"      // global configuration
+	"github.com/chenhy/spigo/tooling/asgard"        // tools to create an architecture
 	"log"
 )
 

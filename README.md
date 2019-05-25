@@ -1,10 +1,10 @@
 # spigo and simianviz
 
-[![Join the chat at https://gitter.im/adrianco/spigo](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/adrianco/spigo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/chenhy/spigo](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/chenhy/spigo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[![GoDoc](https://godoc.org/github.com/adrianco/spigo?status.svg)](https://godoc.org/github.com/adrianco/spigo) 
+[![GoDoc](https://godoc.org/github.com/chenhy/spigo?status.svg)](https://godoc.org/github.com/chenhy/spigo) 
 
-[Wiki Instructions](https://github.com/adrianco/spigo/wiki)
+[Wiki Instructions](https://github.com/chenhy/spigo/wiki)
 
 SIMulate Interactive Actor Network VIsualiZation - simianviz - also
 visualize the simian army in action. Follow [@simianviz on twitter](https://www.twitter.com/simianviz) to
@@ -98,16 +98,16 @@ $ compose2arch -file myarch.yaml > json_arch/myarch.json
 ### Contributing and forking Spigo/SimianViz
 Here's a [useful guide to managing forked go programs](http://code.openark.org/blog/development/forking-golang-repositories-on-github-and-managing-the-import-path) on github. Thanks to [Kurt](https://github.com/kkemple), [Priya](https://github.com/hubayirp) and [Henri](https://github.com/hvandenb) for their initial contributions and advice.
 
-Ideas for future enhancements and interfaces have been accumulated as Issues, [please take a look there](https://github.com/adrianco/spigo/issues) and feel free to add your own comments and ideas, or go ahead and implement something.
+Ideas for future enhancements and interfaces have been accumulated as Issues, [please take a look there](https://github.com/chenhy/spigo/issues) and feel free to add your own comments and ideas, or go ahead and implement something.
 
 ### Next steps, papers and presentations
 [See this paper for some Occam code](SkypeSim07.pdf) and results for the original version of this idea circa 2007.
 
 The public launch was during a short keynote presentation at the March 2015 O'Reilly Software Architecture Conference: [Monitoring Microservices - A Challenge](
-http://www.slideshare.net/adriancockcroft/software-architecture-monitoring-microservices-a-challenge) - 
+http://www.slideshare.net/chenhyckcroft/software-architecture-monitoring-microservices-a-challenge) - 
 [Video of the 10 minute talk](https://youtu.be/smEuX-Hq6RI)
 
-Most of the microservices presentations on [Adrian's slideshare account](http://slideshare.net/adriancockcroft) discuss the current state of work.
+Most of the microservices presentations on [Adrian's slideshare account](http://slideshare.net/chenhyckcroft) discuss the current state of work.
 
 The basic framework is in place, but more interesting behaviors, automonous running, and user input to control or stop the simulation haven't been added yet.
 
