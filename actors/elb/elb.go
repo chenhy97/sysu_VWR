@@ -37,6 +37,7 @@ func Start(listener chan gotocol.Message) {
 				return
 			}
 			if exit_symbol == 1{
+				flow.Instrument(msg, name, hist, "DONE")
 				flow.Add2Buffer(msg)
 				continue
 			}
@@ -93,7 +94,7 @@ func Start(listener chan gotocol.Message) {
 				gotocol.Message{gotocol.Final, nil, time.Now(), gotocol.NilContext, name}.GoSend(parent)
 				flow.Add2Buffer(msg)
 				exit_symbol = 1//为了可以在注入了delete类型错误之后，还可以记录trace，不让其推出，改为使用标识位判断退出
-				// return
+				//return
 			}
 		case <-eurekaTicker.C: // check to see if any new dependencies have appeared
 			//for {//这一部分是否多余(select 好像可以保证一次只有一个case在执行)或者不够合理(也许会产生竞争)，
