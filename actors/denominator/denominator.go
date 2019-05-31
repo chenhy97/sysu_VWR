@@ -61,7 +61,7 @@ func Start(listener chan gotocol.Message) {
 				log.Println("begin")
 				time.Sleep(delaytime)
 				log.Println("end")
-				flow.Instrument(msg, name, nethist, "YES")
+				flow.Instrument(msg, name, nethist, "YES"+name)
 				delaysymbol = 0
 			}else{
 				flow.Instrument(msg, name, nethist, "NO")

@@ -139,7 +139,7 @@ func AnnotateReceive(msg gotocol.Message, name string, received time.Time,tag_sy
 		return
 	}
 	flowlock.Lock()
-	if (tag_symbol == "YES" || tag_symbol == "DONE"){
+	if (tag_symbol[0:3] == "YES" || tag_symbol[0:4] == "DONE"){
 		flowmap[msg.Ctx.Trace] = append(flowmap[msg.Ctx.Trace], annotate_tag(msg, name, received, CR, SR,tag_symbol))
 	}else if tag_symbol == "NO"{
 		flowmap[msg.Ctx.Trace] = append(flowmap[msg.Ctx.Trace], annotate(msg, name, received, CR, SR))
@@ -159,7 +159,7 @@ func AnnotateSend(msg gotocol.Message, name string,tag_symbol string) {
 		return
 	}
 	flowlock.Lock()
-	if tag_symbol == "YES"{
+	if tag_symbol[0:3] == "YES"{
 		flowmap[msg.Ctx.Trace] = append(flowmap[msg.Ctx.Trace], annotate_tag(msg, name, msg.Sent, SS, CS,tag_symbol))
 
 	}else if tag_symbol == "NO"{
